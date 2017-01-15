@@ -11,13 +11,12 @@ app.controller("ProjectController", ['$rootScope', '$scope', '$state', '$locatio
   var task_users = [];
   /////////////////////////////// VIEW VARIABLES //////////////////////////////////////////////
   $scope.projects = [];
-  
+
   ///////////////////////////////  FUNCTIONS /////////////////////////////////////////////////
   ctrl.setListTasks = function(){
     DataService.initTasks2()
      .then(function(data){
        list_tasks = data.related;
-       console.log(list_tasks);
        ctrl.setProjects();
      }, function(data){});
   } 
@@ -39,7 +38,6 @@ app.controller("ProjectController", ['$rootScope', '$scope', '$state', '$locatio
     DataService.initProjects2()
     .then(function(data){
       list_projects = data.related;
-      console.log(list_projects);
       ctrl.list_projects = data.related;
       ctrl.setListCollabs();
     }, function(data){})
@@ -57,7 +55,6 @@ app.controller("ProjectController", ['$rootScope', '$scope', '$state', '$locatio
   ctrl.setNeededData();
 
   ctrl.setProjects = function(){
-   console.log(list_projects);
    var projects = list_projects;
    for(var i = 0; i < projects.length; i++){
      projects[i].collaborators = DataService.getCollabById(list_collabs, list_users, projects[i].id);
@@ -97,7 +94,6 @@ app.controller("ProjectController", ['$rootScope', '$scope', '$state', '$locatio
               Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right'});
               if(response.data.data !== undefined){
                  var project_data = response.data.data;
-                 console.log(project_data);
                  var doer = filterFilter(list_users, {id : project_data.userid})[0];
                  var arrNotif = [];
                  for(var i = 0; i < project_data.collaborators.length; i++){
@@ -142,7 +138,6 @@ app.controller("ProjectController", ['$rootScope', '$scope', '$state', '$locatio
      var projects = $scope.projects;
      data.create_date = $filter('date')(new Date(data.create_date), 'MMMM d, y');
      projects.unshift(data);
-     // projects = $filter('orderBy')(projects, '-create_date');
      $scope.projects = projects;
   })
   $scope.$on('/updateprojectname', function(event, data){

@@ -44,18 +44,17 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
     }, function(data){})
   }
   ctrl.setListAssignments = function(){
-     DataService.initAssignments2()
+    DataService.initAssignments2()
      .then(function(data){
      list_assignments = data;
      ctrl.setListProjects();
-     }, function(data){})
+    }, function(data){})
   }
   ctrl.setListProjects = function(){
     DataService.initProjects2()
     .then(function(data){
       $scope.list_projects = data.related;
       list_projects = data.related;
-      console.log(list_projects);
       ctrl.setListCollabs();
     }, function(data){})
   }
@@ -76,7 +75,6 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
   }
   ctrl.setTaskListFilter = function(filter){
     if(filter === 'incomplete'){
-
       var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks.related);
       tasks = tasks.filter(function(task){
         var test = filterFilter(task.assignees, {id : getCookie('userid')})[0];
@@ -126,7 +124,6 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
           });
         
       } else {
-        console.log('Cant be completed..');
         var confirm = $mdDialog.confirm()
           .title("Task Completion")
           .content('Some of its subtasks are still in progress.')
@@ -166,7 +163,6 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
           data : data,
           method : 'POST'
         }).then(function(response){
-          console.log(response);
           Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right', verticalSpacing: 15});
           ctrl.close();
         }, function(response){});
@@ -251,7 +247,6 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
     if(!found){
       var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks.related);
       var task = filterFilter(tasks, {id : data.id})[0];
-      console.log(task);
       if(task !== undefined){
           task.complete_date = data.complete_date;
           $scope.tasks.push(task);
@@ -277,7 +272,6 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
      if(!found){
       var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks.related);
       var task = filterFilter(tasks, {id : data.id})[0];
-      console.log(task);
       if(task !== undefined){
           task.complete_date = null;
           $scope.tasks.push(task);
@@ -287,15 +281,13 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
  });
  $scope.$on('/createtask', function(event, data){
     var test = filterFilter(data.assigned_users, { id : getCookie('userid')})[0];
-    console.log(list_tasks);
-    console.log(test);
     if(test !== undefined || getCookie('userid') === data.id){
-       DataService.initProjects2()
+      DataService.initProjects2()
       .then(function(res){
         list_projects = res.related;
         data.project = DataService.getProjectById(list_projects, data.project_id);
         $scope.tasks.push(data);
-         $scope.tasks = $filter('orderBy')($scope.tasks, '-edit_date');
+        $scope.tasks = $filter('orderBy')($scope.tasks, '-edit_date');
       }, function(data){})  
     }
   });

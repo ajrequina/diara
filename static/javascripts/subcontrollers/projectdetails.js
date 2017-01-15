@@ -63,7 +63,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
   ctrl.getProjectDetails = function(){
     user_id = getCookie('userid');
     var project = JSON.parse($window.localStorage['project']); 
-    console.log(list_tasks);
     $scope.project_details = filterFilter(list_projects, {id : project.id})[0];
     $scope.project_details.collaborators = DataService.getCollabById(list_collabs, list_users, project.id);
     ctrl.initProjectDetails();
@@ -84,7 +83,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     var total = 0;
     for(var i = 0; i < tasks.length; i++){
       if(tasks.complete_date !== null){
-        
         if(tasks[i].rating !== null){
           count++;
           total += tasks[i].rating;
@@ -99,8 +97,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     }
 
     ctrl.setStatus();
-    
-    console.log($scope.ave_rating);
   }
   ctrl.setProjectTasks = function(){
     ctrl.setTaskListFilter('incomplete');
@@ -115,31 +111,16 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     var tasks = filterFilter(list_tasks, {project_id : $scope.project_details.id});
     if($scope.project_details.deadline_date !== null){
       var date = null;
-      console.log($scope.project_details.deadline_date);
       var deadline_date = $filter('date')($scope.project_details.deadline_date, 'dd-MM-yyyy');
-      console.log(deadline_date);
       if($scope.project_details.deadline_time !== null){
-        // var d = new Date(),
-        // s = $scope.project_details.deadline_time,
-        // parts = s.match(/(\d+)\:(\d+) (\w+)/),
-        // hours = /am/i.test(parts[3]) ? parseInt(parts[1], 10) : parseInt(parts[1], 10) + 12,
-        // minutes = parseInt(parts[2], 10);
-
-        // d.setHours(hours);
-        // d.setMinutes(minutes);
-        // console.log(d);
         date = new Date($scope.project_details.deadline_date);
-        console.log(date);
       } else {
         date = new Date($scope.project_details.deadline_date);
       }
-      console.log(date);
       var date1 = new Date($scope.project_details.create_date);
       date1 = date1.getTime();
       var now = new Date();
       now = now.getTime();
-      console.log(now);
-      console.log(date.getTime() < now);
       if(date.getTime() < now){
         // in progress
         tasks = filterFilter(tasks, {complete_date : null});
@@ -156,7 +137,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
           $scope.status = "Completed";
         }
       }
-      //var timeDiff = Math.abs(date.getTime() - date1.getTime());
     } else {
       tasks = filterFilter(tasks, {complete_date : null});
         if(tasks.length > 0){
@@ -192,7 +172,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
        for(var i = 0; i < tasks.length; i++){
          tasks[i].assignees = DataService.getAssignmentsById(list_assignments, list_users, tasks[i].id, null);
        }
-       console.log(tasks);
       tasks = tasks.filter(function(task){
         return task.assignees.length === 0;
       });
@@ -201,6 +180,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
        $scope.project_details.tasks = tasks;
     }
   }
+
   ///////////// UPDATES ////////////
  ctrl.updateProjectTitle = function(event){
     if(event.which === 13){
@@ -215,7 +195,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
           var old =  $scope.project_details.name;
           $scope.project_details.name = $scope.project_title;
           $scope.project_details.name = MiscService.cleanText($scope.project_details.name);
-          console.log($scope.project_title);
           var data = {
             projectid : $scope.project_details.id,
             name : $scope.project_details.name.replace(/\s+/g,' ').trim(),
@@ -229,7 +208,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                  var users = data;
                  var project_data = response.data.data;
                  var assigner = filterFilter(users, {id : project_data.userid})[0];
-                 console.log(project_data); 
                  var arrNotif = [];
                  for(var i = 0; i < project_data.collaborators.length; i++){
                   if(project_data.collaborators[i].id !== getCookie('userid')){
@@ -248,13 +226,11 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                  var data = {
                    arrNotif : arrNotif
                  };
-                 console.log(arrNotif);
                 $http({
                   url : '/addnotif',
                   method : 'POST', 
                   data : data
                 }).then(function(response){
-                  console.log(response.data);
                 }, function(response){})
               }, function(data){})
               }
@@ -288,12 +264,9 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
              var users = data;
              var project_data = response.data.data;
              var assigner = filterFilter(users, {id : project_data.userid})[0];
-             console.log(assigner);
-             console.log(project_data); 
              var arrNotif = [];
              for(var i = 0; i < project_data.collaborators.length; i++){
               if(project_data.collaborators[i].id !== getCookie('userid')){
-
                var message = assigner.fullname + " (@" + assigner.username + ") "+ " made changes to the description of project " + $scope.project_details.name.replace(/^[ ]+|[ ]+$/g,'');  
                 var d = {
                   type : 'project',
@@ -309,7 +282,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
              var data = {
                arrNotif : arrNotif
              };
-             console.log(arrNotif);
             $http({
               url : '/addnotif',
               method : 'POST', 
@@ -320,9 +292,9 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
         }
       }, function myError(response) {
     });
-
   }
-   $scope.time = null;
+
+  $scope.time = null;
   ctrl.updateProjectDueTime = function(time){
      $scope.time = time;
      if(time !== undefined && time !== null &&  $scope.project_details.deadline_date !== null){
@@ -349,13 +321,10 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                  .then(function(data){
                    var users = data;
                    var project_data = response.data.data;
-                   var assigner = filterFilter(users, {id : project_data.userid})[0];
-                   console.log(assigner);
-                   console.log(project_data); 
+                   var assigner = filterFilter(users, {id : project_data.userid})[0]; 
                    var arrNotif = [];
                    for(var i = 0; i < project_data.collaborators.length; i++){
                     if(project_data.collaborators[i].id !== getCookie('userid')){
-
                      var message = assigner.fullname + " (@" + assigner.username + ") "+ " made changes to the deadline of project " + $scope.project_details.name.replace(/^[ ]+|[ ]+$/g,'');  
                       var d = {
                         type : 'project',
@@ -370,15 +339,12 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                    }
                    var data = {
                      arrNotif : arrNotif
-                   };
-                   console.log(arrNotif);
+                   };;
                   $http({
                     url : '/addnotif',
                     method : 'POST', 
                     data : data
                   }).then(function(response){
-                    console.log(response.data);
-                    //io.emit('/addnotif', response.data.data);
                   }, function(response){})
                 }, function(data){})
               }
@@ -413,13 +379,10 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                  .then(function(data){
                    var users = data;
                    var project_data = response.data.data;
-                   var assigner = filterFilter(users, {id : project_data.userid})[0];
-                   console.log(assigner);
-                   console.log(project_data); 
+                   var assigner = filterFilter(users, {id : project_data.userid})[0]; 
                    var arrNotif = [];
                    for(var i = 0; i < project_data.collaborators.length; i++){
                     if(project_data.collaborators[i].id !== getCookie('userid')){
-
                      var message = assigner.fullname + " (@" + assigner.username + ") "+ " made changes to the deadline of project " + $scope.project_details.name.replace(/^[ ]+|[ ]+$/g,'');  
                       var d = {
                         type : 'project',
@@ -435,14 +398,11 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                    var data = {
                      arrNotif : arrNotif
                    };
-                   console.log(arrNotif);
                   $http({
                     url : '/addnotif',
                     method : 'POST', 
                     data : data
                   }).then(function(response){
-                    console.log(response.data);
-                    //io.emit('/addnotif', response.data.data);
                   }, function(response){})
                 }, function(data){})
               }
@@ -459,10 +419,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     $scope.opened = !$scope.opened;
   };
   ctrl.updateProjectTaskCompletion = function(op, task){
-    console.log('I am here');
-    console.log(task);
     if(op === 'complete'){
-
       var proceed = true;
       var subtasks = DataService.getSubtasksById(list_tasks, task.id);
       for(var i = 0; i < subtasks.length; i++){
@@ -562,19 +519,15 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                var data = {
                  arrNotif : arrNotif
                };
-               console.log(arrNotif);
               $http({
                 url : '/addnotif',
                 method : 'POST', 
                 data : data
               }).then(function(response){
-                console.log(response.data);
-                //io.emit('/addnotif', response.data.data);
               }, function(response){})
             }, function(data){})
                     
-          }
-          //$scope.project_details.collaborators.pop(user);
+          };
        }, function(response){})
     }, function(){});
   }
@@ -616,14 +569,11 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                    var data = {
                      arrNotif : arrNotif
                    };
-                   console.log(arrNotif);
                   $http({
                     url : '/addnotif',
                     method : 'POST', 
                     data : data
                   }).then(function(response){
-                    console.log(response.data);
-                    //io.emit('/addnotif', response.data.data);
                   }, function(response){})
                 }, function(data){})
                         
@@ -651,7 +601,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
           data : data,
           method : 'POST'
         }).then(function(response){
-          console.log(response);
           Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right', verticalSpacing: 15});
           ctrl.close();
         }, function(response){});
@@ -728,7 +677,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
 
     $scope.loadUsers = function(query){
       var users = $scope.projectDetails.collaborators;
-      console.log($scope.projectDetails.collaborators);
       return users.filter(function(user) {
       return user._lowerTitle.indexOf(query.toLowerCase()) != -1 || 
              user.email.indexOf(query) != -1 ||
@@ -793,7 +741,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
          ptask        : null,
          assignedUser : $scope.assignedUser
       };
-       console.log(task);
       TaskService.save(task)
         .then(function(response){
           $Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right', verticalSpacing: 15});
@@ -803,8 +750,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                  var users = data;
                  var task_data = response.data.data;
                  var assigner = filterFilter(users, {id : task_data.userid})[0];
-                 console.log(assigner);
-                 console.log(task_data); 
                  var arrNotif = [];
                  for(var i = 0; i < task_data.assignedUsers.length; i++){
                   if(task_data.assignedUsers[i].id !== getCookie('userid')){
@@ -823,14 +768,11 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
                  var data = {
                    arrNotif : arrNotif
                  };
-                 console.log(arrNotif);
                 $http({
                   url : '/addnotif',
                   method : 'POST', 
                   data : data
                 }).then(function(response){
-                  console.log(response.data);
-                  //io.emit('/addnotif', response.data.data);
                 }, function(response){})
               }, function(data){})
               }
@@ -930,7 +872,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     }
   });
   $scope.$on('/deleteproject', function(event, data){
-    console.log(data);
     var coll = [];
     for(var i = 0; i < $scope.projects.length; i++){
       if($scope.projects[i].id !== data.id){
@@ -1006,7 +947,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
         break;
       }
     } 
-    console.log(tasks);
     var count = 0;
     var total = 0;
     for(var i = 0; i < tasks.length; i++){
@@ -1024,8 +964,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     } else {
       $scope.ave_rating = Math.round(total/count);
     }
-    console.log($scope.ave_rating);
-
      ctrl.setStatus();
   });
   $scope.$on('/updatetaskname', function(event, data){
@@ -1072,7 +1010,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
           });
           for(var j = 0; j < data.add_users.length; j++){
            var exist_user = filterFilter($scope.project_details.tasks[i].assignees, {id : data.add_users[j].id})[0];
-           console.log(exist_user);
            if(exist_user === undefined){
              $scope.project_details.tasks[i].assignees.push(data.add_users[j]);
            }
@@ -1109,10 +1046,8 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
   $scope.$on('/updateprojectdeadline', function(event, data){
     if(data.id === $scope.project_details.id){
       $scope.project_details.deadline_date = data.deadline_date;
-      console.log(data.deadline_time);
       if(data.deadline_time !== null){
         $scope.project_details.deadline_time = data.deadline_time;
-        console.log($scope.project_details.deadline_time.split(":"));
         var time = $scope.project_details.deadline_time;
         
         if(time.indexOf('PM') !== -1){
@@ -1121,7 +1056,6 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
           time = time.substring(0, time.indexOf('AM'));
         }
         time = time.split(':');
-        console.log(time);
         var x = new Date();
         x.setHours(time[0]);
         x.setMinutes(time[1]);
