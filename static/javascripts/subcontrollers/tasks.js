@@ -8,8 +8,7 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
   var list_projects = [];
   $scope.list_projects = [];
   var ctrl = this;
-  $scope.tasks = [];
-  console.log('Here at Task Ctrl'); 
+  $scope.tasks = [];s
   $scope.type = "incomplete";
   $scope.list_tasks = [];
 
@@ -186,7 +185,6 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
           },
           method : 'POST'
         }).then(function(response){ 
-           // $scope.tasks[i].complete_date = "Waiting for the date..";
            Notification.warning({message: response.data.message,  positionY: 'top', positionX: 'right', verticalSpacing: 15});
            if($scope.tasks[i].project_id !== null){
              if(response.data.data !== undefined){

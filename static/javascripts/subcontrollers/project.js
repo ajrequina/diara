@@ -1,5 +1,3 @@
-
-
 app.controller("ProjectController", ['$rootScope', '$scope', '$state', '$location', 'Flash','$http','$filter','$mdDialog','$window','filterFilter','$document','$uibModal','HTTPFactory','DataService','MiscService','ProjectService','TaskService','socket','Notification',
   function ($rootScope, $scope, $state, $location, Flash,$http, $filter, $mdDialog,$window, filterFilter, $document, $uibModal, HTTPFactory, DataService, MiscService, ProjectService, TaskService, socket, Notification) {
    /////////////////////////////// CONTROLLER VARIABLES /////////////////////////////////////////
