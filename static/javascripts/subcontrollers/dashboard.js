@@ -1,14 +1,4 @@
-﻿/*==========================================================
-    Author      : Ranjithprabhu K
-    Date Created: 13 Jan 2016
-    Description : Controller to handle Home page
-    Change Log
-    s.no      date    author     description     
-
-
- ===========================================================*/
-
-app.controller("DashboardController", ['$rootScope', '$scope', '$state', '$location','Flash','DataService','filterFilter','$filter',
+﻿app.controller("DashboardController", ['$rootScope', '$scope', '$state', '$location','Flash','DataService','filterFilter','$filter',
 function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilter, $filter) {
   var ctrl = this;
   ctrl.showDetails = true;
