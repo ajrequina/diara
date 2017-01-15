@@ -3,7 +3,6 @@
 app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$location', 'Flash','$http','$filter','$mdDialog','$window','filterFilter','$document','$uibModal','HTTPFactory','DataService','MiscService','ProjectService','TaskService','socket','Notification','$timeout',
   function ($rootScope, $scope, $state, $location, Flash,$http, $filter, $mdDialog,$window, filterFilter, $document, $uibModal, HTTPFactory, DataService, MiscService, ProjectService, TaskService, socket, Notification, $timeout) {
    /////////////////////////////// CONTROLLER VARIABLES /////////////////////////////////////////
-  console.log('Profile Controller --->');
   var ctrl = this;
   var list_tasks = [];
   var list_users = [];
@@ -34,7 +33,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
       data : data
     }).then(function(response){
        list_tasks = response.data;
-       console.log(list_tasks);
        ctrl.setListProjects(data);
     }, function(response){});
   } 
@@ -59,7 +57,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
       data : data
     }).then(function(response){
        list_projects = response.data;
-       console.log(list_projects);
        ctrl.setListCollabs();
     }, function(response){});
   }
@@ -72,7 +69,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
   }
 
    ctrl.setTaskCompletion = function(op, task){
-    console.log(task);
     if(op === 'complete'){
       var proceed = true;
       task.subtask = DataService.getSubtasksById(list_tasks.related, task.id);
@@ -98,7 +94,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
           });
         
       } else {
-        console.log('Cant be completed..');
         var confirm = $mdDialog.confirm()
           .title("Task Completion")
           .content('Some of its subtasks are still in progress.')
@@ -135,7 +130,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
           data : data,
           method : 'POST'
         }).then(function(response){
-          console.log(response);
           Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right', verticalSpacing: 15});
           ctrl.close();
         }, function(response){});
@@ -209,7 +203,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
       var id = getCookie('userid');
       var tasks = list_tasks.related;
         for(var i = 0; i < tasks.length; i++){
-          //console.log(filterFilter(list_projects.related, {id : tasks[i].project_id}));
           if(filterFilter(list_projects.related, {id : tasks[i].project_id})[0] !== undefined){
             tasks[i].project = filterFilter(list_projects.related, {id : tasks[i].project_id})[0];
         }
@@ -222,7 +215,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
       var id = getCookie('userid');
        var tasks = list_tasks.related;
         for(var i = 0; i < tasks.length; i++){
-          //console.log(filterFilter(list_projects.related, {id : tasks[i].project_id}));
           if(filterFilter(list_projects.related, {id : tasks[i].project_id})[0] !== undefined){
             tasks[i].project = filterFilter(list_projects.related, {id : tasks[i].project_id})[0];
         }
@@ -255,7 +247,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
 
     var tasks = list_tasks.related;
     for(var i = 0; i < tasks.length; i++){
-      //console.log(filterFilter(list_projects.related, {id : tasks[i].project_id}));
       if(filterFilter(list_projects.related, {id : tasks[i].project_id})[0] !== undefined){
         tasks[i].project = filterFilter(list_projects.related, {id : tasks[i].project_id})[0];
       }
@@ -263,8 +254,7 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
     tasks = filterFilter(tasks, {complete_date : null});
     $scope.user_details.tasks = tasks;
     $scope.user_details._upper = $scope.user_details.first_name.charAt(0).toUpperCase() + $scope.user_details.first_name.slice(1);
-    $scope.user_details._upperfull = $scope.user_details.first_name.charAt(0).toUpperCase() + $scope.user_details.first_name.slice(1) + ' ' + $scope.user_details.last_name.charAt(0).toUpperCase() + $scope.user_details.last_name.slice(1)
-    console.log($scope.user_details);
+    $scope.user_details._upperfull = $scope.user_details.first_name.charAt(0).toUpperCase() + $scope.user_details.first_name.slice(1) + ' ' + $scope.user_details.last_name.charAt(0).toUpperCase() + $scope.user_details.last_name.slice(1);
   }
   ctrl.setNeededData = function(){
     ctrl.getProfileDetails();
@@ -290,7 +280,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
 
   
   $scope.$on('/deleteproject', function(event, data){
-    console.log(data);
     var coll = [];
     for(var i = 0; i < $scope.projects.length; i++){
       if($scope.projects[i].id !== data.id){
@@ -303,7 +292,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
      var projects = $scope.projects;
      data.create_date = $filter('date')(new Date(data.create_date), 'MMMM d, y');
      projects.unshift(data);
-     // projects = $filter('orderBy')(projects, '-create_date');
      $scope.projects = projects;
   })
   $scope.$on('/completetask', function(event, data){
@@ -376,7 +364,6 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
           });
           for(var j = 0; j < data.add_users.length; j++){
            var exist_user = filterFilter($scope.project_details.tasks[i].assignees, {id : data.add_users[j].id})[0];
-           console.log(exist_user);
            if(exist_user === undefined){
              $scope.project_details.tasks[i].assignees.push(data.add_users[j]);
            }
