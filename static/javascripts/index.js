@@ -813,9 +813,7 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
      }, function(response){}); 
   }
 
-  ctrl.goToTasks = function(id){
 
-  }
   $scope.notify = function(padata){
     $http({
       url : '/listnotifs',

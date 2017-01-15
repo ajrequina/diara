@@ -3,6 +3,7 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
   var ctrl = this;
   ctrl.showDetails = true;
   ctrl.home = {};
+  // hey
   $scope.ave_response = null;
   $scope.incomplete_tasks = [];
   $scope.overdue_tasks = [];
