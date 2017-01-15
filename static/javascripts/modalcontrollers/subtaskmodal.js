@@ -98,7 +98,6 @@ app.controller('SubtaskModalController',
 	                 var data = {
 	                   arrNotif : arrNotif
 	                 };
-	                 console.log(arrNotif);
 	                $http({
 	                  url : '/addnotif',
 	                  method : 'POST', 
