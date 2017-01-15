@@ -29,11 +29,6 @@ app.controller('TaskDetailsController',
          list_tasks = response.data;
           ctrl.getTaskDetails();
       }, function(response){});
-      // DataService.initTasks2()
-      //  .then(function(data){
-         
-        
-      //  }, function(data){});
     } 
     ctrl.setListUsers = function(){
       DataService.initUsers2()
@@ -119,7 +114,6 @@ app.controller('TaskDetailsController',
       $scope.users = task_users;
       if($scope.task_details.deadline_time !== null){
          var time = $scope.task_details.deadline_time.split(":");
-         console.log(time);
          var x = new Date();
          x.setHours(time[0]);
          x.setMinutes(time[1]);
@@ -137,7 +131,6 @@ app.controller('TaskDetailsController',
 	    $scope.task_details.assignees = assignees;
 	    $scope.assigned_users = assignees;
       $window.sessionStorage['old-assignee'] = JSON.stringify(assignees);
-      console.log($scope.users);
     }
     ctrl.setTaskComments = function(){
       var data = { taskid : $scope.task_details.id };
@@ -154,7 +147,6 @@ app.controller('TaskDetailsController',
     ctrl.setTaskProject = function(){
     	var project = DataService.getProjectById(list_projects, $scope.task_details.project_id);
     	$window.sessionStorage['old-project'] = JSON.stringify(project); 
-      console.log(project);
 	    if(project !== null && project !== undefined){
 	      $scope.project_title = project.name;
         $scope.data = {};
@@ -164,7 +156,6 @@ app.controller('TaskDetailsController',
         $scope.data.project = null;
         $scope.project_title = "Project unspecified";
       }
-      console.log($scope.project_title);
     }
     ctrl.setTaskAttachments = function(){
     	var data = { taskid : $scope.task_details.id };
@@ -173,13 +164,10 @@ app.controller('TaskDetailsController',
         data : data,
         method : 'POST'
       }).then(function(response){
-        console.log(response.data);
         $scope.task_details.attachments =  DataService.setTaskAttachments($scope.task_details, response.data);   
-        console.log($scope.task_details.attachments);
       }, function(response){});
     }
     ctrl.setTaskRating = function(){
-      console.log($scope.task_details.rating);
       $scope.task_rating =  $scope.task_details.rating === null ? "0": $scope.task_details.rating;
     }
     ctrl.loadUsers = function(query){
@@ -221,7 +209,6 @@ app.controller('TaskDetailsController',
         }
         TaskService.updateAssignee(data)
           .then(function(response){
-            console.log(response);
             if(response.data.message.indexOf('error') === -1){
               $scope.task_details.project_id = id;
               if(response.data.data !== undefined){
@@ -399,47 +386,43 @@ app.controller('TaskDetailsController',
     }
     ctrl.updateTaskDescription = function(text){
       $scope.task_description = text;
-      console.log($scope.task_description);
       var oldDescription = $scope.task_details.description;
       $scope.task_details.description = $scope.task_description;
-      
-    
-          var data = {
-            taskid : $scope.task_details.id,
-            description : $scope.task_details.description,
-            assignees : $scope.task_details.assignees
-          };
-          if(oldDescription !== $scope.task_details.description){
-            TaskService.updateTaskDescription(data)
-            .then(function (response) {
-                if(response.data.data !== undefined && oldDescription !== $scope.task_details.description){
-                   var task_data = response.data.data;
-                   var doer = filterFilter(list_users, {id : task_data.userid})[0];
-                   var arrNotif = [];
-                   for(var i = 0; i < task_data.assignees.length; i++){
-                    if(task_data.assignees[i].id !== getCookie('userid')){
-                     var message = doer.fullname + " (@" + doer.username + ") "+ " made changes on the description of task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
-                      var d = {
-                        type : 'task',
-                        message : message.replace(/\s+/g,' ').trim(),
-                        typeid : task_data.taskid,
-                        operation : 'update',
-                        createdate : task_data.editdate,
-                        userid : task_data.assignees[i].id
-                      };
-                      arrNotif.push(d);  
-                    }
-                   }
-                  $http({
-                    url : '/addnotif',
-                    method : 'POST', 
-                    data : { arrNotif : arrNotif }
-                  }).then(function(response){}, 
-                          function(response){})
+      var data = {
+        taskid : $scope.task_details.id,
+        description : $scope.task_details.description,
+        assignees : $scope.task_details.assignees
+      };
+      if(oldDescription !== $scope.task_details.description){
+        TaskService.updateTaskDescription(data)
+        .then(function (response) {
+            if(response.data.data !== undefined && oldDescription !== $scope.task_details.description){
+               var task_data = response.data.data;
+               var doer = filterFilter(list_users, {id : task_data.userid})[0];
+               var arrNotif = [];
+               for(var i = 0; i < task_data.assignees.length; i++){
+                if(task_data.assignees[i].id !== getCookie('userid')){
+                 var message = doer.fullname + " (@" + doer.username + ") "+ " made changes on the description of task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
+                  var d = {
+                    type : 'task',
+                    message : message.replace(/\s+/g,' ').trim(),
+                    typeid : task_data.taskid,
+                    operation : 'update',
+                    createdate : task_data.editdate,
+                    userid : task_data.assignees[i].id
+                  };
+                  arrNotif.push(d);  
                 }
-            }, function (response) {});
-          }
-      
+               }
+              $http({
+                url : '/addnotif',
+                method : 'POST', 
+                data : { arrNotif : arrNotif }
+              }).then(function(response){}, 
+                      function(response){})
+            }
+        }, function (response) {});
+      }
     }
     ctrl.updateTaskDueDate = function(){
       if($scope.task_date !== undefined){
@@ -561,7 +544,6 @@ app.controller('TaskDetailsController',
         }
         TaskService.updateAssignee(data)
           .then(function(response){
-            console.log(response);
             if(response.data.message.indexOf('error') === -1){
               $scope.task_details.project_id = id;
               if(response.data.data !== undefined){
@@ -736,7 +718,6 @@ app.controller('TaskDetailsController',
       } else {
         TaskService.updateAssignee(data)
           .then(function(response){
-            console.log(response);
             if(response.data.message.indexOf('error') === -1){
               $scope.task_details.project_id = id;
               $scope.task_details.assignees = $scope.assigned_users;
@@ -787,7 +768,6 @@ app.controller('TaskDetailsController',
       } 
     }
     $scope.updateTaskRating = function(rating){
-      console.log(rating);
       var data = {
         taskid : $scope.task_details.id,
         rating : rating
@@ -823,10 +803,8 @@ app.controller('TaskDetailsController',
              $scope.task_details.complete_date = "Waiting for the date..";
              Notification.warning({message: response.data.message,  positionY: 'top', positionX: 'right', verticalSpacing: 15});
              if($scope.task_details.project_id !== null){
-              console.log(response);
               var collabs = filterFilter(list_collabs, { project_id : $scope.task_details.project_id });
                if(response.data.data !== undefined){
-                 console.log(task_data);
                  var task_data = response.data.data;
                  var doer =  filterFilter(list_users, {id : task_data.userid})[0];
                  var arrNotif = [];
@@ -882,10 +860,8 @@ app.controller('TaskDetailsController',
           $scope.task_details.complete_date = null;
           Notification.warning({message: response.data.message,  positionY: 'top', positionX: 'right', verticalSpacing: 15});
            if($scope.task_details.project_id !== null){
-            console.log(response);
             var collabs = filterFilter(list_collabs, { project_id : $scope.task_details.project_id });
              if(response.data.data !== undefined){
-               console.log(task_data);
                var task_data = response.data.data;
                var doer =  filterFilter(list_users, {id : task_data.userid})[0];
                var arrNotif = [];
@@ -921,7 +897,6 @@ app.controller('TaskDetailsController',
         for(var k = 0; k < element.files.length; k++){
           fd.append('atts', element.files[k]);
         }
-        console.log(element.files);
         fd.append('taskid', $scope.task_details.id);
         for(var i = 0; i < $scope.task_details.assignees.length; i++){
           fd.append('assignees', JSON.stringify($scope.task_details.assignees[i]));
@@ -933,7 +908,6 @@ app.controller('TaskDetailsController',
            Notification.warning({message: response.data.message,  positionY: 'top', positionX: 'right', verticalSpacing: 15});
            if(response.data.data !== undefined){
              var task_data = response.data.data;
-             console.log(task_data);
              var doer = filterFilter(list_users, {id : task_data.userid})[0];
              var arrNotif = [];
              for(var i = 0; i < task_data.assignees.length; i++){
@@ -950,7 +924,6 @@ app.controller('TaskDetailsController',
                 arrNotif.push(d);  
               }
              }
-             console.log(arrNotif);
             $http({
               url : '/addnotif',
               method : 'POST', 
@@ -988,7 +961,6 @@ app.controller('TaskDetailsController',
             rating = rating.substring(0, rating.indexOf('.'));
             subtask.rating = rating;
             $window.sessionStorage['subtask'] = JSON.stringify(subtask);
-            console.log(subtask);
             $uibModal.open({
               animation: true,
               templateUrl: 'ratesubtask-template',
@@ -1000,7 +972,6 @@ app.controller('TaskDetailsController',
             });
           }, function(response){});
         } else {
-          console.log('Cant be completed..');
           var confirm = $mdDialog.confirm()
             .title("Subtask Completion")
             .content('Some of its subtasks are still in progress.')
@@ -1032,13 +1003,11 @@ app.controller('TaskDetailsController',
           taskid : $scope.subtask.id,
           rating : $scope.rate
         };
-        console.log(data);
         $http({
           url : '/ratetask',
           data : data,
           method : 'POST'
         }).then(function(response){
-          console.log(response);
           Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right', verticalSpacing: 15});
           ctrl.close();
         }, function(response){});
@@ -1067,61 +1036,59 @@ app.controller('TaskDetailsController',
           taskid : $scope.task_details.id,
           subtasks : $scope.task_details.lower_tasks
         }
-        console.log(data);
 
-          TaskService.updateAssignee(data)
-            .then(function(response){
-              console.log(response);
-              if(response.data.data !== undefined){
-                $scope.task_details.project_id = null;
-                $scope.task_details.assignees = [];
-                $scope.task_details.assignees.push(curr_user); 
-                if(response.data.data !== undefined){
-                  var task_data = response.data.data;
-                  var doer = filterFilter(list_users, {id : task_data.userid})[0];
-                  var arrNotif = [];
-                  for(var i = 0; i < task_data.newUsers.length; i++){
-                    if(task_data.newUsers[i].id !== getCookie('userid')){
-                     var message = doer.fullname + " (@" + doer.username + ") "+ " assigned you on task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
-                      var d = {
-                        type : 'task',
-                        message : message.replace(/\s+/g,' ').trim(),
-                        typeid : task_data.taskid,
-                        operation : 'add',
-                        createdate : task_data.assigndate,
-                        userid : task_data.newUsers[i].id
-                      };
-                      arrNotif.push(d);  
-                    }
-                  }
-                  for(var i = 0; i < task_data.oldUsers.length; i++){
-                    if(task_data.oldUsers[i].id !== getCookie('userid')){
-                     var message = doer.fullname + " (@" + doer.username + ") "+ " removed you as assignee on task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
-                      var d = {
-                        type : 'task',
-                        message : message.replace(/\s+/g,' ').trim(),
-                        typeid : task_data.taskid,
-                        operation : 'delete',
-                        createdate : task_data.assigndate,
-                        userid : task_data.oldUsers[i].id
-                      };
-                      arrNotif.push(d);  
-                    }
-                  }
-                  $http({
-                    url : '/addnotif',
-                    method : 'POST', 
-                    data : { arrNotif : arrNotif }
-                  }).then(function(response){}, 
-                          function(response){})
+      TaskService.updateAssignee(data)
+        .then(function(response){
+          if(response.data.data !== undefined){
+            $scope.task_details.project_id = null;
+            $scope.task_details.assignees = [];
+            $scope.task_details.assignees.push(curr_user); 
+            if(response.data.data !== undefined){
+              var task_data = response.data.data;
+              var doer = filterFilter(list_users, {id : task_data.userid})[0];
+              var arrNotif = [];
+              for(var i = 0; i < task_data.newUsers.length; i++){
+                if(task_data.newUsers[i].id !== getCookie('userid')){
+                 var message = doer.fullname + " (@" + doer.username + ") "+ " assigned you on task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
+                  var d = {
+                    type : 'task',
+                    message : message.replace(/\s+/g,' ').trim(),
+                    typeid : task_data.taskid,
+                    operation : 'add',
+                    createdate : task_data.assigndate,
+                    userid : task_data.newUsers[i].id
+                  };
+                  arrNotif.push(d);  
                 }
               }
-            }, function(response){});
+              for(var i = 0; i < task_data.oldUsers.length; i++){
+                if(task_data.oldUsers[i].id !== getCookie('userid')){
+                 var message = doer.fullname + " (@" + doer.username + ") "+ " removed you as assignee on task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
+                  var d = {
+                    type : 'task',
+                    message : message.replace(/\s+/g,' ').trim(),
+                    typeid : task_data.taskid,
+                    operation : 'delete',
+                    createdate : task_data.assigndate,
+                    userid : task_data.oldUsers[i].id
+                  };
+                  arrNotif.push(d);  
+                }
+              }
+              $http({
+                url : '/addnotif',
+                method : 'POST', 
+                data : { arrNotif : arrNotif }
+              }).then(function(response){}, 
+                      function(response){})
+            }
+          }
+        }, function(response){});
       }  
     }
     $scope.saveDescription = function(text){
-      console.log(text);
     }
+
     ctrl.deleteTask = function(event){
        var content = null;
        if($scope.task_details.lower_tasks.length > 0){
@@ -1142,43 +1109,41 @@ app.controller('TaskDetailsController',
         };
 
         TaskService.deleteTask(data)
-            .then(function(response){                
-              for(var i = 0; i < $scope.task_details.lower_tasks.length; i++){
-                var data = {
-                  taskid : $scope.task_details.lower_tasks[i].id
+          .then(function(response){                
+            for(var i = 0; i < $scope.task_details.lower_tasks.length; i++){
+              var data = {
+                taskid : $scope.task_details.lower_tasks[i].id
+              }
+              TaskService.deleteTask(data)
+                .then(function(response){}, 
+                      function(response){});
+            }
+            if(response.data.data !== undefined){
+               var task_data = response.data.data;
+               var doer = filterFilter(list_users, {id : task_data.userid})[0];
+               var arrNotif = [];
+               for(var i = 0; i < task_data.assignees.length; i++){
+                if(task_data.assignees[i].id !== getCookie('userid')){
+                 var message = doer.fullname + " (@" + doer.username + ") "+ " deleted the task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
+                  var d = {
+                    type : 'task',
+                    message : message.replace(/\s+/g,' ').trim(),
+                    typeid : task_data.taskid,
+                    operation : 'delete',
+                    createdate : task_data.createdate,
+                    userid : task_data.assignees[i].id
+                  };
+                  arrNotif.push(d);  
                 }
-                TaskService.deleteTask(data)
-                  .then(function(response){}, 
-                        function(response){});
-              }
-              if(response.data.data !== undefined){
-                 var task_data = response.data.data;
-                 console.log(task_data);
-                 var doer = filterFilter(list_users, {id : task_data.userid})[0];
-                 var arrNotif = [];
-                 for(var i = 0; i < task_data.assignees.length; i++){
-                  if(task_data.assignees[i].id !== getCookie('userid')){
-                   var message = doer.fullname + " (@" + doer.username + ") "+ " deleted the task " + $scope.task_details.title.replace(/^[ ]+|[ ]+$/g,'');  
-                    var d = {
-                      type : 'task',
-                      message : message.replace(/\s+/g,' ').trim(),
-                      typeid : task_data.taskid,
-                      operation : 'delete',
-                      createdate : task_data.createdate,
-                      userid : task_data.assignees[i].id
-                    };
-                    arrNotif.push(d);  
-                  }
-                 }
-                $http({
-                  url : '/addnotif',
-                  method : 'POST', 
-                  data : {arrNotif : arrNotif}
-                }).then(function(response){}, 
-                        function(response){});
-              }
-                            
-            }, function(response){});
+               }
+              $http({
+                url : '/addnotif',
+                method : 'POST', 
+                data : {arrNotif : arrNotif}
+              }).then(function(response){}, 
+                      function(response){});
+            }         
+          }, function(response){});
         }, function() {});
     }
     ctrl.deleteTaskAttachment = function(file){
@@ -1336,9 +1301,7 @@ app.controller('TaskDetailsController',
       }
     });
     $scope.$on('set_task_details', function(event, data){
-      console.log('Hey I am here..');
       var task = filterFilter(list_tasks, { id  : data.id})[0];
-      console.log(task);
       ctrl.changeTaskDetails(task);
     })
     /////// WEB LISTENERS ///////
@@ -1364,7 +1327,6 @@ app.controller('TaskDetailsController',
     });
     $scope.$on('/updatetaskdesc', function(event, data){
       if(data.id === $scope.task_details.id){
-        console.log(data);
         $scope.task_details.description = data.description;
         $scope.task_description = data.description;
       } 
@@ -1373,14 +1335,6 @@ app.controller('TaskDetailsController',
       if(data.id === $scope.task_details.id){
         $scope.task_details.deadline_date = data.deadline_date;
         $scope.task_details.deadline_time = data.deadline_time;
-        // if($scope.task_details.deadline_time !== null){
-        //  var time = $scope.task_details.deadline_time.split(":");
-        //  console.log(time);
-        //  var x = new Date();
-        //  x.setHours(time[0]);
-        //  x.setMinutes(time[1]);
-        //  $scope.task_details.deadline_time = $filter('date')(x.getTime(), 'hh:mm a');
-        // }
       } 
     });
     $scope.$on('/updatetaskassignee', function(event, data){
@@ -1421,7 +1375,6 @@ app.controller('TaskDetailsController',
            }
         }
       }
-      console.log($scope.task_details.assignees);
       for(var j = 0; j < data.add_users.length; j++){
         if(filterFilter( $scope.task_details.assignees, { id : data.add_users[j].id})[0] === undefined){
            $scope.task_details.assignees.push(data.add_users[j]);
@@ -1432,7 +1385,6 @@ app.controller('TaskDetailsController',
     $scope.$on('/completetask', function(event, data){
       if(data.id === $scope.task_details.id){
         $scope.task_details.complete_date = data.complete_date;
-        console.log('true');
       } else {
         for(var i = 0; i < $scope.task_details.subtasks.length; i++){
           if($scope.task_details.subtasks[i].id === data.id){
@@ -1499,7 +1451,6 @@ app.controller('TaskDetailsController',
           }
           
         }
-        console.log($scope.assigned_users);
         for(var i = 0; i < task_users.length; i++){
           if(task_users[i].id === data.id){
             task_users[i].first_name = data.first_name;
@@ -1524,7 +1475,6 @@ app.controller('TaskDetailsController',
     });
     $scope.$on('/ratetask', function(event, data){
       if($scope.task_details.id === data.id){
-        console.log('updating..');
         $scope.task_details.rating = data.rating;
         $scope.task_rating = data.rating;
       }
