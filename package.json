@@ -1,0 +1,30 @@
+{
+  "name": "express-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "body-parser": "^1.15.2",
+    "consolidate": "^0.14.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "multer": "^1.2.0",
+    "nconf": "^0.8.4",
+    "node-gcm": "^0.14.4",
+    "nodemailer": "^2.6.4",
+    "nunjucks": "^2.5.0",
+    "pg": "^6.1.0",
+    "pg-promise": "^5.3.3",
+    "socket.io": "^1.4.8",
+    "ua-parser-js": "^0.7.10",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,213 @@
+<div class="modal-header" style="background-color: #2b2728;">
+  <strong class="modal-title" style="font-size: 16px; color:white;">Settings</strong>
+</div>
+
+
+<ul class="nav nav-tabs" id="tabContent">
+    <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+    <li><a href="#account" data-toggle="tab">Account</a></li>
+</ul>
+
+<div class="tab-content modal-body" >
+  <div class="tab-pane active" id="profile">
+    <!-- <form action="/updateuserinfo" method="post" enctype="multipart/form-data"> -->
+     <form >
+      <input type="file" id="pic" name="pic"  file-model = "myFile"
+           style="visibility: hidden; width: 1px; height: 1px" multi onload="readURL(this)" onchange="readURL(this);"/>
+      <script type="text/javascript">
+         function readURL(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#profpic')
+                    .attr('src', e.target.result)
+                    .width(80)
+                    .height(80);
+            };
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+      </script>
+          
+       <div>
+         
+         <div style="position:relative; left:0; top:0; margin-left: calc(50% - 40px)"><img  id="profpic" onclick="document.getElementById('pic').click(); return false" src="{{curr_user.profpic_path}}" onerror="this.onerror=null;this.src='/static/images/user.png';" onmouseover="document.getElementById('editpic').style.display='block';" onmouseout="document.getElementById('editpic').style.display='none';">
+         <img id="editpic" src="/static/images/edit.png"></div>
+         <!--  <div><img src="/static/images/edit_white.png" style="width:30px; height:30px;"/></div> -->
+         <!-- <md-input-container   class="md-inline" style="width: 150px;justify-content: center;">
+           <input  type="text" name="username"  ng-model="username" ng-blur="checkUsername()" required minlength="8" md-minlength="8" ng-focus="username_error= ''">
+           <div style="color: red; font-size: 12px;">{{username_error}}</div>
+         </md-input-container> -->
+  
+       </div>
+      
+
+       <div style="margin-top: 20px">
+       
+         <md-content layout="row">
+         <md-input-container   class="md-inline" style="width: 270px">
+           <input  type="text" name="firstname" placeholder="Firstname" ng-model="firstname" ng-blur="checkFirstname()">
+         </md-input-container>
+         <md-input-container  class="md-inline" style=" margin-left: 15px; width: 280px">
+           <input type="text" name="lastname" placeholder="Lastname" ng-model="lastname" ng-blur="checkLastname()">
+         </md-input-container>
+        </md-content>
+         
+         <md-input-container class="md-block">
+           <textarea ng-model="info" name="info" placeholder="About Me" ></textarea>
+         </md-input-container>
+       </div>
+        <!-- <md-button type="submit" name="submit" value="submit">UPDATE INFO</md-button> -->
+        <md-button type="submit" name="submit" ng-click="sendUserInfo()" value="submit">UPDATE INFO</md-button>
+        <md-button type="button" ng-click="close()">CANCEL</md-button>
+<!--        <input type="submit" name="submit" value="submit"> -->
+    </form>
+
+     
+  <div class="control-group">
+  </div>
+</div>
+<div class="tab-pane" id="account">
+ <form ng-submit="sendPassword()">
+   <md-content layout="column" style="margin-top: 15px;">
+    <md-input-container  style=" margin-left: 15px; width: 280px">
+     <input type="password" name="curr_password" placeholder="Enter Current Password"
+       ng-model="curr_password" required ng-focus="error_input = ''">
+       <div style="color: red; font-size: 12px;">{{error_input}}</div>
+    </md-input-container>
+    <md-input-container  style=" margin-left: 15px; width: 280px">
+     <input type="password" name="new_password1" placeholder="Enter New Password" 
+            ng-model="new_password1" required ng-focus="error_match =''" minlength="8" md-minlength="8">
+            <div style="color: red; font-size: 12px;">{{error_match}}</div>
+    </md-input-container>
+    <md-input-container  style=" margin-left: 15px; width: 280px">
+     <input type="password" name="new_password2" placeholder="Enter Again New Password" 
+           ng-model="new_password2" required ng-focus="error_match=''" minlength="8" md-minlength="8">
+          <div style="color: red; font-size: 12px;">{{error_match}}</div>
+    </md-input-container>
+  </md-content>
+   <md-button type="submit">CHANGE PASSWORD</md-button>
+   <md-button type="button" ng-click="close()"  >CANCEL</md-button>
+ </form>
+  
+</div> 
+</div>
+
+ 
+
+
+<style type="text/css">
+#profpic { 
+  position: relative; 
+  top: 0; 
+  left: 0; 
+  width:80px; 
+  height: 80px; 
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
+  -webkit-filter: grayscale(0%);
+} 
+
+#profpic:hover{
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+ */
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(100%); /* Chrome 19+ & Safari 6+ */
+    -webkit-transition: all .6s ease; /* Fade to color for Chrome and Safari */
+    -webkit-backface-visibility: hidden; /* Fix for transition flickering */
+}
+
+#editpic { 
+  display: none;
+  position: absolute; 
+  top: 25px; 
+  left: 25px; 
+  width:30px; 
+  height: 30px;
+} 
+.image-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+.image-container .after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    color: #FFF;
+}
+.image-container:hover .after {
+    display: block;
+    background: rgba(0, 0, 0, .6);
+}
+.tag-template div:first-child {
+  float: left;
+}
+
+.tag-template div:first-child img {
+  width: 24px;
+  height: 24px;
+  float: left;
+  border-radius: 50%;
+  vertical-align: middle;
+  /*background-color: white;*/
+  margin-bottom: 2px;
+}
+
+.tag-template div:last-child {
+  float: left;
+  margin-left: 5px;
+}
+.left-panel {
+  float: left;
+}
+
+.left-panel img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.right-panel {
+  float: left;
+  margin-left: 4px;
+  margin-top: 5px;
+}
+
+.right-panel span:first-child {
+  font-size: 14px;
+}
+
+.right-panel span:nth-child(2) {
+  font-size: 12px;
+  color: gray;
+}
+
+.right-panel span:last-child {
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.select-style {
+  height: 30px; 
+  border-top-color: transparent; 
+  border-left-color: transparent;
+  border-right-color: transparent;
+/*  -webkit-background-size: cover; 
+  -moz-background-size: cover;    
+  -o-background-size: cover;    */  
+  font-size: 15px;
+}
+.select-style option {
+  font-size: 15px;
+  margin-left:5px;
+}
+.select-style:focus {
+  -webkit-outline: none;
+  -moz-outline: none;
+  -o-outline: none;
+  outline: none;
+}
+</style>

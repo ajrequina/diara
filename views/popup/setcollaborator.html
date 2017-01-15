@@ -1,0 +1,81 @@
+<div class="modal-header" style="background-color: #2b2728;">
+  <strong class="modal-title" style="font-size: 16px; color:white;">Create Project</strong>
+</div>
+<div class="modal-body">
+
+ <form name="cProjectForm">
+    <md-input-container class="md-block">
+      <label>Title* </label>
+      <input type="text" md-autofocus md-no-autogrow ng-model="data.title" name="title" required md-no-asterisk maxlength="100" md-maxlength="100" style="width:100%;" novalidate>
+      <div ng-messages="cProjectForm.title.$error">
+       <div ng-message="required">This is a required field.</div>
+      </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+      <label>Description</label>
+      <input type="text" style="width:100%;" name="description" ng-model="data.description" maxlength="200" md-maxlength="200">
+    </md-input-container>
+    <md-switch ng-model="data.setProjectDue" class="md-primary" ng-change="onSetDueChange(data.setProjectDue)">
+      <strong>{{setProjectDue_Mess}}</strong>
+    </md-switch>
+
+   <md-content ng-if="data.setProjectDue" layout="row">
+    <md-input-container>  
+       
+       <input type="date" name="deadlinedate" ng-model="data.date" min="{{minDate | date : 'yyyy-MM-dd'}}" placeholder="MM/DD/YYYY">
+      <div class="hint-messages" style="font-size: 11px;">* Current date or beyond 
+      </div>
+    </md-input-container>
+    
+    <md-input-container ng-if="data.date">
+       <input type="time" name="deadlinetime" ng-model="data.time"  placeholder="HH:SS AM/PM">
+      <div class="validation-messages" ng-messages="cProjectForm.deadlinetime.$error">
+       <div ng-message="time">Invalid time.</div>
+      </div>
+    </md-input-container>
+
+
+   </md-content>
+   <md-switch ng-model="data.setCollaborator" class="md-primary" 
+              ng-change="onSetCollaboratorChange(data.setCollaborator)">
+      <strong>{{setCollaborator_Mess}}</strong>
+   </md-switch>
+      <md-chips ng-init="onSetAllUsers()" ng-if="data.setCollaborator"  ng-model="selectedPerson" md-autocomplete-snap
+                md-transform-chip="ctrl.transformUChip($chip)"
+                md-require-match="true"
+                md-on-add="ctrl.addU($chip)"
+                md-on-remove="ctrl.removeU($chip)">
+        <md-autocomplete
+            md-selected-item="ctrl.selectedUItem"
+            md-search-text="ctrl.searchUText"
+            md-items="item in ctrl.queryUSearch(ctrl.searchUText)"
+            md-item-text="item.fullname"
+            md-no-cache="true"
+            md-min-length="0"
+            placeholder="Search Team Members.."
+            required
+            name="project">
+        <md-item-template>
+          <span md-highlight-text="ctrl.searchUText">{{item.fullname}}</span>
+        </md-item-template>
+        <md-not-found>
+         No matches found.
+        </md-not-found>
+        </md-autocomplete>
+        <md-chip-template>
+          <span>
+            <strong style="font-size:14px">{{$chip.fullname}}</strong>
+          </span>
+        </md-chip-template>
+      </md-chips>
+      <div class="validation-messages" ng-messages="cTeamForm.project.$error">
+        <div ng-message="required">This is a required field.</div>
+      </div>
+   <div class="modal-footer" style="padding: 1 1px 1 1px">
+    <button class="btn" type="submit" ng-click="">Save</button>
+    <button class="btn" type="button" ng-click="close()">Cancel</button>
+  </div>
+
+ </form>
+</div>

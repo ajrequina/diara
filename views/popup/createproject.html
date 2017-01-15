@@ -1,0 +1,202 @@
+
+<div class="modal-header" style="background-color: #2b2728;">
+  <strong class="modal-title" style="font-size: 16px; color:white;">Create Project</strong>
+</div>
+
+<div class="modal-body">
+  <script type="text/ng-template" id="my-custom-template">
+    <div class="auto-style">
+      <div class="left-panel">
+        <img src="{{data.profpic_path}}?" onerror="this.onerror=null;this.src='/static/images/user.png';"/>
+      </div>
+      <div class="right-panel">
+        <span ng-bind-html="$highlight($getDisplayText())"></span>
+        <span>({{data.email}})</span>
+        <span>{{data.fullname}}</span>
+      </div>
+    </div>
+    
+  </script>
+  <script type="text/ng-template" id="tag-template">
+      <div class="tag-template">
+        <div>
+          <img src="{{data.profpic_path}}?" onerror="this.onerror=null;this.src='/static/images/user.png';">
+        </div>
+        <div>
+          <span>{{$getDisplayText()}}</span>
+          <a class="remove-button" ng-click="$removeTag()">&times;</a>
+        </div>
+      </div>
+  </script>
+
+ <form name="cProjectForm">
+    <md-input-container class="md-block">
+      <label>Title* </label>
+      <input type="text" md-autofocus md-no-autogrow ng-model="data.title" name="title" required md-no-asterisk maxlength="100" md-maxlength="100" style="width:100%;" novalidate>
+      <div ng-messages="cProjectForm.title.$error">
+       <div ng-message="required">This is a required field.</div>
+      </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+      <label>Description</label>
+      <input type="text" style="width:100%;" name="description" ng-model="data.description" maxlength="200" md-maxlength="200">
+    </md-input-container>
+
+    <div ng-if="users.length > 1">
+      <md-switch ng-model="data.setCollaborator" class="md-primary" ng-change="onSetCollabChange(data.setCollaborator)">
+      <strong>{{setCollaborator}}</strong>
+    </md-switch>
+    
+       <tags-input ng-if="data.setCollaborator"
+                ng-model="collaborators" 
+                placeholder="Email, Name or Username .." 
+                replace-spaces-with-dashes="false"
+                add-from-autocomplete-only="true"
+                display-property="username"
+                template="tag-template">
+      <auto-complete source="loadUsers($query)" 
+                     min-length="3" 
+                     debounce-delay="5"
+                     template="my-custom-template"
+                     max-results-to-show="30"></auto-complete>
+      </tags-input>
+      <br ng-if="data.setCollaborator">
+    </div>
+    <div >
+      <strong>Project Deadline</strong><br>
+      <md-input-container class="hackyhack">  
+        <input  type="text" uib-datepicker-popup ng-model="data.date" bindToController="true" is-open="opened" datepicker-options="dateOptions" popup-placement="bottom-left" close-text="Close" ng-click="open2()" placeholder="YYYY-MM-DD" show-button-bar="false"/>
+      </md-input-container>
+          <md-input-container>
+            <input  ng-disabled="!data.date" ng-init="data.time='12:00 PM'" type="text" ng-model="data.time" popover-placement="bottom-left" placeholder="HH:MM AM/PM" uib-popover-template="'timepicker-template'"/>
+          </md-input-container>
+      <script type="text/ng-template" id="timepicker-template">
+          <div
+           uib-timepicker  controller="projectModalController" bindToController="true" ng-model="mytime" ng-change="setTime(mytime)" hour-step="1" minute-step="1" show-meridian="true"> 
+           </div>
+      </script>
+    </div>
+  
+  <!--  <md-content ng-if="data.setProjectDue" layout="row">
+    <md-input-container>  
+       
+       <input type="date" name="deadlinedate" ng-model="data.date" min="{{minDate | date : 'yyyy-MM-dd'}}" placeholder="MM/DD/YYYY">
+      <div class="hint-messages" style="font-size: 11px;">* Current date or beyond 
+      </div>
+    </md-input-container>
+    
+    <md-input-container ng-if="data.date">
+       <input type="time" name="deadlinetime" ng-model="data.time"  placeholder="HH:SS AM/PM">
+      <div class="validation-messages" ng-messages="cProjectForm.deadlinetime.$error">
+       <div ng-message="time">Invalid time.</div>
+      </div>
+    </md-input-container>
+    </md-content> -->
+    
+   
+   <div class="modal-footer" style="padding: 1 1px 1 1px">
+    <button class="btn" type="submit" ng-click="saveProject()">Save</button>
+    <button class="btn" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+
+ </form>
+</div>
+
+<style type="text/css">
+.hackyhack {
+  position: relative;
+  z-index: 9999999999;
+}
+.tag-template div:first-child {
+  float: left;
+}
+
+.tag-template  {
+  z-index: 9999999999999999999;
+}
+.tag-template div:first-child img {
+  width: 24px;
+  height: 24px;
+  float: left;
+  border-radius: 50%;
+  vertical-align: middle;
+  /*background-color: white;*/
+  margin-bottom: 2px;
+}
+
+.tag-template div:last-child {
+  float: left;
+  margin-left: 5px;
+}
+.left-panel {
+  float: left;
+}
+
+.left-panel img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.right-panel {
+  float: left;
+  margin-left: 4px;
+  margin-top: 5px;
+}
+
+.right-panel span:first-child {
+  font-size: 14px;
+}
+
+.right-panel span:nth-child(2) {
+  font-size: 12px;
+  color: gray;
+}
+
+.right-panel span:last-child {
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.select-style {
+  height: 30px; 
+  border-top-color: transparent; 
+  border-left-color: transparent;
+  border-right-color: transparent;
+/*  -webkit-background-size: cover; 
+  -moz-background-size: cover;    
+  -o-background-size: cover;    */  
+  font-size: 15px;
+}
+.select-style option {
+  font-size: 15px;
+  margin-left:5px;
+}
+.select-style:focus {
+  -webkit-outline: none;
+  -moz-outline: none;
+  -o-outline: none;
+  outline: none;
+}
+  .full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+  }
+  .partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+  }
+  
+  .dropdown-menu table {
+    /*min-height: 200px;*/
+   /* width: 350px;
+    z-index: 999999999;*/
+  }
+  .auto-style{
+    z-index: 9999999999999999999;
+  }
+</style>

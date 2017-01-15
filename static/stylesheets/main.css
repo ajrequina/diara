@@ -1,0 +1,57 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  height: 100%;
+}
+
+h1 {
+  margin: 10px;
+}
+
+button {
+  padding: 10px;
+  margin: 10px;
+  width: 150px;
+}
+
+a {
+  text-decoration: none;
+}
+
+input {
+  padding: 10px;
+}
+
+div {
+  margin: 10px;
+}
+
+.container {
+  padding: 10px;
+  border: 1px solid black;
+  width: 20%;
+  text-align: center;
+}
+
+.list-container {
+  padding: 20px 10px;
+  border: 1px solid black;
+  width: 50%;
+  text-align: center;
+}
+
+.list-item {
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid black;
+  width: 93%;
+}
+
+.no-item {
+  width: 94%;
+}

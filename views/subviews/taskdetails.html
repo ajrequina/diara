@@ -1,0 +1,1156 @@
+<style type="text/css">
+
+  #topDiv{
+    display: flex;
+    padding: 5px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(200, 200, 200, 0.6);
+  }
+
+  #back, #addST{
+    display: flex;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  #addST{
+    justify-content: flex-end;
+  }
+
+  .checkmark {
+    display: none;
+    margin: 0 7.6px;
+  }
+  
+  .options,
+  .completed,
+  .delete,
+  .archive, .addTask {
+    flex: 0 0 0;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0 4px;
+    /* margin-bottom: -0.25px;*/
+    display: block;
+  }
+  
+  .completed {
+    margin: 0 1.5px;
+  }
+  
+  .options {
+    padding: 5px;
+    border-radius: 3px;
+    border: 1.55px solid;
+    display: none;
+    min-width: 70px;
+    min-height: 30px;
+  }
+  /*  .options:hover{
+    background-color: black;
+  }*/
+  
+  .options:focus img,
+  .completed:focus img,
+  .delete:focus img,
+  .archive:focus img,
+  .addTask:focus img {
+    outline: none;
+  }
+  
+  .options:active img,
+  .completed:active img,
+  .delete:active img,
+  .archive:active img,
+  .addTask:active img {
+    outline: none;
+  }
+  
+  .options img,
+  .completed img {
+    max-height: 20px;
+    max-width: 20px;
+  }
+  
+  .completed img {
+    max-height: 25px;
+    max-width: 25px;
+  }
+  
+  .delete img {
+    max-height: 27px;
+    max-width: 27px;
+    margin: 2px;
+  }
+  
+  .archive img, .addTask img {
+    max-height: 25px;
+    max-width: 25px;
+    margin: 2px;
+  }
+  
+  .options:focus {
+    outline: none;
+  }
+  
+  .options:hover {
+    border: 2px solid;
+    border-color: #fa6200;
+    -webkit-transition: border border-color 0.8s ease;
+    -moz-transition: border border-color 0.8s ease;
+    -o-transition: border border-color 0.8s ease;
+    -ms-transition: border border-color 0.8s ease;
+    transition: border border-color 0.8s ease;
+  }
+
+  article{
+    padding: 0;
+  }
+  .content{
+    display: flex;
+    padding-bottom: 0;
+  }
+   #commentsDiv{
+      background:#fff; 
+      margin: 0;
+      margin-right: 10px;
+      flex: 1;
+      display: block;
+      overflow-x: hidden;
+      background-color: transparent;
+     border-top: 1px solid rgba(200, 200, 200, 0.6);
+   }
+
+  #taskDiv{
+    display: block;
+    flex-direction: column;
+    margin: 0 10px;
+    overflow: auto;
+    background-color: white;
+    padding: 10px 40px;
+    flex: 3 0 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.24);
+  }
+
+  #taskDiv #deadlineDiv{
+    margin-top: 20px;
+    align-self: center;
+    font-size: 15px;
+    margin-left: 70%;
+
+  }
+  #taskDiv h1{
+    margin: 0;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  #tasks{
+    color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    background-color: transparent;
+/*    word-break: break-all;*/
+    margin-top: 30px;
+    font-size: 18px;
+  }
+
+  @media(max-width: 1000px){
+    .content{
+      display: block;
+      padding: 0;
+    }
+
+    #taskDiv, #commentsDiv{
+          margin-top: 0;
+          margin-right: 1px;
+          margin-left: 1px;
+      }
+  }
+
+
+    @media (max-width: 991px){
+      .content{
+        height: calc(100% - 123px);
+      }
+    }
+ 
+  @media (max-width: 767px){
+    .content{
+        height: calc(100% - 170px);
+      }
+      /*#commentsDiv{
+        padding-bottom: 50px;
+      }*/
+    }
+
+    @media (max-width: 1245px){
+      #commentsDiv{
+      flex: 2;
+    }
+
+    }
+
+
+.taskHeader {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  
+  .taskHeader a {
+    overflow: hidden;
+    text-decoration: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /*color: rgba(43, 39, 40, 0.7);*/
+  }
+  
+  .taskHeader a:hover {
+    /*color: rgba(43, 39, 40, 0.7);*/
+  }
+ 
+  
+  .timeline {
+    position: relative;
+    margin: 0 0 21px 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .timeline>li {
+    position: relative;
+    margin-right: 7px;
+    margin-bottom: -20px;
+  }
+  
+  .timeline>li:before,
+  .timeline>li:after {
+    content: " ";
+    display: table;
+  }
+  
+  .timeline>li:after {
+    clear: both;
+  }
+  
+  .timeline>li>.timeline-item {
+    /*-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);*/
+    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);*/
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-top: 0;
+    background: #fff;
+    color: #444;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0;
+    position: relative;
+  }
+  
+  .timeline>li>.timeline-item>.time {
+    float: right;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .timeline>li>.timeline-item>.timeline-header {
+    margin: 0;
+    color: #555;
+    border-bottom: 1px solid #f4f4f4;
+    padding: 10px;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  
+  .timeline>li>.timeline-item>.timeline-header>a {
+    font-weight: 600;
+  }
+  
+  .timeline>li>.timeline-item>.timeline-body,
+  .timeline>li>.timeline-item>.timeline-footer {
+    padding: 10px;
+  }
+  
+  .timeline>li>.fa,
+  .timeline>li>.glyphicon,
+  .timeline>li>.ion {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+    line-height: 30px;
+    position: absolute;
+    color: #666;
+    background: #d2d6de;
+    border-radius: 50%;
+    text-align: center;
+    left: 18px;
+    top: 0;
+  }
+  
+  .timeline>.time-label>span {
+    font-weight: 600;
+    padding: 5px;
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+  
+  .timeline-inverse>li>.timeline-item {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  
+  .timeline-inverse>li>.timeline-item>.timeline-header {
+    border-bottom-color: #ddd;
+  }
+  
+  
+  .repeated-item.ng-leave {
+    -webkit-animation: 0.5s my_animation;
+    -moz-animation: 0.5s my_animation;
+    -o-animation: 0.5s my_animation;
+    animation: 0.5s my_animation;
+  }
+  
+  @keyframes my_animation {
+    from {
+      max-height: 90px;
+      opacity: 1;
+      left: 0;
+    }
+    to {
+      max-height: 0;
+      opacity: 0;
+      left: -50px;
+    }
+  }
+}
+
+#settings {
+  display: block;
+  position: fixed;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: transparent;
+  padding: 20px;
+  margin: 0;
+}
+#settings .container {
+  display: block;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background-color: transparent;
+}
+.panel {
+  /*box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);*/
+}
+.panel>.panel-heading {
+  background-image: none;
+  background-color: transparent;
+  color: black;
+}
+.panel-collapse {
+  background-color: rgb(255, 255, 255);
+  /*box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.1);*/
+}
+form.settingsForm {
+  flex-direction: column;
+  display: flex;
+  width: 320px;
+  justify-content: center;
+  padding: 15px 20px;
+  background-color: rgba(0, 0, 0, 0);
+  margin: 0 auto;
+}
+form.settingsForm input {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 20px;
+  align-self: center;
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border-color: rgba(0, 0, 0, 0.5);
+  max-height: 40px;
+  padding: 0 15px;
+}
+form.settingsForm button {
+  background-color: rgba(250, 98, 0, 0.7);
+  align-self: flex-end;
+  border: none;
+  min-width: 100px;
+  min-height: 30px;
+  margin: 20px 23px;
+  font-family: 'Roboto', sans-serif;
+  border: none;
+  color: white;
+}
+a,
+a:hover,
+a:focus {
+  outline: none;
+  color: black;
+  cursor: pointer;
+  text-decoration: none;
+}
+a:hover {
+  color: rgb(250, 98, 0);
+}
+
+#projectDescDiv{
+  border: 0.5px solid;
+  border-color: transparent;
+  padding: 10px 5px;
+}
+
+#projectDescDiv:hover, #projectDescDiv:focus, #projectDescDiv:active{
+  border-color: black;
+}
+
+#createSubtask{
+  z-index:0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+
+}
+
+#createSubtask:hover, #createSubtask:active, #createSubtask:focus{
+  background-color: transparent;
+}
+
+#createSubtask img{
+  max-width: 30px;
+  max-height: 30px;
+}
+
+#header{
+display: flex;
+width: 100%;
+background-color: white; 
+box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.24); 
+padding: 8px;
+height: 70px;
+align-items: center; 
+justify-content: center; 
+flex-direction: column;
+}
+
+#header h1{
+display: flex; 
+flex-direction: row; 
+flex-wrap: nowrap; 
+width: 40%; 
+align-items: center; 
+justify-content: center; 
+margin-bottom: 5px;
+}
+
+#header h1 > span{
+overflow: hidden; 
+text-decoration: none; 
+white-space: nowrap; 
+text-overflow: ellipsis;
+}
+
+#addST img{
+max-width: 25px; 
+max-height: 25px;
+margin: 2px;
+}
+
+#projectInfo{
+  margin-top: 20px; 
+}
+
+#projectInfo img{
+width: 20px; 
+height: 20px;
+}
+
+#taskTitle{
+  display: flex; 
+  margin-bottom: 10px;
+}
+
+#taskTitle h1{
+  width: calc(100% - 45px);
+  word-wrap:break-word; 
+  word-break: all; 
+  text-overflow: ellipsis;
+}
+
+#completeTask{
+  width: 45px; 
+  margin-top: 5px
+}
+
+#completeTask img{
+  max-width: 32px; 
+  max-height: 32px;
+}
+
+#deadline {
+  display: inline-block;
+  margin: 5px 0 20px 8px;
+}
+
+#deadline > div{
+  display: flex;
+  margin-bottom: 5px;
+}
+
+#deadline > div > img{
+  width:20px; 
+  height: 20px;
+  margin-right: 5px;
+}
+
+#attachmentDiv {
+  margin: 13px 0;
+}
+
+#attachmentDiv > header{
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+#downloadAll{
+  float: right;
+  margin-right: 5px;
+}
+
+#downloadAll img{
+  width: 20px;
+  height: 20px;
+}
+/*#attachmentDiv div{
+  max-height: 150px;
+  overflow-y: auto;
+}*/
+
+#attachedFiles{
+  background-color: rgb(245, 245, 245);
+  margin: 8px 0 8px 20px;
+  padding: 5px 8px;
+  border-radius: 3px;
+  border: 1px solid rgb(200, 200, 200);
+  display: flex;
+}
+
+#attachedFiles div{
+display: flex; 
+flex-direction: row; 
+flex-wrap: nowrap; 
+width: calc(100% - 20px);
+overflow: hidden;
+}
+
+#attachedFiles div a {
+  color: rgb(17, 85, 204);
+  text-shadow: 0.5px 0px 0px rgb(17, 85, 204);
+  overflow: hidden; 
+  text-decoration: none; 
+  white-space: nowrap; 
+  text-overflow: ellipsis;
+}
+
+#attachedFiles button{
+  width: 20px;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  float: right;
+  margin: 0;
+}
+
+#attachedFiles button img{
+  width: 15px;
+  height: 15px;
+}
+
+.collabs{
+    /*position: relative;*/
+}
+.collabs, .collabs ul {
+    list-style-type:     none;
+    list-style-position: outside;
+    /*position:            relative;*/
+    line-height:         30px;
+    margin:              0;
+    padding:             0;
+}
+
+
+.collabs li {
+    float:        left;
+    margin-right: 1px;
+    padding-bottom: 10px;
+}
+
+.collabs ul {
+    /*position: absolute;*/
+    display:  none;
+    width:    100%;
+    top:      2.5em;
+    padding: 0;
+}
+
+.dropdown button{
+
+  outline: none;
+  border: none;
+  background-color: transparent;
+  left: 5px;
+  padding: 0;
+  float: left;
+}
+
+#selectCollabs:hover{
+  background-color: orange;
+}
+
+</style>
+
+
+<!-- <section class="content-header" >
+    <center><h2 style="display: flex; flex-direction: row; flex-wrap: nowrap; width: 80%; align-items: center; justify-content: center">
+    	<span style="overflow: hidden; text-decoration: none; white-space: nowrap; text-overflow: ellipsis;">
+    	{{taskDetails.title}}
+    	</span>
+    </h2></center>
+</section> -->
+<center>
+  <section class="content-header" id="header" ng-init="getTaskDetails()">
+    <h1>
+      <span>
+      {{task_details.title}}
+      </span>
+    </h1>
+
+    <span ng-if="task_details.complete_date !== null" style=" font-size: 17px;" uib-rating ng-model="task_rating" max="5" read-only="task_details.complete_date === null" on-hover="hoveringOver(value)" on-leave="updateTaskRating(task_rating)" 
+    titles="['1','2','3','4','5']" aria-labelledby="default-rating"></span>
+
+  </section>
+</center>
+
+<section class="content">
+		<div id="taskDiv">
+    <div style=" border-bottom: 1px solid rgba(200, 200, 200, 0.6); padding: 10px 0; margin-bottom: 5px"><a onclick="goBack()"> &#8592; Back</a></div>
+
+    <span class="dropdown" ng-repeat="user in task_details.assignees">
+      <img class="dropdown-toggle"  data-toggle="dropdown" src="{{user.profpic_path}}?" onerror="this.onerror=null;this.src='/static/images/user.png';" style="height: 30px; width: 30px; margin: 5px 2px; border-radius: 50%">
+       <ul class="dropdown-menu" style="margin-top: 10px; border-radius: 0px; width: 100px;">
+          <div style="width: 100%; margin: 5px">
+              <div class="pull-left image">
+                  <img src="{{user.profpic_path}}?" alt="error" style="margin: 0 5px; width:40px; height:40px;  display: block; border-radius: 50%" onerror="this.onerror=null;this.src='/static/images/user.png';">
+              </div>
+              <div>
+                  <div style="width: calc(100% - 70px); overflow: hidden; text-overflow:ellipsis; white-space: nowrap; padding: 5px; ">
+                  {{user.fullname}} 
+                  </div>
+                  <div class="text-aqua text-sm" style="width: calc(100% - 70px); margin-top: -15px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap; padding: 5px;">
+                  @{{user.username}}
+                  </div>
+              </div>
+              <div style="margin-top: -10px; margin-left: 5px;">
+                  <br> <button ng-click="ctrl.setUserDetails(user)"><strong><a ui-sref="profile">Go to profile</a></strong></button> <br>
+                  <button ng-click="ctrl.deleteTaskAssignee(user)"><strong>Remove assignee</strong></button> 
+              </div>
+          </div>
+         </ul>
+      </span>
+      <span class="dropdown">
+        <img src="/static/images/addpeople.png" class="dropdown-toggle"  data-toggle="dropdown" onerror="this.onerror=null;this.src='/static/images/user.png';" style="height: 30px; width: 30px; margin-right: 5px;" title="add collaborator">    
+        <ul class="dropdown-menu">
+          <li style="width: 100%; padding: 10px 8px 10px 10px">
+
+            <form>
+              <input style="width: 100%" type="text" ng-model="query" name="" placeholder="Find users..">
+            </form>
+
+            <div ng-if="query.length > 0" style="margin-top: 10px; max-height: 150px; overflow-y: auto">
+              <div ng-repeat="user in users | filter : query | orderBy : 'first_name'">
+                <div id="selectCollabs" style=" width: 100%; padding: 5px; display: flex; flex-direction: row;" ng-click="ctrl.addTaskAssignee(user)">
+                    <div>
+                    <img src="{{user.profpic_path}}?" onerror="this.onerror=null;this.src='/static/images/user.png';" style="height: 20px; width: 20px; margin: 5px; border-radius: 50%">
+                    </div>
+                    <div style="width: calc(100% - 30px); word-break: break-all; word-wrap: break-word; line-height: 1.2em"><a  >{{user.fullname}} <br> <span class="text-aqua text-sm">@{{user.username}}</span></a></div>
+                </div>
+                <hr style="margin: 0">
+              </div>
+            </div>
+             
+          </li>
+        </ul>
+
+      </span>  
+			<div id="topDiv">
+		        <!-- <div  id="back">
+					<a ui-sref="tasks">&larr; Back to Tasks</a>
+				</div>
+				 -->
+				<div id="addST">   
+             <img style="max-width: 25px; max-height: 25px;" src="/static/images/attachFile.png?"
+                 title="Attach Files" data-toggle="tooltip" data-placement="top" tooltip onclick="document.getElementById('attach').click(); return false" >
+
+            <input type="file" id="attach"  name="upload" style="visibility: hidden; width: 1px; height: 1px" file-model="file" multiple onchange="angular.element(this).scope().updateTaskAttachments(this)"/>
+
+            <img style="max-width: 25px; max-height: 25px; margin: 0 5px" src="/static/images/addSubtask.png?"
+                 title="Add Subtask" data-toggle="tooltip" data-placement="top" tooltip ng-click="ctrl.showAddSubtask()">
+
+            <img style="max-width: 25px; max-height: 25px;" src="/static/images/delete.png?"
+                 title="Delete Task" data-toggle="tooltip" data-placement="top" tooltip ng-click="ctrl.deleteTask($event)">
+            
+          </div>
+			</div>
+
+			<div style="margin-top: 20px; ">
+		    <div >
+			    <div>
+			        <div>
+			          <span style=" display: flex; font-size: 15px;">
+
+			          <strong ng-if="task_details.project_id !== null" class="badge" style=" max-width: 70%;" ng-click="ctrl.setProjectDetailsId(task_details.project_id)"><span style="white-space: nowrap; text-overflow: ellipsis; display: block; overflow: hidden; text-decoration: none;">{{project_title}}</span></strong>
+                <strong ng-if="task_details.project_id === null" class="badge" style=" max-width: 70%;"><span style="white-space: nowrap; text-overflow: ellipsis; display: block; overflow: hidden; text-decoration: none;">{{project_title}}</span></strong>
+			            <img ng-if="task_details.task_id === null" src="/static/images/edit.png" style="margin-left: 10px; width: 20px; height: 20px;" popover-placement="bottom" uib-popover-template="'select-proj-template'" popover-is-open="popoverIsOpen" popover-trigger="'outsideClick'">
+                  
+			            <img ng-if="task_details.task_id === null" src="/static/images/delete.png" style="margin-left: 2px; width: 20px; height: 20px;" 
+			                 ng-click="ctrl.deleteTaskProject()">
+			          </span>
+			           <script type="text/ng-template" id="select-proj-template">
+							    <div controller="TaskDetailsController" bindToController="true" style=" max-width:200px;">
+							     <select ng-model="data.project" class="select-style" style="width: 200px;" 
+							             ng-options="project.name for project in ctrl.list_projects">
+					         </select>
+					         	<md-button type="button" ng-click="ctrl.setUsers()" style="float:right; margin-top: 4px;">Save</md-button>
+							    </div>
+					    </script>
+			        </div>
+		        </div>
+		       
+			   
+		    </div>
+		   </div>
+		   
+		<div style="display: flex; margin-top: 40px; margin-bottom: 10px;" >
+
+      <div style="width: 45px; margin-top: 5px">
+         <img ng-show="task_details.complete_date === null" style="max-width: 32px; max-height: 32px;" 
+              src="/static/images/incomplete.png?"  
+              onmouseover="this.src='/static/images/incompleteHover.png'"
+              onmouseout="this.src='/static/images/incomplete.png'"
+              title="Complete Task" data-toggle="tooltip" data-placement="top" tooltip ng-click="ctrl.updateTaskCompletion('complete')">
+        <img ng-show="task_details.complete_date !== null" style="max-width: 32px; max-height: 32px;" src="/static/images/completed.png"  ng-click="ctrl.updateTaskCompletion('incomplete')" title="Undo Complete Task" data-toggle="tooltip" data-placement="top" tooltip >
+
+      </div>                        
+
+		  <div style="width: calc(100% - 45px);"> 
+        <h1 class="editable" contenteditable="true"  spellcheck="false" placeholder="Title"
+			    ng-model="task_title" style="word-wrap:break-word; word-break: all; text-overflow: ellipsis;"  class="editable" ng-keydown="ctrl.updateTaskTitle($event)">
+			    {{task_details.title}}</h1>
+			</div>
+		</div>
+
+		<div style=" margin-top: 10px;">
+		     <div style="display: flex;">
+		     	<img src="/static/images/date-icon.png" 
+				       style="width:20px; height: 20px; margin-top: 5px; margin-bottom: 5px; margin-right: 5px; display: inline;" 
+               uib-datepicker-popup     ng-model="task_date"             bindToController="true" 
+               is-open="open_calendar"  datepicker-options="dateOptions" popup-placement="bottom-left" close-text="Successfully updated!" ng-click="ctrl.openTaskCalendar()"
+				       show-button-bar="false" ng-change="ctrl.updateTaskDueDate()">
+				  <h5 style="margin-top: 10px; margin-bottom: 5px; margin-right: 10px; outline: none; display: inline;" >
+				      Due Date : 	
+				      {{task_details.deadline_date | date : 'MMMM d, y'}} 
+				      <span ng-if="!task_details.deadline_date">unspecified</span>
+				  </h5>
+		     </div>
+		     <div style="display: flex;">
+		     	 <img  src="/static/images/time-icon.png" 
+			       style="width:20px; height: 20px; margin-top: 5px; margin-bottom: 5px; margin-right:5px;" 
+			       popover-placement="bottom-left" uib-popover-template="'timepicker.html'" popover-is-open="open_time" popover-trigger="'outsideClick'"><br>
+			   <h5  style="margin-top: 10px; margin-bottom: 20px; outline: none; display: inline;" >
+				      Due Time : 
+				      <span>{{task_details.deadline_time | date : 'h:mm a'}}</span> 
+				      <span ng-if="!task_details.deadline_time">unspecified</span>
+				 </h5>
+		     </div>		   
+		</div>
+     <div>
+       <!-- <textarea  class="description"       style="width: 100%; overflow: hidden; text-overflow: ellipsis;                                          height: 200px; font-size: 18px; color: black;" 
+                  placeholder="Description" ng-model="task_description" 
+                  ng-blur="ctrl.updateTaskDescription()">{{task_details.description}}
+      </textarea> -->
+      <a href="#" editable-textarea="task_description" e-rows="7" e-cols="50" onbeforesave="ctrl.updateTaskDescription($data)">
+        <pre>{{task_details.description || 'no task description'}}</pre>
+      </a>
+     </div>
+
+		   
+			  
+		    <script type="text/ng-template" id="timepicker.html">
+		      <div uib-timepicker  ng-model="mytime"    hour-step="1" 
+		           minute-step="1" show-meridian="true" class="exclude" 
+		           bindToController="true"> 
+		       </div>
+		         <img src="/static/images/save.png" 
+		              style="float: right; width: 25px; height: 25px; border-left: 2px solid #000;
+		                     margin-bottom: 5px;" 
+		              ng-click="ctrl.updateTaskDueTime(mytime)">
+		    </script>
+		   
+			</h3>
+      
+     <div id="attachmentDiv" ng-show="task_details.attachments !== undefined && task_details.attachments.length > 0">
+        <header>
+          Attachments
+          <div id="downloadAll">
+            <img src="/static/images/downloadAll.png?" title="download all" tooltip data-placement="bottom">
+          </div>
+        </header>
+        
+          <div>
+            <div id="attachedFiles"  data-role="tagsinput" ng-repeat="file in task_details.attachments">
+              <div>
+                <a target="_self" href="{{file.filename}}" download="{{file.name}}">{{file.name}}</a>
+              </div>
+              <button ng-click="ctrl.deleteTaskAttachment(file)">
+                <img src="/static/images/delete.png?">
+              </button>
+            </div>
+          </div>
+      </div>
+ 
+
+			<div id="settings">
+			    <div class="panel-group container" id="parentpanel">
+			      <div class="panel panel-default" style="border: none; box-shadow: none" >
+			        
+			          <div class="panel-heading" style="border: none; width: 130px;" onclick="changeArrow()">
+			            <a class="accordion-toggle" data-toggle="collapse" data-parent="#parentpanel" href="#changePW" ui-sref="#changePW">
+			            <div class="panel-title" style="font-size: 20px;">
+			              <img id="arrow" src="/static/images/arrowRight.png" style="width: 8px; height: 8px;">
+			              Subtasks
+			            </div>
+			            </a>
+			          </div>
+			        
+
+			        <div id="changePW" class="panel-collapse collapse" ng-show="task_details.subtasks.length > 0">
+			          <div class="panel-body">
+			            
+			            <div class="row ">
+			              <div class="col-md-12">
+
+			                <ul class="timeline " ng-repeat="subtask in task_details.subtasks" class="repeated-item">
+			                  <li>
+			                    <div class="timeline-item " animate>
+			                      <span class="timeline-header time" style="float: left" animate>
+			                          <button ng-show="subtask.complete_date === null" class="completed" id="{{subtask.id}}" ng-click="ctrl.updateSubtaskCompletion('complete', subtask)">
+			                              <img src="/static/images/incomplete.png"  
+			                                onmouseover="this.src='/static/images/incompleteHover.png'"
+			                                onmouseout="this.src='/static/images/incomplete.png'">
+			                          </button>
+  
+                              <button ng-show="subtask.complete_date !== null" class="completed" id="{{subtask.id}}" ng-click="ctrl.updateSubtaskCompletion('incomplete', subtask)">
+                                  <img src="/static/images/completed.png">
+                              </button>
+
+			                        </span>
+
+			                      <h3 class="timeline-header taskHeader"><a ng-click="ctrl.changeTaskDetails(subtask)">{{subtask.title}}</a></h3>
+			                    </div>
+			                  </li>
+			                </ul>
+			              </div>
+			            </div>
+			          </div>
+			        </div>
+
+			      </div>
+			    </div>
+			  </div>
+     
+		</div>
+
+		          <aside id="commentsDiv">
+     <div style="background-color: white; min-height: 190px; width: 100%; box-shadow: 1px 0px 8px rgba(0, 0, 0, 0.24);">
+
+        <div style="width: 100%; display: flex;">
+          <img src="{{user.profpic_path}}?" style="width: 35px; height: 35px; margin: 10px; border-radius: 50%" onerror="this.onerror=null;this.src='/static/images/user.png';">
+          <div style="margin: 7px 0; width: calc(100% - 65px); text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+            <strong style="margin-top: 10px">{{user.first_name}} {{user.last_name}}<br>(@{{user.username}})</strong>
+          </div>
+        </div>
+
+          <span style="display: flex;">
+            <textarea placeholder="Write Comment" ng-model="comment" style="width: 100%; height: 100px; margin-left: 10px; margin-right:10px;"></textarea>
+          </span>
+
+        <button ng-click="ctrl.addComment()" style="margin-top: 5px; float:right; padding-top: 1px; margin-right: 10px; font-size: 12px;">SEND</button>
+     </div>
+
+    <div ng-repeat="task_comment in task_comments" style="background-color: white; display: flex;
+  flex-direction: column; margin-top: 5px; width: 100%; box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.24);">
+      <div>
+        <div style="width: 100%; display: flex;">
+          <img src="{{task_comment.user.profpic_path}}?" style="width: 35px; height: 35px; margin: 10px; border-radius: 50%" onerror="this.onerror=null;this.src='/static/images/user.png';">
+          <div style="margin: 7px 0; width: calc(100% - 65px); text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+            <strong style="margin-top: 10px; font-size: 13px; line-height: 0.5em">{{task_comment.user.fullname}} <br> (@{{task_comment.user.username}})</strong>
+          </div>
+        </div>
+       <!--  <img src="" style="width: 25px; height: 25px; margin-bottom: 5px; margin-right:3px; margin-top: 5px; margin-left: 10px;" onerror="this.onerror=null;this.src='/static/images/user.png';" >
+        <strong style="margin-top: 10px">{{task_comment.user.fullname}} (@{{task_comment.user.username}})
+        </strong><br> -->
+        <div ng-show="task_comment.willEditComment === false">
+          <div style="width: 92%; min-height: 50px; margin-top: -18px; margin-left: 10px; margin-right:20px; border-bottom: 1px solid grey; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; white-space: pre-line;" >
+              {{task_comment.comment}}
+              
+          </div>
+
+          <div style="margin-bottom: 5px; margin-top: 5px;">
+            <div>
+              <a ng-show="task_comment.user.id === curr_user.id" href="" ng-click="ctrl.editComment($index)" style="margin-left: 15px; font-size: 12px;">Edit</a>
+              <a ng-show="task_comment.user.id === curr_user.id" href="" style=" font-size: 12px; " ng-click="ctrl.deleteComment(task_comment)">| Delete</a>
+              <span style=" font-size: 12px; float: right; margin-right: 10px; margin-bottom: 5px;">{{task_comment.comment_date | date : 'MM/dd/yy hh:mm:ss a'}}</span>
+            </div>
+          </div> 
+        </div>
+        <div ng-show="task_comment.willEditComment === true">
+          <textarea placeholder="Write Comment"  style=" width: 92%; min-height: 100px; margin-left: 10px; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;" ng-model="task_comment.editedComment"></textarea>
+          <div style="margin-bottom: 5px; margin-top: 5px; float: left; margin-left: 5px;">
+            <div>
+              <a href="" ng-click="ctrl.editComment($index)" style="margin-left: 10px; font-size: 12px;">Save</a>
+              <a href="" style=" font-size: 12px; " ng-click="task_comment.willEditComment = !task_comment.willEditComment">| Cancel</a>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+    </aside>
+  
+</section>
+  <script type="text/ng-template" id="auto-template">
+     <div class="auto-template">
+      <div class="left-panel">
+        <img src="{{data.profpic_path}}?" onerror="this.onerror=null;this.src='/static/images/user.png';">
+      </div>
+      <div class="right-panel">
+        <span>{{data.fullname}}</span>
+        <span >({{data.username}})</span>
+        <span>{{data.email}}</span>
+      </div>
+     </div>
+  </script>
+  <script type="text/ng-template" id="tag-template">
+      <div class="tag-template" >
+        <div title="<b>{{data.fullname}}</b><br><i>{{data.username}}</i>" data-html="true" tooltip data-placement="bottom">
+          <img src="{{data.profpic_path}}?" onerror="this.onerror=null;this.src='/static/images/user.png';">
+        </div>
+        <div>
+          <span style="display:none;"></span>
+          <a class="remove-button" ng-click="$removeTag()">&times;</a>
+        </div>
+      </div>
+  </script>
+   <script type="text/ng-template" id="ratesubtask-template">
+     <div class="modal-header" ng-init="ctrl.setRating()">
+            <h3 class="modal-title" id="modal-title">Rate Task</h3>
+      </div>
+      <div class="modal-body" id="modal-titledal-body">
+          <span style="margin-left: 80px;" uib-rating ng-model="rate" max="5" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['1','2','3','4','5']" aria-labelledby="default-rating"></span> ({{rate}})
+      </div>
+      <div class="modal-footer">
+          <md-button style="float: left;" ng-click="ctrl.saveRating()">Rate!</md-button>
+          <md-button ng-click="ctrl.close()">Later</md-button>
+      </div>
+    </script>
+
+<script type="text/javascript">
+
+function goBack() {
+    window.history.back();
+}
+
+  function changeArrow() {
+    var arrow = document.getElementById("arrow").src;
+    if( arrow.indexOf('arrowRight') >= 0){
+      document.getElementById("arrow").src = "/static/images/arrowDown.png";
+    }
+    else if(arrow.indexOf('arrowDown') >= 0){
+      document.getElementById("arrow").src = "/static/images/arrowRight.png";
+    }
+
+    
+
+  }
+  $('.placeholder').on('input', function(){
+      if ($(this).text().length > 0) {
+          $(this).removeClass('placeholder');
+      } else {
+          $(this).addClass('placeholder');
+      }
+  });
+  $('contenteditable').keydown(function(e) {
+      // trap the return key being pressed
+      if (e.keyCode === 13) {
+        // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
+        document.execCommand('insertHTML', false, '<br><br>');
+        // prevent the default behaviour of return key pressed
+        return false;
+      }
+    });
+</script>
+<style type="text/css">
+xmp{ white-space:pre-wrap; word-wrap:break-word; }
+ .popover-content{
+  border-radius: 0%;
+ }
+
+ [contenteditable=true]:empty:after {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+  color:grey;
+ }
+
+  .select-style {
+  height: 30px; 
+  border-top-color: transparent; 
+  border-left-color: transparent;
+  border-right-color: transparent;
+  font-size: 15px;
+}
+.select-style option {
+  font-size: 15px;
+  margin-left:5px;
+}
+.select-style:focus {
+  -webkit-outline: none;
+  -moz-outline: none;
+  -o-outline: none;
+  outline: none;
+}
+.tag-template div:first-child {
+  float: left;
+  padding-bottom: 0px;
+}
+
+.tag-template div:first-child img {
+  width: 24px;
+  height: 24px;
+  float: left;
+  border-radius: 50%;
+  vertical-align: middle;
+  /*background-color: white;*/
+  margin-bottom: 2px;
+}
+
+.tag-template div:last-child {
+  float: left;
+  margin-left: 5px;
+}
+.left-panel {
+  float: left;
+}
+
+.left-panel img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.right-panel {
+  float: left;
+  margin-left: 4px;
+  margin-top: 5px;
+}
+
+.right-panel span:first-child {
+  font-size: 14px;
+}
+
+.right-panel span:nth-child(2) {
+  font-size: 12px;
+  color: gray;
+}
+
+.right-panel span:last-child {
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+}
+.editable {
+  border-bottom: 1px solid white;
+}
+.editable:focus{
+/*-webkit-box-shadow:inset 0px 0px 0px 10px #f00;
+-moz-box-shadow:inset 0px 0px 0px 10px #f00;
+ box-shadow:inset 0px 0px 0px 10px #f00;*/
+  border-bottom: 1px solid #000; /* or whatever colour you'd prefer */
+  /*/outline: 3px solid black;*/
+}
+.editable:hover{
+  border-bottom: 1px solid #000;
+}
+.center-modal {
+    position: fixed;
+    top: 10%;
+    left: 18.5%;
+    width: 100%;
+    height: 100%;
+    margin-left: -10%;
+}
+
+tags-input .tags .tag-item {
+  margin: 2px;
+  padding: 5px 5px;
+  display: inline-block;
+  float: left;
+  font: 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  height: 26px;
+  line-height: 25px;
+  font-weight: bold;
+  /*border: 1px solid #acacac;*/
+  border-radius: 50px;
+  /*background: #DEDEDE;*/
+  background: transparent;
+  border: 0.5px solid grey;
+
+  max-width: 150px;
+}
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap; 
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word; 
+}
+tags-input .tags {
+  padding: 1px;
+  cursor: text;
+  background-color: #fff;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+.description {
+  -moz-border-color:white;
+}
+.description:focus {
+  /*border-color:black;*/
+}
+
+</style>
+

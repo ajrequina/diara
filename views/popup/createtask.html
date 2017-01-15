@@ -1,0 +1,168 @@
+<div class="modal-header" style="background-color: #2b2728;">
+  <strong class="modal-title" style="font-size: 16px; color:white;">Create Task</strong>
+</div>
+
+<div class="modal-body">
+ <form name="cTaskForm">
+    <md-input-container class="md-block md-primary md-hue-2">
+      <label>Title* </label>
+      <input type="text"  md-autofocus md-no-autogrow ng-model="data.title" name="title" required md-no-asterisk maxlength="100" md-maxlength="100" style="width:100%;" novalidate>
+      <div ng-messages="cTaskForm.title.$error">
+       <div ng-message="required">This is a required field.</div>
+      </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+      <label>Description</label>
+      <input type="text" style="width:100%;" name="description" ng-model="data.description" maxlength="200" md-maxlength="200">
+    </md-input-container>
+    <md-switch ng-model="data.setAssignment" class="md-primary" ng-change="onSetAssignmentChange(data.setAssignment)">
+      <strong>{{setAssignment}}</strong>
+    </md-switch>
+    <div style="margin-bottom: 12px;" layout="column" ng-if="data.setAssignment">
+    <strong>Projects: </strong>
+    <select ng-model="data.project" class="select-style" style="width: 100%;" ng-change="setUsers()">
+      <option value="none">None</option>
+      <option ng-repeat="project in projects" value="{{project}}">{{project.name}} ({{project.create_date | date : 'MMMM d, y hh:mm:ss a'}})</option>
+    </select>
+    <tags-input ng-if="data.setAssignment && data.project != undefined"
+                ng-model="assignedUser" 
+                placeholder="Email, Name or Username .." 
+                replace-spaces-with-dashes="false"
+                add-from-autocomplete-only="true"
+                display-property="username"
+                template="tag-template">
+      <auto-complete source="loadUsers($query)" 
+                     debounce-delay="5"
+                     template="auto-template"
+                     max-results-to-show="30"
+                     load-on-focus="true"
+                     load-on-empty="true"></auto-complete>
+    </tags-input>
+    <br ng-if="data.setAssignment">
+    </div>
+
+    <strong>Task Deadline</strong><br>
+    <md-input-container class="hackyhack">  
+
+      <input type="text" uib-datepicker-popup ng-model="data.date" bindToController="true" is-open="opened" datepicker-options="dateOptions" popup-placement="bottom-left" close-text="Close" ng-click="open2()" placeholder="YYYY-MM-DD" show-button-bar="false"/>
+    </md-input-container>
+        <md-input-container>
+          <input ng-disabled="!data.date" ng-init="data.time='12:00 PM'" type="text" ng-model="data.time" popover-placement="bottom-left" placeholder="HH:MM AM/PM" uib-popover-template="'timepicker-template'"/>
+        </md-input-container><br>
+      <script type="text/ng-template" id="timepicker-template">
+        <div
+         uib-timepicker  controller="modalController" bindToController="true" ng-model="mytime" ng-change="setTime(mytime)" hour-step="1" minute-step="1" show-meridian="true"> 
+         </div>
+      </script>
+   <div class="modal-footer" style="padding: 1 1px 1 1px">
+    <button class="btn" type="submit" ng-click="saveTask($event)">Save</button>
+    <button class="btn" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+  
+ </form>
+</div>
+<!-- TEMPLATES -->
+  <script type="text/ng-template" id="auto-template">
+     <div class="auto-template">
+      <div class="left-panel">
+        <img src="{{data.profpic_path}}" onerror="this.onerror=null;this.src='/static/images/user.png';"/>
+      </div>
+      <div class="right-panel">
+        <span ng-bind-html="$highlight($getDisplayText())"></span>
+        <span>({{data.fullname}})</span>
+        <span>{{data.email}}</span>
+      </div>
+     </div>
+     
+  </script>
+  <script type="text/ng-template" id="tag-template">
+      <div class="tag-template">
+        <div>
+          <img src="{{data.profpic_path}}" onerror="this.onerror=null;this.src='/static/images/user.png';"/>
+        </div>
+        <div>
+          <span>{{$getDisplayText()}}</span>
+          <a class="remove-button" ng-click="$removeTag()">&times;</a>
+        </div>
+      </div>
+  </script>
+  <!-- END OF TEMPLATES -->
+<style type="text/css">
+.hackyhack {
+  position: relative;
+  z-index: 1;
+}
+
+.tag-template div:first-child {
+  float: left;
+}
+.auto-template  {
+  background-color: red;
+}
+.tag-template div:first-child img {
+  width: 24px;
+  height: 24px;
+  float: left;
+  border-radius: 50%;
+  vertical-align: middle;
+  /*background-color: white;*/
+  margin-bottom: 2px;
+}
+
+.tag-template div:last-child {
+  float: left;
+  margin-left: 5px;
+}
+.left-panel {
+  float: left;
+}
+
+.left-panel img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.right-panel {
+  float: left;
+  margin-left: 4px;
+  margin-top: 5px;
+}
+
+.right-panel span:first-child {
+  font-size: 14px;
+}
+
+.right-panel span:nth-child(2) {
+  font-size: 12px;
+  color: gray;
+}
+
+.right-panel span:last-child {
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.select-style {
+  height: 30px; 
+  border-top-color: transparent; 
+  border-left-color: transparent;
+  border-right-color: transparent;
+/*  -webkit-background-size: cover; 
+  -moz-background-size: cover;    
+  -o-background-size: cover;    */  
+  font-size: 15px;
+}
+.select-style option {
+  font-size: 15px;
+  margin-left:5px;
+}
+.select-style:focus {
+  -webkit-outline: none;
+  -moz-outline: none;
+  -o-outline: none;
+  outline: none;
+}
+</style>
