@@ -1,0 +1,114 @@
+<div class="modal-header" style="background-color: #2b2728;">
+  <strong class="modal-title" style="font-size: 16px; color:white;">Add Subtask</strong>
+</div>
+<div class="modal-body">
+ <form name="cSubtaskForm">
+  <md-input-container class="md-block">
+    <label>Title</label>
+    <input type="text" novalidate md-autofocus md-no-autogrow ng-model="data.title" name="title" required md-no-asterisk maxlength="30" md-maxlength="30" style="width:100%;" >
+    <div class="validation-messages" ng-messages="cSubtaskForm.title.$error">
+     <div ng-message="required">This is a required field.</div>
+    </div>
+  </md-input-container>
+  <md-input-container class="md-block">
+    <label>Description</label>
+    <input type="text" md-no-autogrow ng-model="data.description" name="description" md-no-asterisk maxlength="50" md-maxlength="50" style="width:100%;" novalidate>
+  </md-input-container>
+   <div ng-if="subtask_assignees.length > 0">
+   <label>Assignees..</label>
+   <tags-input  
+                ng-model="assigned_user" 
+                placeholder="Email, Name or Username .." 
+                replace-spaces-with-dashes="false"
+                add-from-autocomplete-only="true"
+                display-property="username"
+                template="tag-template">
+      <auto-complete source="ctrl.loadSubtaskAssignee($query)" 
+                     min-length="0" 
+                     debounce-delay="3"
+                     template="autocomplete-template"
+                     max-results-to-show="30"
+                     load-on-focus="true"
+                     load-on-empty="true"></auto-complete>
+    </tags-input>
+   </div>
+
+  <div class="modal-footer" style="padding: 1 1px 1 1px">
+    <button class="btn" type="submit" ng-click="ctrl.saveSubtask()">Save</button>
+    <button class="btn" type="button" ng-click="ctrl.close()">Cancel</button>
+  </div>
+ </form>
+</div>
+
+
+ <!-- TEMPLATES -->
+  <script type="text/ng-template" id="autocomplete-template">
+     <div class="auto-template">
+      <div class="left-panel">
+        <img src="{{data.profpic_path}}" onerror="this.onerror=null;this.src='/static/images/user.png';"/>
+      </div>
+      <div class="right-panel">
+        <span ng-bind-html="$highlight($getDisplayText())"></span>
+        <span>({{data.fullname}})</span>
+        <span>{{data.email}}</span>
+      </div>
+     </div>  
+  </script>
+
+  <script type="text/ng-template" id="tag-template">
+      <div class="tag-template">
+        <div>
+          <img src="{{data.profpic_path}}" onerror="this.onerror=null;this.src='/static/images/user.png';"/>
+        </div>
+        <div>
+          <span>{{$getDisplayText()}}</span>
+          <a class="remove-button" ng-click="$removeTag()">&times;</a>
+        </div>
+      </div>
+  </script>
+<!-- END OF TEMPLATES -->
+
+<style type="text/css">
+  .left-panel {
+  float: left;
+}
+
+.left-panel img {
+  margin-top: 7px;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.right-panel {
+  float: left;
+  margin-left: 4px;
+  margin-top: 5px;
+}
+
+.right-panel span:first-child {
+  font-size: 14px;
+}
+
+.right-panel span:nth-child(2) {
+  font-size: 12px;
+  color: gray;
+}
+
+.right-panel span:last-child {
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+}
+tags-input .tags {
+/*  -moz-appearance: textfield;
+  -webkit-appearance: textfield;*/
+  padding: 1px;
+  overflow: hidden;
+  word-wrap: break-word;
+  cursor: text;
+  background-color: #fff;
+  border-bottom: 0px solid #a9a9a9;
+  height: 100%;
+}
+</style>

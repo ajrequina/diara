@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html ng-app="Diara" >
+<head>
+
+    <link rel="icon"
+      type="image/png"
+      href="/static/images/logo.only.final.png">
+
+  <style type="text/css">
+    .no-js #loader {
+        display: none;
+    }
+    .js #loader {
+      display: block; position: absolute; left: 100px; top: 0;
+    }
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(/static/images/diara.gif) center no-repeat #fff;
+        background-size: 100px 100px;
+    }
+  </style>
+
+  <title ng-bind="$state.current.data.pageTitle"></title>
+  <meta name="description" content="Angular Bootstrap Dashboard"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link href="/static/plugins/angular-material/angular-material.min.css" rel="stylesheet" />
+
+    <!--CSS-->
+    <link href="/static/stylesheets/bootstrap.css" rel="stylesheet" />
+    <link href="/static/library/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/stylesheets/site.css" rel="stylesheet" />
+    <link href="/static/stylesheets/style-2.css" rel="stylesheet" />
+    <link href="/static/stylesheets/nga.all.min.css" rel="stylesheet" />
+    <link href="/static/stylesheets/themes.css" rel="stylesheet" />
+    <link href="/static/stylesheets/dashboard.css" rel="stylesheet" />
+    <link href="/static/stylesheets/font-awesome.min.css" rel="stylesheet" />
+    <link href="/static/plugins/bootstrap-slider/slider.css" rel="stylesheet" />
+    <link href="/static/stylesheets/flexslider.css" rel="stylesheet" />
+    <link href="/static/plugins/owl-carousel/owl.theme.css" rel="stylesheet" />
+    <link href="/static/plugins/owl-carousel/owl.transitions.css" rel="stylesheet" />
+    <link href="/static/plugins/owl-carousel/owl.carousel.css" rel="stylesheet" />
+    <link href="/static/library/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="/static/library/ngToast.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/library/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="/static/library/angular-csp.css">
+    <link rel="stylesheet" href="/static/library/angular-ui-notification.min.css">
+
+    <!-- LIBRARY Scripts -->
+    <script src="/static/library/jquery.min.js"></script>
+    <script src="/static/library/bootstrap.min.js"></script>
+    <script src="/static/library/modernizr.js"></script>
+    <script src="/static/plugins/bootstrap-slider/bootstrap-slider.js"></script>
+    <script src="/static/library/bootstrap-select.min.js"></script>
+    <script src="/static/library/ui-boostrap-tpls-0.13.0.min.js"></script>
+    <script src="/static/library/angular.min.js"></script>
+    <script src="/static/library/angular-ui-notification.min.js"></script>
+    <script src="/static/library/angular.js"></script>
+    <script src="/static/library/angular-animate.min.js"></script>
+    <script src="/static/library/angular-ui-router-min.js"></script>
+    <script src="/static/library/angular-resource.js"></script>
+    <script src="/static/library/angular-cookies.min.js"></script>
+    <script src="/static/library/angular-cookies.js"></script>
+    <script src="/static/library/angular-modal-service.js"></script>
+    <script src="/static/library/ui-router-styles.js"></script>
+    <script src="/static/plugins/knob/jquery.knob.js"></script>
+    <script src="/static/plugins/Chart.min.js"></script>
+    <script src="/static/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/static/library/ng-tags-input.min.js"></script>
+    <script src="/static/library/moment.min.js"></script>
+    <script src="/static/library/angular-moment.min.js"></script>
+    <script src="/static/library/angular-moment.js"></script>
+    <script src="/static/library/socket.io-1.4.5.js"></script>
+    <link rel="stylesheet" href="/static/library/xeditable.min.css" />
+    <script src="/static/library/xeditable.min.js"></script>
+
+    <script src="/static/library/angular-material.min.js"></script>
+    <script src="/static/library/angular-aria.min.js"></script>
+    <script src="/static/library/angular-messages.min.js"></script>
+
+    <script src="/static/library/angular-flash.js"></script>
+    <script src="/static/library/angular-sanitize.js"></script>
+    <script src="/static/library/ui-bootstrap-tpls-2.2.0.js"></script>
+    <script src="/static/library/angular-moment-picker.min.js"></script>
+    <link rel="stylesheet" href="/static/library/angular-moment-picker.min.css" />
+    <script type="text/javascript" src="/static/library/angular-strap.min.js"></script>
+    <script type="text/javascript" src="/static/library/angular-strap.tpl.min.js"></script>
+    <script type="text/javascript" src="/static/library/ngToast.min.js"></script>
+    <script type="text/javascript" src="/static/library/angular-desktop-notification.js"></script>
+    <script type="text/javascript" src="/static/library/angular-base64.min.js"></script>
+    <script type="text/javascript" src="/static/library/jszip.min.js"></script>
+    <script type="text/javascript" src="/static/library/angular-file-saver.bundle.min.js"></script>
+    <script type="text/javascript" src="/static/library/FileSaver.min.js"></script>
+    <script type="text/javascript" src="/static/library/jszip-utils.min.js"></script>
+    <script type="text/javascript" src="/static/library/jszip-utils-ie.min.js"></script>
+    <script src = "/static/library/zingchart.min.js" ></script>
+    <script src = "/static/library/zingchart-angularjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <!-- CORE Scripts -->
+    <script src="/static/javascripts/index.js"></script>
+    <script src="/static/javascripts/route.js"></script>
+    <script src="/static/javascripts/factory.js"></script>
+    <script src="/static/javascripts/directive.js"></script>
+    <script src="/static/javascripts/service.js"></script>
+
+
+    <!-- SUBVIEW Scripts -->
+    <script src="/static/javascripts/subcontrollers/dashboard.js"></script>
+    <script src="/static/javascripts/subcontrollers/tasks.js"></script>
+    <script src="/static/javascripts/subcontrollers/projects.js"></script>
+    <script src="/static/javascripts/subcontrollers/teams.js"></script>
+    <script src="/static/javascripts/subcontrollers/archive.js"></script>
+    <script src="/static/javascripts/subcontrollers/teamthreads.js"></script>
+    <script src="/static/javascripts/subcontrollers/notifications.js"></script>
+    <script src="/static/javascripts/subcontrollers/taskdetails.js"></script>
+    <script src="/static/javascripts/subcontrollers/project.js"></script>
+    <script src="/static/javascripts/subcontrollers/projectdetails.js"></script>
+    <script src="/static/javascripts/subcontrollers/profile.js"></script>
+    <!-- MODAL Scripts -->
+    <script src="/static/javascripts/modalcontrollers/subtaskmodal.js"></script>
+    <script src="/static/javascripts/modalcontrollers/settingsmodal.js"></script>
+    <script src="/static/javascripts/modalcontrollers/taskmodal.js"></script>
+    <script src="/static/javascripts/modalcontrollers/projectmodal.js"></script>
+</head>
+  <script type="text/javascript">
+        $(window).load(function() {
+        $(".se-pre-con").fadeOut("slow");;
+    });
+  </script>
+<div class="se-pre-con"></div>
+<body ng-controller="MainController as ctrl" class="hold-transition sidebar-mini skin-black">
+    <div flash-message="5000"></div>
+    <div class="wrapper">
+    <header class="main-header">
+
+        <!-- Logo -->
+        <a class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><img src="/static/images/logoOnly.png"></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><img id="this" src="/static/images/logoFull.png"></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a class="sidebar-toggle" data-toggle="offcanvas" role="button" data-ng-click="ctrl.sideBar(1);">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown notifications-menu">
+                        <a class="dropdown-toggle" data-toggle="dropdown" title="Create">
+                            <img src="/static/images/create.png" style="max-width: 19px; max-height: 19px"></img>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <ul class="menu">
+                                  <li>
+                                    <ul class="menu">
+                                        <li>
+                                            <a  ng-click="showCreateTask()">
+                                              Task
+                                            </a>
+                                            <a ng-click="showCreateProject()">
+                                               Project
+                                            </a>
+                                        </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown notifications-menu">
+                        <a class="dropdown-toggle" data-toggle="dropdown" ng-click="getNotifications()" title="Notifications">
+                            <img ng-if="have_unread === false" src="/static/images/notification.png" style="max-width: 19px; max-height: 19px"></img>
+                             <img ng-if="have_unread === true" src="/static/images/notificationAlert.png" style="max-width: 19px; max-height: 19px"></img>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <ul class="menu">
+                                  <li>
+                                    <ul class="menu">
+                                        <li ng-repeat="notification in notifications" ng-show="$index < 3">
+                                            <a ng-if="notification.read_date === null"  ng-click="notificationClicked(notification, $index)" style="background-color: #ccc;">
+                                                <div style="width: 25px; float: left;">
+                                                    <img ng-show="notification.type === 'comment'" src="/static/images/comment.png" style="width: 20px; height: 20px;">
+                                                     <img ng-show="notification.type === 'task'" src="/static/images/assignment.png" style="width: 20px; height: 20px;">
+                                                     <img ng-show="notification.type === 'project'" src="/static/images/folder.png" style="width: 20px; height: 20px;">
+                                                </div>
+
+
+                                                 <div style="width: calc(100% - 32px); float: left; margin: 0 3px">
+
+                                                    <span ng-bind="notification.message" style="word-wrap: break-word; white-space: normal;"></span>
+                                                   <br>
+                                                    <strong><span ng-bind="notification.create_date | date : 'MMM d, y hh:mm:ss a'"></span></strong>
+                                                </div>
+                                            </a>
+                                            <a ng-if="notification.read_date !== null" ng-click="notificationClicked(notification, $index)"  >
+                                                <div style="width: 25px; float: left;">
+                                                    <img ng-show="notification.type === 'comment'" src="/static/images/comment.png" style="width: 20px; height: 20px;">
+                                                     <img ng-show="notification.type === 'task'" src="/static/images/assignment.png" style="width: 20px; height: 20px;">
+                                                     <img ng-show="notification.type === 'project'" src="/static/images/folder.png" style="width: 20px; height: 20px;">
+                                                </div>
+
+
+                                                 <div style="width: calc(100% - 32px); float: left; margin: 0 3px">
+
+                                                    <span ng-bind="notification.message" style="word-wrap: break-word; white-space: normal;"></span>
+                                                   <br>
+                                                    <strong><span ng-bind="notification.create_date | date : 'MMM d, y hh:mm:ss a'"></span></strong>
+                                                </div>
+                                            </a>
+
+                                        </li>
+
+                                        <center ng-if="notifications.length > 0" style="margin: 5px"><a ui-sref="notifications" >See all</a></center>
+                                        <center ng-if="notifications.length === 0" style="margin: 5px">No Notifications</center>
+
+
+                                    </ul>
+                                  </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown notifications-menu">
+                        <a class="dropdown-toggle" data-toggle="dropdown" title="Profile">
+                            <img id="profpic2"   alt="User Image" style="margin-left: 5px; width:20px; height:20px;  display: block; border-radius: 100px;" onerror="this.onerror=null;this.src='/static/images/user.png';"></img>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <ul class="menu">
+                                  <li>
+                                    <ul class="menu">
+                                        <li>
+                                            <a ui-sref="profile" ng-click="ctrl.setUserDetails()">Profile</a>
+                                            <a ng-click="showSettings()">Settings</a>
+                                            <a href="/logout">Log out</a>
+                                        </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img id="profpic1" alt="error" class="profile-img" alt="User Image" onerror="this.onerror=null;this.src='/static/images/user.png';">
+
+                </div>
+                <div class="pull-left info" style="">
+                    <p style="width: 150px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap; padding-top: 5px; margin: 0" ng-bind="name">
+                                        </p>
+                    <span class="text-aqua text-sm" style="width: 150px; overflow: hidden; margin-top: 5px; text-overflow:ellipsis; white-space: nowrap;" ng-bind="username"></span>
+                </div>
+            </div>
+            <!-- search form -->
+            <!-- <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                  <input type="text" ng-model="selected" uib-typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search..." list="search_results"> -->
+                    <!-- <input type="text" name="q" class="form-control" placeholder="Search..."> -->
+                   <!--  <span class="input-group-btn">
+                        <button type="button" name="search" id="search-btn" class="btn btn-flat" data-ng-click="ctrl.search();"><i class=" fa fa-search"></i></button>
+                    </span>
+                    <datalist  style="min-width: 100px;" id="search_results">
+                    <option value="Something"></option>
+                    <option value="Something Else"></option>
+                    <option value="Another One"></option>
+                    <option value="Alpha"></option>
+                    <option value="Bravo"></option>
+                    <option value="Charlie"></option>
+                    <option value="Delta"></option>
+                    <option value="Echo"></option>
+                    <option value="Foxtrot"></option>
+                    <option value="Gamma"></option>
+                </datalist>
+                </div> -->
+                  <!--  <ul class="dropdown-menu">
+                            <li>
+                                <ul class="menu">
+                                  <li>
+                                    <ul class="menu">
+                                        <li>
+                                            <a ng-click="showCreateTask()">
+                                              Task
+                                            </a>
+                                            <a ng-controller="ProjectsController" ng-click="showCreateProject()">
+                                               Project
+                                            </a>
+                                        </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                            </li>
+                        </ul>
+            </form> -->
+
+            <!-- /.search form -->
+            <ul class="sidebar-menu">
+                <li class="treeview" ui-sref-active="active" ng-click="ctrl.sideBar();">
+                    <a ui-sref="dashboard">
+                        <img src="/static/images/dashboardwhite.png" style="max-width: 17px; max-height: 17px; margin-top:-3px"></img>
+                        <span style="margin-left: 4px;"> Dashboard</span>
+                    </a>
+                </li>
+                <li class="treeview" ui-sref-active="active" ng-click="ctrl.sideBar();">
+                    <a ui-sref="tasks">
+                        <img src="/static/images/task.png" style="max-width: 17px; max-height: 17px; margin-top:-3px"></img>
+                        <span style="margin-left: 4px;"> Tasks</span>
+                    </a>
+                </li>
+                <li class="treeview" ui-sref-active="active" ng-click="ctrl.sideBar();">
+                    <a ui-sref="projects">
+                        <img src="/static/images/project.png" style="max-width: 17px; max-height: 17px; margin-top:-3px"></img>
+                        <span style="margin-left: 4px;"> Projects</span>
+                    </a>
+                </li>
+                <li >
+
+                </li>
+            </ul>
+
+        </section>
+        <!-- /.sidebar -->
+
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <script type="text/javascript">
+        $(window).load(function() {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");;
+    });
+    </script>
+
+    <div class="content-wrapper">
+
+      <ui-view class="slide"></ui-view>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+    window.onresize = window.onload = function () {
+        var logo = document.getElementById('this');
+        if (window.innerWidth < 767) {
+            logo.src = "/static/images/logoFull2.png";
+        }
+        else{
+            logo.src = "/static/images/logoFull.png";
+        }
+    };
+</script>
+
+</body>
+</html>
+<style type="text/css">
+  .hidden {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  /* start 'enter' transition on main view */
+main.ng-enter {
+    /* transition on enter for .5s */
+    transition: .5s;
+
+    /* start with opacity 0 (invisible) */
+    opacity: 0;
+}
+
+/* end 'enter' transition on main view */
+main.ng-enter-active {
+    /* end with opacity 1 (fade in) */
+    opacity: 1;
+}
+.slide {
+    -webkit-transition: -webkit-transform .7s ease-in-out;
+    -moz-transition: -moz-transform .7s ease-in-out;
+    -o-transition: -o-transform .7s ease-in-out;
+    transition: transform .7s ease-in-out;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.slide.ng-enter {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
+
+.slide.ng-enter.ng-enter-active, .slide.ng-leave {
+    position: absolute;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.slide.ng-leave.ng-leave-active {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+}
+</style>
+<script type="text/javascript">
+      angular.element(document.body).bind('click', function (e) {
+        //Find all elements with the popover attribute
+        var popups = document.querySelectorAll('*[popover]');
+        if(popups) {
+          //Go through all of them
+          for(var i=0; i<popups.length; i++) {
+            //The following is the popover DOM elemet
+            var popup = popups[i];
+            //The following is the same jQuery lite element
+            var popupElement = angular.element(popup);
+
+            var content;
+            var arrow;
+            if(popupElement.next()) {
+              //The following is the content child in the popovers first sibling
+              content = popupElement.next()[0].querySelector('.popover-content');
+              //The following is the arrow child in the popovers first sibling
+              arrow = popupElement.next()[0].querySelector('.arrow');
+            }
+            //If the following condition is met, then the click does not correspond
+            //to a click on the current popover in the loop or its content.
+            //So, we can safely remove the current popover's content and set the
+            //scope property of the popover
+            if(popup != e.target && e.target != content && e.target != arrow) {
+              if(popupElement.next().hasClass('popover')) {
+                //Remove the popover content
+                popupElement.next().remove();
+                //Set the scope to reflect this
+                popupElement.scope().tt_isOpen = false;
+              }
+            }
+          }
+        }
+      });
+    </script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+  if (!Notification) {
+    alert('Desktop notifications not available in your browser. Try Chromium.');
+    return;
+  }
+
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+});
+</script>
+<script type="text/ng-template" id="notifications-template.html">
+<div class="ui-notification">
+    <h3 ng-show="title" ng-bind-html="title"></h3>
+    <div class="message" ng-bind-html="message"></div>
+    <div class="message">
+        <a ui-sref="route({url: urlParam})">click here to change ui-route</a>
+    </div>
+</div>
+</script>
+<script type="text/ng-template" id="dropdown-template">
+  <a>
+      <!-- <img ng-src="http://upload.wikimedia.org/wikipedia/commons/thumb/{{match.model.flag}}" width="16"> -->
+      <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+  </a>
+</script>
+
+<style>
+    [uib-typeahead-popup].dropdown-menu {
+      overflow-y: auto;
+      z-index: 1000;
+    }
+  .typeahead-demo .custom-popup-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    display: none;
+    background-color: #f9f9f9;
+  }
+
+  .typeahead-demo .custom-popup-wrapper > .message {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    color: #868686;
+  }
+
+  .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+    position: static;
+    float: none;
+    display: block;
+    min-width: 160px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+</style>

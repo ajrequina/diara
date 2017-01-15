@@ -1,0 +1,123 @@
+
+
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: row;
+        height: calc(100vh);
+        justify-content: center;
+        align-items: center;
+        background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url("/static/images/todo_list.jpg");
+        background-size: cover;
+      }
+
+      form {
+        display: flex;
+        flex: 0 0 450px;
+        width: 450px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 15px;
+        background-color: rgba(255, 255, 255, 1);
+        box-shadow:0 1px 5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+      }
+
+
+      form .logo{
+        display: flex;
+        margin-top:10px;
+        margin-bottom:30px;
+        justify-content: center;
+        align-items: center;
+        align-self: center;
+        flex: 0 0 600px;
+
+      }
+
+      form .logo img{
+				margin-top: 20px
+        align-self: center;
+        max-width: 350px;
+        max-height: 225px;
+      }
+
+      form a{
+        align-self: center;
+        margin-left: 35px;
+      }
+
+      form button {
+        margin: 25px 40px 0 40px;
+      }
+
+      form label {
+        font-size: 20px;
+      }
+
+      form input {
+        background-color: #F9F2F2;
+        border-color: rgba(0, 0, 0, 0.3);
+        min-height: 15px;
+        color: black;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 6px 2px;
+        width: 130px;
+      }
+
+      .buttons {
+        flex: 1 1 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 8px 25px;
+        margin-bottom: 0;
+      }
+
+      .buttons .btn {
+        min-width:100%;
+        min-height: 70px;
+        background-color: rgba(250, 98, 0, 0.7);
+        border: none;
+        color:white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        font-weight: normal;
+        font-family: Helvetica;
+        margin: 0;
+        box-shadow: 2px 2px 5px #888888;
+      }
+
+      .buttons a{
+        margin: 20px;
+        text-decoration: none;
+				color: blue;
+      }
+
+      .buttons a:hover, a:focus{
+        outline:none;
+        text-decoration: none;
+				color: rgb(250, 98, 0);
+      }
+
+      .buttons .btn:hover{
+        background-color: rgba(250, 98, 0, 0.9);
+        cursor: pointer;
+      }

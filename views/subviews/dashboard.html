@@ -1,0 +1,124 @@
+﻿<!--
+Author: Ranjithprabhu K
+Page Description: Dashboard Home page
+Date: 05 Jan 2016
+-->
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header" style="background-color: white">
+        <h1>
+          Dashboard
+        </h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <!-- <div 
+    data-ac-chart="'line'" 
+    data-ac-data="data" 
+    data-ac-config="config" 
+    class="chart">
+  </div> -->
+   <!-- <nvd3 options="options" data="data"></nvd3> -->
+    <!--  <zingchart id = "myChart" zc-json = "myJson" zc-height = 400 zc-width = 400 ></zingchart>  -->
+              
+    <div style="width: 100%">
+    <center>
+    <div style="float: left; margin-left: 20px; margin-bottom: 50px;width: 200px; height: 200px; background-color: #64b5f6;">
+    <br>
+     <center> <span style="font-size: 18px;color: white">My Average</span></center>
+     <center> <span style="font-size: 18px;color: white">Response Time</span></center>
+     <center> <span style="font-size: 60px;color: white; font-weight:bold; line-height:60px;">{{ave_response}}</span></center>
+     <center> <span style="font-size: 18px;color: white">Per Task</span></center>
+     <br>
+    </div>
+
+    <div style="float: left; margin-left: 20px;width: 200px; height: 200px; background-color: #69f0ae">
+    <br>
+     <center> <span style="font-size: 18px;color: white">My Average</span></center>
+     <center> <span style="font-size: 18px;color: white">Completed Tasks</span></center>
+     <center> <span style="font-size: 60px;color: white; font-weight:bold; line-height:60px;">{{ave_task}}</span></center>
+     <center> <span style="font-size: 18px;color: white">Per Day</span></center>
+     <br>
+    </div>
+
+    <div ng-if="incomplete_task !== undefined" style="float: left; margin-left: 20px;width: 200px; height: 200px; background-color: #e1bee7 ">
+  
+     <center> <span style="font-size: 18px;color: white">Longest Incomplete Task</span></center>
+     <center> <span style="font-size: 18px;color: white">"{{incomplete_task.name}}"</span></center>
+     <center> <span style="font-size: 60px;color: white; font-weight:bold; line-height:60px;">{{incomplete_task.time}}</span></center>
+     <center> <span style="font-size: 18px;color: white">Since Creation</span></center>
+     <br>
+    </div>
+    <div ng-if="incomplete_task === undefined" style="float: left; margin-left: 20px;width: 200px; height: 200px; background-color: #e1bee7 ">
+    <br>
+     <center> <span style="font-size: 18px;color: white">Longest Incomplete Task</span></center>
+     <center> <span style="font-size: 18px;color: white"></span></center>
+     <center> <span style="font-size: 60px;color: white; font-weight:bold; line-height:60px;">NONE</span></center>
+     <center> <span style="font-size: 18px;color: white"></span></center>
+     <br>
+    </div>
+
+    <div ng-if="overdue_task !== undefined" style="float: left; margin-left: 20px;width: 200px; height: 200px; background-color: #ffcc80 ">
+    <br>
+     <center> <span style="font-size: 18px;color: white">Most Overdue Task</span></center>
+     <center> <span style="font-size: 18px;color: white">"{{overdue_task.name}}"</span></center>
+     <center> <span style="font-size: 60px;color: white; font-weight:bold; line-height:60px;">{{overdue_task.time}}</span></center>
+     <center> <span style="font-size: 18px;color: white">Ago</span></center>
+     <br>
+    </div>
+    <div ng-if="overdue_task === undefined"  style="float: left; margin-left: 20px;width: 200px; height: 200px; background-color: #ffcc80 ">
+    <br>
+     <center> <span style="font-size: 18px;color: white">Most Overdue Task</span></center>
+     <center> <span style="font-size: 18px;color: white">  </span></center>
+     <center> <span style="font-size: 60px;color: white; font-weight:bold; line-height:60px;">NONE</span></center>
+     <center> <span style="font-size: 18px;color: white"></span></center>
+     <br>
+    </div>
+    </center>
+    </div>
+      
+
+
+    <hr style="color: black;">
+    <center>
+    <br>
+      <div style="height: 300px; width: 800px;">
+       <canvas id="line" ></canvas>
+     </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div style="height: 300px; width: 800px;">
+       <canvas id="bar"></canvas>
+     </div>
+    </center>
+     
+    
+<!--        <div style="display: flex; flex-direction: column;">
+       <div style="display: flex;">
+       	   <div style="width: 250px; height: 250px; background-color: grey;">
+       	   	
+       	   </div>
+       	   <div style="width: 250px; height: 250px; background-color: grey; margin-left: 5px;">
+       	   	
+       	   </div>
+       </div>
+       <div style="display: flex; margin-top: 5px;">
+       	   <div style="width: 100%; height: 250px; background-color: grey;">
+       	   	
+       	   </div>
+       	   <div style="width: 100%; height: 250px; background-color: grey; margin-left: 5px;">
+       	   	
+       	</div>
+       </div>
+
+       </div> -->
+ 
+      
+     </div>
+        
+      
+    </section><!-- /.content -->
+<style type="text/css">
+  .chart {
+ width: 500px;
+ height: 500px;
+}
+</style>

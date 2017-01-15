@@ -1,0 +1,66 @@
+#settings {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+    justify-content: flex-start;
+    align-items: center;
+    background-color: transparent;
+    padding: 20px;
+    margin: 0;
+}
+
+#settings .container {
+    display: block;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: transparent;
+}
+
+.panel > .panel-heading {
+    background-image: none;
+    background-color: white;
+    color: black;
+
+}
+
+.panel-heading .pending{
+  background-image: none;
+  background-color: rgba(245, 98, 0, 0.8);
+  color: black;
+}
+
+.panel-collapse{
+    background-color: rgb(245, 245, 245);
+}
+
+form {
+    flex-direction: column;
+    display: flex;
+    width: 320px;
+    justify-content: center;
+    padding: 15px 20px;
+    background-color: rgba(0, 0, 0, 0);
+    margin: 0 auto;
+}
+
+form input{
+    flex: 1 1 auto;
+    margin: 3px 0;
+    font-size: 20px;
+    align-self: center;
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 7px;
+    border-color: rgba(0, 0, 0, 0.5);
+    max-height: 40px;
+    padding: 0 15px;
+}
+
+input[type="submit"]{
+    background-color: rgba(250, 98, 0, 0.8);
+    align-self: flex-end;
+    /*margin: 10px 0;*/
+}

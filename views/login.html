@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html ng-app="Diara">
+  <base href="/">
+  <head >
+    
+    <title>Diara - Log In</title>
+    <link rel="stylesheet" href="/static/stylesheets/login.css">
+		<link rel="icon"
+      type="image/png"
+      href="/static/images/logo.only.final.png">
+      <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+      <link rel="stylesheet" href="/static/library/angular-ui-notification.min.css">
+      <script src="/static/library/jquery.min.js"></script>
+    <script src="/static/library/bootstrap.min.js"></script>
+    <script src="/static/library/modernizr.js"></script>
+    <script src="/static/plugins/bootstrap-slider/bootstrap-slider.js"></script>
+    <script src="/static/library/bootstrap-select.min.js"></script>
+    <script src="/static/library/ui-boostrap-tpls-0.13.0.min.js"></script>
+    <script src="/static/library/angular.min.js"></script>
+    <script src="/static/library/angular.js"></script>
+    <script src="/static/library/angular-animate.min.js"></script>
+    <script src="/static/library/angular-ui-router-min.js"></script>
+    <script src="/static/library/angular-resource.js"></script>
+    <script src="/static/library/angular-cookies.min.js"></script>
+    <script src="/static/library/angular-cookies.js"></script>
+    <script src="/static/library/angular-modal-service.js"></script>
+    <script src="/static/library/ui-router-styles.js"></script>
+    <script src="/static/plugins/knob/jquery.knob.js"></script>
+    <script src="/static/plugins/Chart.min.js"></script>
+    <script src="/static/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/static/library/ng-tags-input.min.js"></script>
+    <script src="/static/library/moment.min.js"></script>
+    <script src="/static/library/angular-moment.min.js"></script>
+    <script src="/static/library/angular-moment.js"></script>
+    <script src="/static/library/socket.io-1.4.5.js"></script>
+    <link rel="stylesheet" href="/static/library/xeditable.min.css" />
+    <script src="/static/library/xeditable.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="/static/library/angular-material.min.js"></script>
+    <script src="/static/library/angular-aria.min.js"></script>
+    <script src="/static/library/angular-messages.min.js"></script>
+
+    <script src="/static/library/angular-flash.js"></script>
+    <script src="/static/library/angular-sanitize.js"></script>
+    <script src="/static/library/ui-bootstrap-tpls-2.2.0.js"></script>
+    <script src="/static/library/angular-moment-picker.min.js"></script>
+    <link rel="stylesheet" href="/static/library/angular-moment-picker.min.css" />
+    <script type="text/javascript" src="/static/library/angular-strap.min.js"></script>
+    <script type="text/javascript" src="/static/library/angular-strap.tpl.min.js"></script>
+    <script src="/static/library/angular-ui-notification.min.js"></script>
+    <script type="text/javascript" src="/static/library/angular-desktop-notification.js"></script>
+    <script type="text/javascript" src="/static/library/angular-base64.min.js"></script>
+    <script type="text/javascript" src="/static/library/jszip.min.js"></script>
+    <script type="text/javascript" src="/static/library/angular-file-saver.bundle.min.js"></script>
+    <script type="text/javascript" src="/static/library/FileSaver.min.js"> </script>
+    <script type="text/javascript" src="/static/library/jszip-utils.min.js"></script>
+    <script type="text/javascript" src="/static/library/jszip-utils-ie.min.js"></script>
+    <script src = "/static/library/zingchart.min.js" ></script>  
+    <script src = "/static/library/zingchart-angularjs.js"></script>
+    
+
+    <!-- CORE Scripts -->
+    <script src="/static/javascripts/index.js"></script>
+    <script src="/static/javascripts/route.js"></script>
+    <script src="/static/javascripts/factory.js"></script>
+    <script src="/static/javascripts/directive.js"></script>
+    <script src="/static/javascripts/service.js"></script>
+
+    <!-- CREDENTIAL script -->
+    <script src="/static/javascripts/usercontrollers/credential.js"></script>
+  </head>
+
+  <body>
+    <div class="page" ng-controller="CredentialController">
+      <form >
+          <div class="logo"><img src="/static/images/logo.png"></div>
+          <input  required =    "true"  
+                  ng-model =    "data.user" 
+                  name =        "user"      
+                  type =        "text"       
+                  style =       "border-radius: 7px 7px 0 0; border-style: inset;"   
+                  placeholder = "email address or username" 
+                  ng-focus="error_login = ''"/>
+          <input  required  ng-model="data.password" name="password"  type="password"   style="border-radius: 0 0 7px 7px; border-style: outset;"  placeholder="password" ng-focus="error_login = ''"/>
+            
+          <div style="color: red; text-align: center; margin-top: 5px; font-family: 'Source Sans Pro', sans-serif;" ng-bind="error_login"></div>  
+          <div class="buttons">
+            <input type="submit"  ng-click="checkLogin()" class="btn" name="Login" value="Log in">
+            <a href="/signup" class="btn">Sign Up</a>
+          </div>
+          <a href="#">Forgot password?</a>
+      </form>
+    </div>
+  </body>
+</html>

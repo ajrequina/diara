@@ -1,0 +1,721 @@
+﻿
+ <style type="text/css">
+  .taskHeader{
+    display: flex; 
+    flex-direction: row; 
+    flex-wrap: nowrap;
+  }
+
+  .taskHeader a{
+    overflow: hidden;
+    text-decoration: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /*color: rgba(43, 39, 40, 0.7);*/
+  }
+
+  .taskHeader a:hover{
+    /*color: rgba(43, 39, 40, 0.7);*/
+  }
+
+  #SortFilterOptions {
+    margin-top: 20px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap-reverse;
+  }
+  
+  #SortFilter,
+  #SearchField {
+    display: flex;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+/*    justify-content: center;*/
+    justify-content: flex-end;
+  }
+  
+  #SortFilter .sort,
+  #SortFilter .filter {
+    margin: 0;
+    margin-top: 5px;
+    background-color: transparent;
+    padding-right: 2px;
+    color: black;
+    width: 90px;
+    height: 30px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+  }
+
+  #SortFilter .sort img,
+  #SortFilter .filter img {
+    margin-top: -2px;
+    margin-left: 2px;
+    max-width: 15px;
+    max-height: 15px;
+  }
+  
+  #SortFilter .sort:hover,
+  #SortFilter .sort:focus,
+  #SortFilter .filter:hover,
+  #SortFilter .filter:focus {
+    background-color: transparent;
+  }
+  
+  #SortFilter .sortDropdown,
+  #SortFilter .filterDropdown,
+  .view {
+    position: relative;
+    display: inline-block;
+  }
+  
+  #SortFilter .sortDropdown-content,
+  #SortFilter .filterDropdown-content, .view-content {
+    min-width: 110px;
+    display: none;
+    position: absolute;
+    overflow: auto;
+    padding: 0;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 11;
+  }
+  
+  #SortFilter .filterDropdown-content {
+    width: 220px;
+  }
+  
+  #SortFilter .sortDropdown-content .md-button,
+  #SortFilter .filterDropdown-content .md-button {
+    width: 110px;
+    color: black;
+    background-color: white;
+    padding: 2px 0 2px 15px;
+    text-decoration: none;
+    text-transform: none;
+    border-radius: 0;
+    display: block;
+    margin: 0;
+    text-align: left;
+  }
+
+  #SortFilter .filterDropdown-content .md-button {
+    width: 220px;
+  }
+  
+  #SortFilter .sortDropdown .md-button:hover,
+  #SortFilter .filterDropdown .md-button:hover {
+    background-color: #f1f1f1
+  }
+  
+  #SortFilter .show {
+    display: block;
+  }
+  
+  .checkmark {
+    display: none; 
+    margin: 0 7.6px;
+  
+  }
+
+  .options, .completed, .delete, .archive {
+    flex: 0 0 0;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0 4px;
+   /* margin-bottom: -0.25px;*/
+    display: block;
+  }
+
+  .completed {
+    margin: 0 1.5px;
+  }
+  .options{
+    padding: 5px;
+    border-radius: 3px;
+    border: 1.55px solid;
+    display: none;
+    min-width: 70px;
+    min-height: 30px;
+  }
+/*  .options:hover{
+    background-color: black;
+  }*/
+
+  .options:focus img, .completed:focus img, .delete:focus img, .archive:focus img{
+    outline: none;
+  }
+
+   .options:active img, .completed:active img, .delete:active img, .archive:active img{
+    outline: none;
+  }
+
+  .options img, .completed img {
+    max-height: 20px;
+    max-width: 20px;
+  }
+
+  .completed img {
+    max-height: 25px;
+    max-width: 25px;
+  }
+
+  .delete img {
+    max-height: 27px;
+    max-width: 27px;
+    margin: 2px;
+  }
+
+  .archive img {
+    max-height: 25px;
+    max-width: 25px;
+    margin: 2px;
+  }
+
+  .options:focus{
+    outline: none;
+  }
+
+  .options:hover{
+    border: 2px solid;
+    border-color: #fa6200;
+    -webkit-transition: border border-color 0.8s ease;
+    -moz-transition: border border-color 0.8s ease;
+    -o-transition: border border-color 0.8s ease;
+    -ms-transition: border border-color 0.8s ease;
+    transition: border border-color 0.8s ease;  
+  }
+
+  input#searchTask {
+    border: 1px solid #ccc;
+    background-color: rgba(250, 250, 250, 0.8); 
+    color: black;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    width: 165px;
+    margin: 0;
+    float: right;
+  }
+  
+   ::-ms-clear {
+    display: none;
+  }
+  
+  .form-control-clear {
+    z-index: 10;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .timeline {
+    position: relative;
+    margin: 0 0 21px 0;
+    padding: 0;
+    list-style: none;
+  }
+  .timeline > li {
+    position: relative;
+    margin-right: 7px;
+    margin-bottom: -20px;
+  }
+  .timeline > li:before,
+  .timeline > li:after {
+    content: " ";
+    display: table;
+  }
+  .timeline > li:after {
+    clear: both;
+  }
+  .timeline > li > .timeline-item {
+    /*-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);*/
+    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);*/
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-top: 0;
+    background: #fff;
+    color: #444;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0;
+    position: relative;
+  }
+  .timeline > li > .timeline-item > .time {
+    float: right;
+    padding:0;
+    margin: 0;
+  }
+  .timeline > li > .timeline-item > .timeline-header {
+    margin: 0;
+    color: #555;
+    border-bottom: 1px solid #f4f4f4;
+    padding: 10px;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .timeline > li > .timeline-item > .timeline-header > a {
+    font-weight: 600;
+  }
+  .timeline > li > .timeline-item > .timeline-body,
+  .timeline > li > .timeline-item > .timeline-footer {
+    padding: 10px;
+  }
+  .timeline > li > .fa,
+  .timeline > li > .glyphicon,
+  .timeline > li > .ion {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+    line-height: 30px;
+    position: absolute;
+    color: #666;
+    background: #d2d6de;
+    border-radius: 50%;
+    text-align: center;
+    left: 18px;
+    top: 0;
+  }
+  .timeline > .time-label > span {
+    font-weight: 600;
+    padding: 5px;
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+  .timeline-inverse > li > .timeline-item {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  .timeline-inverse > li > .timeline-item > .timeline-header {
+    border-bottom-color: #ddd;
+  }
+
+  #SortFilter .input-group {
+    margin-left: 20px;
+  }
+
+  #taskDiv{
+    background:#fff; 
+    margin-top: 10px;
+    margin-right: 7%;
+    margin-left: 7%;
+    margin-bottom: 0; 
+    padding: 0; 
+    padding-left:12px;
+    overflow-x: hidden;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.24);
+  }
+
+  @media (max-width: 406px) {
+    #SortFilter .input-group {
+      margin-left: 0;
+    }
+
+    input#searchTask{
+      width: 100%;
+    }
+
+    #SortFilter {
+      flex-wrap: wrap-reverse;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 991px){
+    .content{
+      height: calc(100% - 120px);
+    }
+  }
+
+  @media (max-width: 767px){
+    .content{
+      height: calc(100% - 160px);
+    }
+
+    #taskDiv{
+        margin-top: 0;
+        margin-right: 1px;
+        margin-left: 1px;
+    }
+  }
+
+.repeated-item.ng-leave {
+  -webkit-animation:0.5s my_animation;
+  -moz-animation:0.5s my_animation;
+  -o-animation:0.5s my_animation;
+  animation:0.5s my_animation;
+ }
+ @keyframes my_animation {
+  from {
+    max-height: 90px;
+    opacity: 1;
+    left: 0;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    left: -50px;
+  }
+ }
+}
+
+
+.view {
+  position: relative;
+  display: inline-block;
+}
+
+#viewButton {
+    margin: 0;
+    margin-top: 5px;
+    background-color: white;
+    padding-right: 2px;
+    color: black;
+    height: 30px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+#viewButton img{
+    margin-top: -2px;
+    margin-left: 2px;
+    max-width: 15px;
+    max-height: 15px;
+}
+
+  
+#viewButton:hover, #viewButton:focus, #viewButton:active{
+  background-color: white;
+  outline: none;
+}
+
+.view-content{
+    min-width: 110px;
+    display: none;
+    position: absolute;
+    overflow: auto;
+    padding: 0;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 11;
+}
+
+.view-content .md-button {
+    min-width: 180px;
+    color: black;
+    background-color: white;
+    padding: 2px 0 2px 15px;
+    text-decoration: none;
+    text-transform: none;
+    border-radius: 0;
+    display: block;
+    margin: 0;
+    text-align: left;
+}
+  .view-content .md-button:hover{
+    background-color: #f1f1f1;
+  }
+.animate-enter, 
+.animate-leave
+{ 
+  -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space:nowrap;
+} 
+
+.animate-leave.animate-leave-active,
+.animate-enter {
+  opacity: 0;
+  width: 0px;
+  height: 0px;
+}
+
+.animate-enter.animate-enter-active, 
+.animate-leave {
+  opacity: 1;
+  width: 150px;
+  height: 30px;
+}
+
+</style>
+
+
+<section class="content-header" style="background-color: white; box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.24);"> <!-- style="background-color: white; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.24);"> -->
+  <h1>My Tasks</h1>
+  
+</section>
+
+ <section class="content" id="taskDiv">
+    <div id="SortFilterOptions" style="margin: 10px; margin-right: 20px; margin-top:20px; margin-bottom: 35px;">
+        <div id="SearchField" style="height: 35px; justify-content: flex-start;">
+          <div class="view" style="margin-right: 15px; margin-left: 0;">
+            <button onclick="sortByFunction()" id="viewButton">View: Incomplete Tasks
+            </button>
+            <div id="viewContent" class="view-content">
+              <md-button class="md-button" id="titleView" onclick="viewFunction(this.id)" ng-click="order='title'">Tasks by Title</md-button>
+              <md-button class="md-button" id="recentView" onclick="viewFunction(this.id)" ng-click="order='-create_date'">Recent Tasks</md-button>
+              <md-button class="md-button" id="oldestView" onclick="viewFunction(this.id)" ng-click="order='create_date'">Oldest Tasks</md-button>
+              <md-button class="md-button" id="completeView" onclick="viewFunction(this.id)" ng-click="ctrl.setTaskListFilter('complete')">Completed Tasks</md-button>
+              <md-button class="md-button" id="incompleteView" onclick="viewFunction(this.id)" ng-click="ctrl.setTaskListFilter('incomplete')">Incomplete Tasks</md-button>
+              <md-button class="md-button" id="unassignedView" onclick="viewFunction(this.id)" ng-click="ctrl.setTaskListFilter('unassigned')">Unassigned Tasks</md-button>
+            </div>
+          </div>
+        </div>
+        <!-- <div id="SortFilter" style="height: 35px;">
+
+            <button class="archive" id="archiveMany" onclick="changeCheckbox(this.id)">
+                <img src="/static/images/archivedark.png"> 
+            </button>
+
+            <button class="delete" id="deleteMany" onclick="changeCheckbox(this.id)">
+                <img src="/static/images/deleteMany.png"> 
+            </button>
+            
+            <button class="options" id="confirmDelete" ng-click="deleteSelectedTasks()">Delete</button>
+            <button class="options" id="confirmArchive">Archive</button>
+            <button class="options" id="cancelDeleteArchive" onclick="revertCheckbox()">Cancel</button>
+        </div> -->
+    </div>
+
+    <div class="checkmark" style="height:30px; margin-top: -30px; margin-left: 26.5px;">
+        <input type="checkbox"  ng-model="select_all" ng-click="deleteSelectedTasks()" id="selectAll" onclick="checkedAll(this.id)" class="checkboxes" style="float:left"><div style="width: 40px; float:left">&#x25be;</div>
+    </div>
+
+
+    <div class="row " >
+        <div class="col-md-12" >
+            <!-- The time line -->
+            <ul class="timeline " ng-repeat="task in tasks | filter: {title:searchQuery || '' } | orderBy : '-create_date'" class="repeated-item" ng-animate=" 'animate' ">
+                <li>      
+                    <div class="timeline-item " animate>
+
+                        <span class="timeline-header time" style="float: left" animate>
+
+                          <div class="checkmark" id="{{task.id}}">
+                              <input type="checkbox" class="checkboxes" ng-model="task.selected" ng-click="">
+                          </div>
+
+                          <button ng-show="task.complete_date === null" class="completed" id="{{task.id}}" ng-click="ctrl.setTaskCompletion('complete', task)">
+                              <img src="/static/images/incomplete.png"  
+                                onmouseover="this.src='/static/images/incompleteHover.png'"
+                                onmouseout="this.src='/static/images/incomplete.png'">
+                          </button>
+                          <button ng-show="task.complete_date !== null" class="completed" id="{{task.id}}" ng-click="ctrl.setTaskCompletion('incomplete', task)">
+                              <img src="/static/images/completed.png">
+                          </button>
+                        </span>
+                       
+                        <span class="timeline-header time" ng-show="task.project !== undefined" animate>
+
+                            <a ui-sref="projectdetails" ng-click="ctrl.setProjectDetails(task.project_id);" class="badge" style="margin: 0; font-size: 12px; max-width: 85px;">
+                                <span style="white-space: nowrap; text-overflow: ellipsis; display: block; overflow: hidden; text-decoration: none">{{task.project.name}}<span>
+                            </a> 
+                        </span>
+
+                        <h3 class="timeline-header taskHeader"><a ui-sref="taskdetails" ng-mouseover="ctrl.setTaskDetails(task)" ng-click="ctrl.setTaskDetails(task)">{{task.title}}</a></h3>
+
+                    </div>
+
+                </li>
+            </ul>
+             <div ng-if="tasks.length === 0" style="margin-top: 20%">
+              <center>You currently have no tasks. <a style="color: #fa6200" ng-click="ctrl.showCreateTask()">Create one?</a></center>
+            </div>
+        </div><!-- /.col -->
+    </div>
+</section><!-- /.content -->
+<script type="text/ng-template" id="ratetask-template">
+     <div class="modal-header" ng-init="ctrl.setRating()">
+            <h3 class="modal-title" id="modal-title">Rate Task</h3>
+      </div>
+      <div class="modal-body" id="modal-titledal-body">
+          <span style="margin-left: 80px;" uib-rating ng-model="rate" max="5" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['1','2','3','4','5']" aria-labelledby="default-rating"></span> ({{rate}})
+      </div>
+      <div class="modal-footer">
+          <md-button style="float: left;" ng-click="ctrl.saveRating()">Rate!</md-button>
+          <md-button ng-click="ctrl.close()">Later</md-button>
+      </div>
+    </script>
+ <script type="text/ng-template" id="ratetask-template-2">
+     <div class="modal-header" ng-init="setRatingOnList()">
+            <h3 class="modal-title" id="modal-title">Rate Task</h3>
+      </div>
+      <div class="modal-body" id="modal-titledal-body">
+          <span style="margin-left: 80px;" uib-rating ng-model="rate" max="5" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['1','2','3','4','5']" aria-labelledby="default-rating"></span> ({{rate}})
+      </div>
+      <div class="modal-footer">
+          <md-button style="float: left;" ng-click="saveRatingOnList()">Rate!</md-button>
+          <md-button ng-click="close()">Later</md-button>
+      </div>
+  </script>
+  <script type="text/ng-template" id="sample-template">
+      <div class="modal-body">
+         <strong>These subtasks will be also deleted : </strong><br><br>
+             1. Task 1 <br>
+             2. Task 2 <br>
+             3. Task 3 <br>
+      </div>
+        <div class="modal-footer">
+          <button class="btn" type="submit" >Continue</button>
+          <button class="btn" type="button" >Cancel</button>
+        </div>
+       </form>
+      </div>
+
+   </script>
+<script type="text/javascript">
+
+  function checkedAll(ID) {
+
+    if(document.getElementById('selectAll').checked){
+      var checkboxes = document.getElementsByClassName("checkboxes");
+      for(i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = true;
+      }
+    }
+    else{
+      var checkboxes = document.getElementsByClassName("checkboxes");
+      for(i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
+    }
+  }
+  
+  function viewFunction(ID) {
+
+    var elem = document.getElementById("viewButton");
+
+    if(ID == "titleView"){
+       elem.textContent = "View: Tasks by Title";
+    }
+    else if(ID == "recentView"){
+      elem.textContent = "View: Recent Tasks";
+    }
+    else if(ID == "oldestView"){
+      elem.textContent = "View: Oldest Tasks";
+    }
+    else if(ID == "completeView"){
+      elem.textContent = "View: Completed Tasks";
+    }
+    else if(ID == "incompleteView"){
+      elem.textContent = "View: Incomplete Tasks";
+    }
+    else if(ID == "unassignedView"){
+      elem.textContent = "View: Unassigned Tasks";
+    }
+
+  }
+
+  function changeCheckbox(ID) {
+
+      document.getElementById("deleteMany").style.display = "none";
+      document.getElementById("archiveMany").style.display = "none";
+
+      if(ID == "deleteMany")
+        document.getElementById("confirmDelete").style.display = "block";
+      else
+        document.getElementById("confirmArchive").style.display = "block";
+
+      document.getElementById("cancelDeleteArchive").style.display = "block";
+
+      var com = document.getElementsByClassName("completed");
+      for(i = 0; i < com.length; i++) {
+        com[i].style.display ='none';
+      }
+      
+      var checkmarks = document.getElementsByClassName("checkmark");
+      for(i = 0; i < checkmarks.length; i++) {
+        checkmarks[i].style.display ='block';
+        checkmarks[i].
+        checked = false;
+      }
+    
+  }
+
+
+  function revertCheckbox() {
+
+      document.getElementById("deleteMany").style.display = "block";
+      document.getElementById("archiveMany").style.display = "block";
+      document.getElementById("confirmDelete").style.display = "none";
+      document.getElementById("confirmArchive").style.display = "none";
+      document.getElementById("cancelDeleteArchive").style.display = "none";
+
+      var com = document.getElementsByClassName("completed");
+      for(i = 0; i < com.length; i++) {
+        com[i].style.display ='block';
+      }
+      
+      var checkmarks = document.getElementsByClassName("checkmark");
+      for(i = 0; i < checkmarks.length; i++) {
+        checkmarks[i].style.display ='none';
+      }
+
+      var checkboxes = document.getElementsByClassName("checkboxes");
+      for(i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
+  }
+</script>
+
+  <script>
+    $('.has-clear input[type="text"]').on('input propertychange', function() {
+      var $this = $(this);
+      var visible = Boolean($this.val());
+      $this.siblings('.form-control-clear').toggleClass('hidden', !visible);
+    }).trigger('propertychange');
+
+    $('.form-control-clear').click(function() {
+      $(this).siblings('input[type="text"]').val('')
+        .trigger('propertychange').focus();
+    });
+  </script>
+
+  <script>
+    function sortByFunction() {
+      document.getElementById("viewContent").classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+      if (!(event.target.matches('#viewButton') || event.target.matches('#viewButton img'))) {
+
+        var dropdowns = document.getElementsByClassName("view-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+      if (!(event.target.matches('.filter') || event.target.matches('.filter img'))) {
+
+        var dropdowns = document.getElementsByClassName("filterDropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    function filterByFunction() {
+      document.getElementById("filterBy").classList.toggle("show");
+    }
+  </script>

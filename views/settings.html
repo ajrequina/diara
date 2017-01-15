@@ -1,0 +1,187 @@
+<style>
+    #settings {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh);
+        justify-content: flex-start;
+        align-items: center;
+        background-color: transparent;
+        padding: 20px;
+        margin: 0;
+    }
+
+    #settings .container {
+        display: block;
+        width: 100%;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .panel {
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
+    }
+
+    .panel > .panel-heading {
+        background-image: none;
+        background-color: white;
+        color: black;
+    }
+
+    .pending{
+      background-image: none;
+      background-color: red;
+      color: white;
+    }
+
+    .panel-collapse{
+        background-color: rgb(245, 245, 245);
+        box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    form.settingsForm {
+        flex-direction: column;
+        display: flex;
+        width: 320px;
+        justify-content: center;
+        padding: 15px 20px;
+        background-color: rgba(0, 0, 0, 0);
+        margin: 0 auto;
+    }
+
+    form.settingsForm input{
+        flex: 1 1 auto;
+        margin: 0;
+        font-size: 20px;
+        align-self: center;
+        background-color: white;
+        box-sizing: border-box;
+        border-radius: 3px;
+        border-color: rgba(0, 0, 0, 0.5);
+        max-height: 40px;
+        padding: 0 15px;
+    }
+
+    form.settingsForm button{
+        background-color: rgba(250, 98, 0, 0.7);
+        align-self: flex-end;
+        border: none;
+        min-width: 100px;
+        min-height: 30px;
+        margin: 20px 23px;
+        font-family: 'Roboto', sans-serif;
+        border: none;
+        color: white;
+    }
+
+    a, a:hover, a:focus{
+      outline:none;
+      color: black;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: rgb(250,98,0);
+    }
+
+</style>
+
+<div class="content" id="settings" >
+    <div class="panel-group container" id="parentpanel">
+
+
+        <div class="panel panel-default">
+            <a data-toggle="collapse" data-parent="#parentpanel" href="#changePW" ui-sref="#changePW">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                      Change Password
+                    </h4>
+                </div>
+            </a>
+
+            <div id="changePW" class="panel-collapse collapse" ng-controller="MainController">
+                <div class="panel-body">
+                    <form class="settingsForm" ng-submit="sendPassword()">
+                        <input type="Password" style="display: none">
+                        <input type="Password" ng-model="data.oldpassword" name="oldpassword" placeholder="current password" required>
+                        <br>
+                        <input type="Password" ng-model="data.newpassword1" name="newpassword1" placeholder="new password" required minlength="8" maxlength="15" ng-change="checkPassword()">
+                        <br>
+                        <input type="Password" ng-model="data.newpassword2" name="newpassword2" placeholder="confirm new password" required ng-change="checkPassword()">
+                        <div style="color:red; text-align:center; margin-top: 5px;">{{ error }}</div> 
+                        <button type="submit">Change</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <a data-toggle="collapse" data-parent="#parentpanel" href="#random" ui-sref="#random">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                      Team MR. JACArTY(t) members
+                  </h4>
+              </div>
+            </a>
+
+            <div id="random" class="panel-collapse collapse">
+                <div class="panel-body">
+                    MRose <br>
+                    Japheth <br>
+                    Alfi <br>
+                    Celine <br>
+                    Arje <br>
+                    Taria <br>
+                    Yannah <br>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="panel panel-default">
+            <a data-toggle="collapse" data-parent="#parentpanel" href="#editUserInfo" ui-sref="#editUserInfo">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        Edit User Info
+                    </h4>
+                </div>
+            </a>
+
+            <div id="editUserInfo" class="panel-collapse collapse">
+                <div class="panel-body"></div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var items = $('a');
+        items.on("click", function() {
+            var toggle = "false";
+
+            items.each(function( index ){
+                var fields = $(this).parent().children('div').children('div').children('form').children('input');
+
+                fields.each(function ( index ) {
+                    if($(this).val().length > 0){
+                      toggle = "true";
+                    }
+                });
+
+                if(toggle === "true"){
+                  $(this).children('.panel-heading').addClass('pending');
+                }
+                else{
+                  $(this).children('.panel-heading').removeClass('pending');
+                }
+
+                toggle = "false";
+            });
+        });
+
+</script>
