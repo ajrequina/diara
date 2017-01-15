@@ -80,14 +80,12 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
         var test = filterFilter(task.assignees, {id : getCookie('userid')})[0];
         return test !== undefined && task.complete_date === null;
       })
-      console.log(tasks);
     } else if(filter === 'complete'){
       var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks.related);
       tasks = tasks.filter(function(task){
         var test = filterFilter(task.assignees, {id : getCookie('userid')})[0];
         return test !== undefined && task.complete_date !== null;
       });
-      console.log(tasks);
     } else if(filter === 'unassigned'){
       var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks.related);
       tasks = tasks.filter(function(task){
@@ -99,7 +97,6 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
     $scope.tasks = $filter('orderBy')($scope.tasks, '-create_date');
   }
   ctrl.setTaskCompletion = function(op, task){
-    console.log(task);
     if(op === 'complete'){
       var proceed = true;
       for(var i = 0; i < task.subtask.length; i++){
@@ -331,11 +328,9 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
       }
     }
     var exist_user = filterFilter(data.add_users, { id : getCookie('userid')})[0];
-    console.log(exist_user);
     if(exist_user !== undefined){
       var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks.related);
       var task = filterFilter(tasks, {id : data.id})[0];
-      console.log(task);
       if(task !== undefined){
           $scope.tasks.unshift(task);
       }
