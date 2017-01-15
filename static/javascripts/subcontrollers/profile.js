@@ -497,6 +497,5 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
       }
       return "";
     }
-  //ctrl.setProjects();
 }]);
 

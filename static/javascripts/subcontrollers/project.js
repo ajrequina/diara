@@ -11,7 +11,7 @@ app.controller("ProjectController", ['$rootScope', '$scope', '$state', '$locatio
   var task_users = [];
   /////////////////////////////// VIEW VARIABLES //////////////////////////////////////////////
   $scope.projects = [];
-
+  
   ///////////////////////////////  FUNCTIONS /////////////////////////////////////////////////
   ctrl.setListTasks = function(){
     DataService.initTasks2()

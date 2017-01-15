@@ -64,7 +64,7 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
             }
 
         ]
-        ctrl.setListTasks = function(){
+    ctrl.setListTasks = function(){
       DataService.initTasks2()
        .then(function(data){
          list_tasks = data.related;
@@ -90,7 +90,6 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
       .then(function(data){
         list_projects = data.related;
         ctrl.list_projects = data.related;
-
         ctrl.setListCollabs();
       }, function(data){})
     }
@@ -114,13 +113,10 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
     $scope.incomplete_task = undefined;
     $scope.overdue_task = undefined;
     var shown_projects_tasks = [];
-    ctrl.startCalculations = function(){
-      console.log(list_tasks);
-      var first = new Date(list_tasks[0].create_date);
-      console.log(first.getTime());
-      var second = new Date();
-      console.log(second.getTime());
 
+    ctrl.startCalculations = function(){
+      var first = new Date(list_tasks[0].create_date);
+      var second = new Date();
       var total = 0;
       var count = 1;
       var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks);
@@ -134,8 +130,6 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
           count++;
         }
       }
-      console.log(count);
-      console.log(tasks);
       var ONE_DAY = 1000 * 60 * 60 * 24;
       $scope.ave_response = timeConversion(new Date(total / count));
 
@@ -150,7 +144,6 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
         var user_exist = filterFilter(collabs, {id : getCookie('userid')})[0];
         return user_exist !== undefined;
       });
-      console.log(projects);
 
       for(var i = 0; i < projects.length; i++){
         projects[i].tasks = filterFilter(list_tasks, {project_id : projects[i].id });
@@ -169,7 +162,6 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
             datetime = new Date(projects[i].deadline_date + ' ' + projects[i].deadline_time);
           }
            datetime = new Date(projects[i].deadline_date);
-           console.log(datetime.getTime());
            var date = new Date();
            if(datetime.getTime() <= date.getTime()){
             var task_completed = filterFilter(projects[i].tasks, {complete_date : null})[0];
@@ -184,15 +176,7 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
               shown_projects.push(data);
             }
            }
-          // console.log(datetime.getTime() > date.getTime());
-           //projects[i].overdue = date.getTime() - datetime.getTime();
-           
-            
-            //console.log(new Date(list_projects[i].deadline_date + ' ' + list_projects[i].deadline_time) - new Date(list_projects[i].create_date));
-           
-            //console.log(diffDays);
            if(datetime !== null){
-             //console.log(datetime.getMonth());
              project_month[datetime.getMonth()].push(projects[i]);
            }   
         }
@@ -201,11 +185,7 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
       
       
       shown_projects_tasks = $filter('orderBy')(shown_projects_tasks, 'tasklength');
-      console.log(shown_projects_tasks);
       shown_projects = $filter('orderBy')(shown_projects, 'days');
-      console.log(shown_projects);
-      //console.log(project_month);
-      //console.log(list_projects);
       var task_completed = new Array();
       for(var i = 0 ; i < 7 ; i++){
         task_completed[i] = [];
@@ -257,8 +237,7 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
       if(overdue_tasks.length > 0){
         $scope.overdue_task = overdue_tasks[0];
       }
-      console.log(incomplete_tasks);
-      console.log(overdue_tasks);
+
       var min = 1;
       min = projects[0].real;
       if(projects.length > 0){
@@ -279,7 +258,6 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
 
       var now = new Date();   
       min = timeConversionForDay(now.getTime() - min)
-      console.log(min);
       var count = 0;
       for(var i = 0; i < tasks.length; i++){
         if(tasks.complete_date !== null){
@@ -288,43 +266,6 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
       }
 
       $scope.ave_task = Math.floor(count / min);
-      console.log();
-
-      // for(var i = 0; i < list_tasks.length; i++){
-      //   list_tasks[i].incomplete = 0;  
-
-      //   if(list_tasks[i].complete_date === null){
-      //     var date = new Date();
-      //     list_tasks[i].incomplete = new Date(date.getTime() - new Date(list_tasks[i].create_date).getTime()).getTime();
-      //   }
-      //   if(list_tasks[i].deadline_date !== null){
-      //     var datetime  = null;
-      //     if(list_tasks[i].deadline_time !== null){
-      //       datetime = new Date(list_tasks[i].deadline_date + ' ' + list_tasks[i].deadline_time).getMonth();
-      //     }
-      //     datetime = new Date(list_tasks[i].deadline_date).getMonth();
-      //     //console.log(datetime);
-      //   }
-      //   if(list_tasks[i].complete_date !== null){
-      //     var datetime = new Date(list_tasks[i].complete_date);
-      //     task_completed[datetime.getDay()].push(list_tasks[i]);
-      //   }
-      //   if(list_tasks[i].complete_date === null){
-      //    if(list_tasks[i].deadline_date !== null){
-      //     var datetime  = null;
-      //     if(list_tasks[i].deadline_time !== null){
-      //       datetime = new Date(list_tasks[i].deadline_date + ' ' + list_tasks[i].deadline_time).getMonth();
-      //     }
-      //     datetime = new Date(list_tasks[i].deadline_date).getMonth();
-      //     //console.log(datetime);
-      //    }
-      //   }
-      // }
-      // $scope.incomplete_tasks = filterFilter(list_tasks, {complete_date : null});
-      // $scope.incomplete_tasks = $filter('orderBy')($scope.incomplete_tasks, '-incomplete');
-      // console.log(task_completed);
-      // console.log($scope.incomplete_tasks);
-      // console.log(list_tasks); 
       ctrl.setLineGraph();
       ctrl.setBarGraph();
     }
