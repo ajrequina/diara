@@ -49,10 +49,8 @@ app.controller("CredentialController", ['$rootScope', '$scope', '$state', '$loca
     if($scope.data !== undefined){
       if($scope.data.email !== undefined){
       var user = filterFilter($scope.users, {email : $scope.data.email})[0];
-      console.log(user);
       if(user !== undefined){
         $scope.error_signup = "The Email Address Already Exist!";
-        console.log($scope.error_signup);
         hasError = true;
       } if($scope.data.email.indexOf('@up.edu.ph') === -1 && !hasError){
         $scope.error_signup = "Invalid UP Email Address!";

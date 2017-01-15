@@ -19,7 +19,6 @@ app.run(function(editableOptions) {
 app.controller("MainController", ['$rootScope', '$scope', '$state', '$location', 'Flash', '$mdDialog','$http','$uibModal','HTTPFactory','filterFilter','DataService','socket','MiscService','$filter','Notification','desktopNotification','HOST','$timeout', '$q', '$log','$window',
   function ($rootScope, $scope, $state, $location, Flash, $mdDialog, $http, $uibModal, HTTPFactory, filterFilter, DataService, socket, MiscService, $filter, Notification, desktopNotification, HOST,$timeout, $q, $log, $window) {  
   socket.removeAllListeners();
-  console.log('Here at Index Ctrl');  
   var list_users = [];
   $scope.have_unread = false;
    $scope.initNotifications = function(){
@@ -30,10 +29,6 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
        $scope.notifications = response.data;
     }, function(response){});
    }
-  // $scope.$on('set_project_details', function(event, data){
-  //   console.log('I am here');
-  //   // $scope.setProjectDetailsById(data.id);
-  // })
 
   $scope.initComments = function(){
     $http({
@@ -198,7 +193,6 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
       $('#profpic2').attr('src', $scope.curr_user.profpic_path + '?'  + new Date().getTime());
     }) 
     $scope.$on('/updateuserinfo', function(event, data){
-      console.log(data);
       if(getCookie('userid') === data.id){
         $scope.name = data.fullname;  
         if(data.profpic_path !== undefined){
@@ -241,7 +235,6 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
         name : data.title ,
         user_id : data.userid
       } 
-      console.log(project)
       var user_exist = filterFilter(data.collaborators, {id : getCookie('userid')})[0];
       if(user_exist !== undefined){
         $rootScope.$broadcast('/createproject', project);
@@ -398,7 +391,6 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
         profpic_path : data.pathdir,
         info : data.info
       };
-      console.log(user);
       $rootScope.$broadcast('/updateuserinfo', user);
     }); 
     socket.on('/deleteattachment', function(data){
@@ -445,7 +437,6 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
          $scope.notifications.push(userNotif[i]);
       }
       $scope.notifications = $filter('orderBy')($scope.notifications, '-create_date');
-      console.log($scope.notifications);
       $scope.showDesktopNotification(userNotif);
      });
     socket.on('/updateprojectname', function(data){
@@ -513,7 +504,6 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
             DataService.initTasks2()
              .then(function(data){
                var task = filterFilter(data.related, { id : id.id})[0];
-               console.log(task);
                 if(task !== undefined){
                    $window.localStorage['task'] = JSON.stringify(task);
                    $state.go('taskdetails', {}, {reload  : true});
@@ -545,10 +535,7 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
                    var assign = data;
                     DataService.initTasks2()
                      .then(function(data){
-                       console.log(data);
-                       console.log(userNotif[i]);
                        var task = filterFilter(data.related, { id :id.id } )[0];
-                       console.log(task);
                         if(task !== undefined){
                            $window.localStorage['task'] = JSON.stringify(task);
                            $state.go('taskdetails', {}, {reload  : true});
@@ -617,13 +604,11 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
       
      }
      socket.on('UPDATE USER INFO', function(){
-       console.log('Updated');
         HTTPFactory.getAllUsers()
        .then(function(response){
          $scope.users = response.data;
          var user = MiscService.getUserId();
          $scope.curr_user = filterFilter($scope.users, {id : user})[0];
-         console.log($scope.curr_user);
        }, function(response){});
      });
 
@@ -653,11 +638,9 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
     $scope.initProjects = function(){
       DataService.initProjects2().then(function(data){
          $scope.projects = data.related;
-         console.log($scope.projects);
       }, function(data){})
     }
     $scope.initCollabs = function(){
-
       DataService.initCollabs2()
        .then(function(data){
          $scope.collab = data;
@@ -692,10 +675,8 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
         url : '/listcomments',
         method : 'POST'
       }).then(function(response){
-         list_comments = response.data;
-         task = filterFilter(list_comments, {id : notif.type_id})[0];
-
-       console.log(task.task_id);
+        list_comments = response.data;
+        task = filterFilter(list_comments, {id : notif.type_id})[0];
        var d = {
          id : task.task_id
        };
@@ -704,9 +685,7 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
            var assign = data;
             DataService.initTasks2()
              .then(function(data){
-               console.log(d);
                var task = filterFilter(data.related, { id : d.id})[0];
-               console.log(task);
                 if(task !== undefined){
                    $window.localStorage['task'] = JSON.stringify(task);
                    $state.go('taskdetails', {}, {reload  : true});
@@ -741,18 +720,12 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
          var d = {
            id : task
          };
-        // console.log('broadcasting task type')
-         console.log(list_tasks);
-         console.log(notif.type_id);
          DataService.initAssignments2()
          .then(function(data){
            var assign = data;
             DataService.initTasks2()
              .then(function(data){
-               console.log(d);
-               console.log(data);
                var task = filterFilter(data.related, { id : notif.type_id })[0];
-               console.log(task);
                 if(task !== undefined){
                    $window.localStorage['task'] = JSON.stringify(task);
                    $state.go('taskdetails', {}, {reload  : true});
@@ -786,10 +759,7 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
           task = notif.type_id;
            var d = {
              notifid : task
-           };
-         console.log(list_projects);
-         
-
+      };
       DataService.initCollabs2()
        .then(function(data){
          var collab = data;
@@ -833,29 +803,13 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
        data : d,
        method : 'POST'
      }).then(function(response){
-        console.log('******* HEY ******** ' + response.data.message);
-        console.log(response.data);
-          // $scope.notifications = $filter('orderBy')($scope.notifications, '-create_date');
-
-          // console.log(notif);
-          console.log()
-          $scope.notifications[idx].read_date = response.data.data.readdate;
-           var unread = filterFilter($scope.notifications, {read_date : null})[0];
-           if(unread === undefined){
-            $scope.have_unread = false;
-           } else {
-            $scope.have_unread = true;
-           }
-          // console.log($scope.notifications);
-           // for(var i = 0; i < $scope.notifications; i++){
-           //   if(notif.id === $scope.notifications[i].id){
-           //     $scope.notifications[i].read_date = 
-           //   }
-           //   $scope.notifications[i].create_date = $filter('date')(new Date($scope.notifications[i].create_date), 'MMM d, y hh:mm:ss a');
-           // }
-
-           //$scope.notifications = $filter('orderBy')($scope.notifications, '-create_date');
-           console.log($scope.notifications);
+        $scope.notifications[idx].read_date = response.data.data.readdate;
+         var unread = filterFilter($scope.notifications, {read_date : null})[0];
+         if(unread === undefined){
+          $scope.have_unread = false;
+         } else {
+          $scope.have_unread = true;
+         }
      }, function(response){}); 
   }
 
@@ -868,16 +822,13 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
       method : 'POST'
     }).then(function(response){
        $scope.notifications = response.data;
-       
-       
        for(var i = 0; i < $scope.notifications; i++){
          $scope.notifications[i].create_date = $filter('date')($scope.notifications[i].create_date, 'MMM d, y hh:mm:ss a');
        }
        $scope.notifications = $filter('orderBy')($scope.notifications, '-create_date');
-       console.log($scope.notifications);
     }, function(response){});
   }
-  $scope.$on('NOTIFY',  function(pevent, padata){  
+    $scope.$on('NOTIFY',  function(pevent, padata){  
   });
   $scope.getNotifications = function(){
     $http({

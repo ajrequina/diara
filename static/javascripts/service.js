@@ -84,10 +84,8 @@ app.service('ProjectService', ['$http', 'HTTPFactory' ,function($http, HTTPFacto
             }, function(response){});
   }
   service.updateCollaborator = function(data){
-     console.log('I was called.. ');
      return HTTPFactory.post('/updatecollaborator', data)
       .then(function(response){
-        console.log(response.data.conf);
         return response.data.conf;
     }, function(response){});
   }
@@ -376,7 +374,6 @@ app.service('DataService',['HTTPFactory','$window','filterFilter','$filter','$q'
    }
 
    service.setTaskAttachments = function(task, files){
-     console.log(files);
      var attach = filterFilter(files, {task_id : task.id});
      for(var i = 0; i < attach.length; i++){
        var filename = attach[i].filename;
@@ -484,20 +481,17 @@ app.service('DataService',['HTTPFactory','$window','filterFilter','$filter','$q'
       return rTasks;
      } else {
       var rTask = filterFilter(tasks, {id : task.task_id})[0];
-      console.log(rTask);
       rTasks.push(rTask);
       while(rTask.task_id !== null){
         rTask = filterFilter(tasks, {id : rTask.task_id})[0];
         rTasks.push(rTask);
-      } 
-      console.log(rTasks);
+      }
       return rTasks;
      }
    }
    service.getRelatedLowerTasks = function(tasks, task){
     var lTasks = [];
     var lTask = filterFilter(tasks, { task_id : task.id});
-    console.log(lTask);
     var queue = [];
     for(var i = 0; i < lTask.length; i++){
      lTasks.push(lTask[i]);
