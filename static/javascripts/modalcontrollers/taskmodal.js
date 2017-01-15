@@ -43,13 +43,6 @@ app.controller('TaskModalController',
 		        }
 		      });
 		      ctrl.function2();
-		        // var a = filterFilter($scope.collab, {project_id: b.id});
-		        // var d = [];
-		        // for(var i = 0; i < a.length; i++){
-		        //   var c = filterFilter($scope.users, {id: a[i].person_id});
-		        //   var e = JSON.stringify(c[0]);
-		        //   d.push(JSON.parse(e));
-		        // }
 		     }, function myError(response) {});
 		   }
             ctrl.filterProjects = function(){
@@ -60,7 +53,6 @@ app.controller('TaskModalController',
 			     var user_exist = filterFilter(project.collaborators, { id : getCookie('userid')})[0];
 			     return user_exist !== undefined;
 			   });
-                console.log($scope.projects);
             }
             ctrl.setNeededData = function(){
             	ctrl.function1();
@@ -198,14 +190,11 @@ app.controller('TaskModalController',
 		             var data = {
 		               arrNotif : arrNotif
 		             };
-		             console.log(arrNotif);
 		            $http({
 		              url : '/addnotif',
 		              method : 'POST', 
 		              data : data
 		            }).then(function(response){
-		              console.log(response.data);
-		              //io.emit('/addnotif', response.data.data);
 		            }, function(response){})
 		          }, function(data){})
 		          }
@@ -224,7 +213,6 @@ app.controller('TaskModalController',
 
 		    $scope.open2 = function() {
 		      $scope.opened = !$scope.opened;
-          console.log($scope.data.date);
 		    };
 		    $scope.close2 = function(){
 		    }

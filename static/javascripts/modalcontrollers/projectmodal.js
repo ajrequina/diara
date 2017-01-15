@@ -22,7 +22,6 @@ app.controller('ProjectModalController',
           HTTPFactory.getAllUsers()
            .then(function mySuccess(response) {
             $scope.users = response.data;
-            console.log($scope.users);
             $scope.users.map(function(user){
               var fullname  = user.first_name + ' ' + user.last_name;
               if(!(fullname === null || fullname === undefined )){
@@ -98,7 +97,6 @@ app.controller('ProjectModalController',
                             'deadlinetime' : $scope.data.deadlinetime,
                             'collaborators' : $scope.collaborators
                           }
-            console.log(project);  
             $scope.cancel();    
             $http({
               method : 'POST',
@@ -131,14 +129,11 @@ app.controller('ProjectModalController',
                        var data = {
                          arrNotif : arrNotif
                        };
-                       console.log(arrNotif);
                       $http({
                         url : '/addnotif',
                         method : 'POST', 
                         data : data
                       }).then(function(response){
-                        console.log(response.data);
-                        //io.emit('/addnotif', response.data.data);
                       }, function(response){})
                     }, function(data){})
                     }

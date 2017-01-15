@@ -8,7 +8,7 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
   var list_projects = [];
   $scope.list_projects = [];
   var ctrl = this;
-  $scope.tasks = [];s
+  $scope.tasks = [];
   $scope.type = "incomplete";
   $scope.list_tasks = [];
 

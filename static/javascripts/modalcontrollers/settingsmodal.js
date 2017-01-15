@@ -5,11 +5,8 @@ app.controller('SettingsModalController', ['$scope', '$uibModalInstance', '$filt
    HTTPFactory.getAllUsers()
      .then(function(response){
        $scope.users = response.data;
-       console.log($scope.users);
        var id = getCookie('userid');
-       console.log(id);
        $scope.curr_user = filterFilter($scope.users, {id : id})[0];
-       console.log($scope.curr_user);
        $scope.firstname = $scope.curr_user.first_name;
        $scope.lastname = $scope.curr_user.last_name;
        $scope.info = $scope.curr_user.info;
@@ -31,9 +28,6 @@ app.controller('SettingsModalController', ['$scope', '$uibModalInstance', '$filt
     }
 
     $scope.updateUser = function(){
-      console.log($scope.firstname);
-      console.log($scope.lastname);
-      console.log($scope.info);
     }
 
     $scope.checkFirstname = function(){
@@ -100,7 +94,6 @@ app.controller('SettingsModalController', ['$scope', '$uibModalInstance', '$filt
     }
     $scope.sendUserInfo = function(){
      var file = $scope.myFile;
-     console.log(file);
      var uploadUrl = "/updateuserinfo";
      var data =  {
       firstname : $scope.firstname,
@@ -114,13 +107,11 @@ app.controller('SettingsModalController', ['$scope', '$uibModalInstance', '$filt
      fd.append('username', data.username);
      fd.append('lastname', data.lastname);
      fd.append('info', data.info);
-     console.log(fd);
        
        $http.post(uploadUrl, fd, {
           transformRequest: angular.identity,
           headers: {'Content-Type': undefined}
        }).then(function(response){
-          console.log(response.data.message);
           $scope.close();
           $mdDialog.show(
             $mdDialog.alert()
