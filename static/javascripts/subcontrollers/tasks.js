@@ -28,7 +28,7 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
       });
    };
   ctrl.setListTasks = function(){
-    DataService.initTasks2()
+    DataService.initTasks()
      .then(function(data){
        list_tasks = data;
        $window.localStorage['task'] = JSON.stringify({id : 2});
@@ -37,21 +37,21 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
      }, function(data){});
   } 
   ctrl.setListUsers = function(){
-    DataService.initUsers2()
+    DataService.initUsers()
      .then(function(data){
        list_users = data;
        ctrl.setListAssignments();
     }, function(data){})
   }
   ctrl.setListAssignments = function(){
-    DataService.initAssignments2()
+    DataService.initAssignments()
      .then(function(data){
      list_assignments = data;
      ctrl.setListProjects();
     }, function(data){})
   }
   ctrl.setListProjects = function(){
-    DataService.initProjects2()
+    DataService.initProjects()
     .then(function(data){
       $scope.list_projects = data.related;
       list_projects = data.related;
@@ -59,7 +59,7 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
     }, function(data){})
   }
   ctrl.setListCollabs = function(){
-    DataService.initCollabs2()
+    DataService.initCollabs()
      .then(function(data){
       list_collabs = data;
       ctrl.setListTasks();
@@ -279,7 +279,7 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
  $scope.$on('/createtask', function(event, data){
     var test = filterFilter(data.assigned_users, { id : getCookie('userid')})[0];
     if(test !== undefined || getCookie('userid') === data.id){
-      DataService.initProjects2()
+      DataService.initProjects()
       .then(function(res){
         list_projects = res.related;
         data.project = DataService.getProjectById(list_projects, data.project_id);

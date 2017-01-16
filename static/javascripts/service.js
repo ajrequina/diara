@@ -113,42 +113,7 @@ app.service('DataService',['HTTPFactory','$window','filterFilter','$filter','$q'
    this.data = null;
    this.done = false;
    ////////////////////////// SETTERS /////////////////////////////////
-   service.initTasks = function(){
-
-      HTTPFactory.get('/listtasks')
-      .then(function(response){
-         var all_tasks = response.data;
-         all_tasks.created = all_tasks.created.filter(function(task) {
-              return !task.deleted;
-         });
-         all_tasks.completed = all_tasks.completed
-            .filter(function(task) {
-              return !task.deleted;
-            });
-
-         all_tasks.assigned = all_tasks.assigned
-            .filter(function(task) {
-              return !task.deleted;
-            });
-
-         all_tasks.incomplete = all_tasks.incomplete
-           .filter(function(task) {
-             return !task.deleted;
-         });
-         all_tasks.related = all_tasks.related
-            .filter(function(task) {
-              return !task.deleted;
-         });
-         all_tasks.repeated = all_tasks.repeated
-            .filter(function(task) {
-             return !task.deleted;
-         });
-         $window.sessionStorage.setItem('all-task', JSON.stringify(all_tasks));
-         this.done = true;
-       }, function(response){});
-  } 
-   service.initTasks2 = function(type){
-
+   service.initTasks = function(type){
       return HTTPFactory.get('/listtasks')
       .then(function(response){
          var all_tasks = response.data;
@@ -181,13 +146,6 @@ app.service('DataService',['HTTPFactory','$window','filterFilter','$filter','$q'
        }, function(response){});
    }
    service.initAssignments = function(){
-    HTTPFactory.get('/listassignment')
-     .then(function(response){
-        var all_assignments = response.data;
-        $window.sessionStorage['all-assignments'] = JSON.stringify(all_assignments);
-     }, function(response){});
-   }
-   service.initAssignments2 = function(){
     return HTTPFactory.get('/listassignment')
      .then(function(response){
         return response.data;
@@ -201,7 +159,7 @@ app.service('DataService',['HTTPFactory','$window','filterFilter','$filter','$q'
         return response.data;
      }, function(response){});
    }
-   service.initUsers2 = function(){
+   service.initUsers = function(){
      return HTTPFactory.get('/listpersons')
       .then(function(response){
        var all_users = response.data;
@@ -219,16 +177,8 @@ app.service('DataService',['HTTPFactory','$window','filterFilter','$filter','$q'
        return all_users;
      }, function(response){});
    }
-   service.initUsers = function(){
-   }
+
     service.initProjects = function(){
-      HTTPFactory.get('/listprojects')
-       .then(function(response){
-         var all_projects = response.data;
-         $window.sessionStorage['all-projects'] = JSON.stringify(all_projects);
-       }, function(response){})
-    }
-    service.initProjects2 = function(){
       return HTTPFactory.get('/listprojects')
        .then(function(response){
          var all_projects = response.data;
@@ -236,13 +186,6 @@ app.service('DataService',['HTTPFactory','$window','filterFilter','$filter','$q'
        }, function(response){})
     }
     service.initCollabs = function(){
-      HTTPFactory.get('/listcollabs')
-       .then(function(response){
-         var all_collabs = response.data;
-         $window.sessionStorage['all-collabs'] = JSON.stringify(all_collabs);
-      }, function(response){})
-    }
-    service.initCollabs2 = function(){
       return HTTPFactory.get('/listcollabs')
        .then(function(response){
          var all_collabs = response.data;
@@ -563,5 +506,23 @@ app.service('MiscService', ['filterFilter','$location', function(filterFilter, $
   }
   return service;
 }]);
+
+app.service('SessionStorageService', ['$window', '$q', function($window, $q){
+  this.setData = function(idx, data){
+   $window.localStorage.setItem(idx, JSON.stringify(data));
+  };
+  this.getData = function(idx){
+    if($window.localStorage.getItem(idx)){
+      return $q.when(JSON.parse($window.localStorage.getItem(idx)));
+    } else {
+      var deferred = $q.defer;
+      deferred.reject('Data Not Found');
+      return deferred.promise;
+    }
+  };
+  this.clearData = function(idx){
+    $window.localStorage.removeItem(idx);
+  };
+}])
 
 

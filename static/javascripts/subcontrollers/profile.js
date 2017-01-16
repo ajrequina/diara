@@ -37,14 +37,14 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
     }, function(response){});
   } 
   ctrl.setListUsers = function(){
-   DataService.initUsers2()
+   DataService.initUsers()
     .then(function(data){
        list_users = data;
        ctrl.initProfileDetails();
    }, function(data){})
   }
   ctrl.setListAssignments = function(){
-     DataService.initAssignments2()
+     DataService.initAssignments()
      .then(function(data){
      list_assignments = data;
      ctrl.setListUsers();
@@ -61,7 +61,7 @@ app.controller("ProfileController", ['$rootScope', '$scope', '$state', '$locatio
     }, function(response){});
   }
   ctrl.setListCollabs = function(){
-    DataService.initCollabs2()
+    DataService.initCollabs()
      .then(function(data){
       list_collabs = data;
       ctrl.setListAssignments();

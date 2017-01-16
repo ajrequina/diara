@@ -106,7 +106,7 @@ app.controller('ProjectModalController',
                 $scope.cancel();
                 Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right'});
                 if(response.data.data !== undefined){
-                     DataService.initUsers2()
+                     DataService.initUsers()
                      .then(function(data){
                        var users = data;
                        var project_data = response.data.data;

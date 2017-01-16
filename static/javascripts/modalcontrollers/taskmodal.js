@@ -167,7 +167,7 @@ app.controller('TaskModalController',
 		          // $rootScope.$broadcast('TASK ADDED');
 		          $scope.comment = "";
 		          if(response.data.data !== undefined){
-		           DataService.initUsers2()
+		           DataService.initUsers()
 		           .then(function(data){
 		             var users = data;
 		             var task_data = response.data.data;

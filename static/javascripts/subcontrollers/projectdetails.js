@@ -28,28 +28,28 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     }, function(response){});
   } 
   ctrl.setListUsers = function(){
-    DataService.initUsers2()
+    DataService.initUsers()
      .then(function(data){
        list_users = data;
        ctrl.setListAssignments();
     }, function(data){})
   }
   ctrl.setListAssignments = function(){
-     DataService.initAssignments2()
+     DataService.initAssignments()
      .then(function(data){
      list_assignments = data;
      ctrl.setListProjects();
      }, function(data){})
   }
   ctrl.setListProjects = function(){
-    DataService.initProjects2()
+    DataService.initProjects()
     .then(function(data){
       list_projects = data.related;
       ctrl.setListCollabs();
     }, function(data){})
   }
   ctrl.setListCollabs = function(){
-    DataService.initCollabs2()
+    DataService.initCollabs()
      .then(function(data){
       list_collabs = data;
       ctrl.setListTasks();
@@ -203,7 +203,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
           ProjectService.updateProjectName(data)
             .then(function mySuccess(response) {
                if(response.data.data !== undefined && old !== $scope.project_details.name){
-               DataService.initUsers2()
+               DataService.initUsers()
                .then(function(data){
                  var users = data;
                  var project_data = response.data.data;
@@ -259,7 +259,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
     ProjectService.updateProjectDescription(data)
       .then(function mySuccess(response) {
       if(response.data.data !== undefined && old !== $scope.project_details.description){
-           DataService.initUsers2()
+           DataService.initUsers()
            .then(function(data){
              var users = data;
              var project_data = response.data.data;
@@ -317,7 +317,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
         .then(function (response) {
            if(response.data.conf){
              if(response.data.data !== undefined && old !== $scope.project_details.deadline_time){
-                 DataService.initUsers2()
+                 DataService.initUsers()
                  .then(function(data){
                    var users = data;
                    var project_data = response.data.data;
@@ -375,7 +375,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
           .then(function (response) {
            if(response.data.conf){
               if(response.data.data !== undefined && old !== $scope.project_details.deadline_date){
-                 DataService.initUsers2()
+                 DataService.initUsers()
                  .then(function(data){
                    var users = data;
                    var project_data = response.data.data;
@@ -496,7 +496,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
             }, function(response){});
           }
           if(response.data.data !== undefined){
-             DataService.initUsers2()
+             DataService.initUsers()
              .then(function(data){
                var users = data;
                var project_data = response.data.data;
@@ -545,7 +545,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
              method : 'POST'
            }).then(function(response){
               if(response.data.data !== undefined){
-                 DataService.initUsers2()
+                 DataService.initUsers()
                  .then(function(data){
                    var users = data;
                    var project_data = response.data.data;
@@ -745,7 +745,7 @@ app.controller("ProjectDetailsController", ['$rootScope', '$scope', '$state', '$
         .then(function(response){
           $Notification.warning({message: response.data.message, positionY: 'top', positionX: 'right', verticalSpacing: 15});
           if(response.data.data !== undefined){
-               DataService.initUsers2()
+               DataService.initUsers()
                .then(function(data){
                  var users = data;
                  var task_data = response.data.data;

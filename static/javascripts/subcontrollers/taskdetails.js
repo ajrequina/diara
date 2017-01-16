@@ -1,6 +1,6 @@
 app.controller('TaskDetailsController', 
-	['$rootScope', '$scope', '$state', '$location', 'Flash','$http','$window','filterFilter','$filter','HTTPFactory','$uibModal','TaskService','$mdDialog','DataService','MiscService','socket','$mdToast','Notification','FileSaver',
-	 function($rootScope, $scope, $state, $location, Flash, $http, $window, filterFilter, $filter, HTTPFactory, $uibModal, TaskService, $mdDialog, DataService, MiscService, socket,  $mdToast, Notification, FileSaver) {
+	['$rootScope', '$scope', '$state', '$location', 'Flash','$http','$window','filterFilter','$filter','HTTPFactory','$uibModal','TaskService','$mdDialog','DataService','MiscService','socket','$mdToast','Notification','FileSaver','SessionStorageService','$timeout',
+	 function($rootScope, $scope, $state, $location, Flash, $http, $window, filterFilter, $filter, HTTPFactory, $uibModal, TaskService, $mdDialog, DataService, MiscService, socket,  $mdToast, Notification, FileSaver, SessionStorageService, $timeout) {
      
      /////////////////////////////// CONTROLLER VARIABLES /////////////////////////////////////////
     var list_tasks = [];
@@ -13,7 +13,7 @@ app.controller('TaskDetailsController',
     var ctrl = this;
     ctrl.list_projects = [];
     /////////////////////////////// VIEW VARIABLES //////////////////////////////////////////////
-    $scope.task_details = {};
+    $scope.task_details = null;
     $scope.assigned_users = [];
     $scope.user = {};
     $scope.task_description = "";
@@ -31,14 +31,14 @@ app.controller('TaskDetailsController',
       }, function(response){});
     } 
     ctrl.setListUsers = function(){
-      DataService.initUsers2()
+      DataService.initUsers()
        .then(function(data){
          list_users = data;
          ctrl.setListAssignments();
       }, function(data){})
     }
     ctrl.setListAssignments = function(){
-       DataService.initAssignments2()
+       DataService.initAssignments()
        .then(function(data){
        list_assignments = data;
        ctrl.setListProjects();
@@ -53,7 +53,6 @@ app.controller('TaskDetailsController',
         ctrl.list_projects = response.data;
          ctrl.setListCollabs();
           // ctrl.getTaskDetails();
-      }, function(response){});
       // DataService.initProjects2()
       // .then(function(data){
       //   list_projects = data.related;
@@ -61,9 +60,27 @@ app.controller('TaskDetailsController',
 
         
       // }, function(data){})
+    });
+  }
+
+    ctrl.viewData = function(){
+        $timeout(function(){
+          SessionStorageService.getData('test')
+           .then(function(data){
+            console.log(data);
+          });
+        }, 10000); 
+     
+      
+      //console.log(SessionStorageService.getData('test'));
+    }
+    ctrl.setData = function(num){
+      console.log(num);
+      var d = { details : num }
+      SessionStorageService.setData('test', d);
     }
     ctrl.setListCollabs = function(){
-      DataService.initCollabs2()
+      DataService.initCollabs()
        .then(function(data){
         list_collabs = data;
         ctrl.setListTasks();
@@ -74,17 +91,16 @@ app.controller('TaskDetailsController',
    }
     ctrl.setNeededData = function(){
       ctrl.setListUsers();
-    }
+    } 
     ctrl.resetTaskDetails = function(task){
       $window.localStorage['task'] = {};
       $window.localStorage['task'] = JSON.stringify(task);
       ctrl.getTaskDetails();
     }
     ctrl.changeTaskDetails = function(task){
-      $window.localStorage['task'] = {};
+      $window.localStorage['task'] = null;
       $window.localStorage['task'] = JSON.stringify(task);
       $state.go('taskdetails', {}, { reload : true }); 
-      ctrl.getTaskDetails();
     } 
     ctrl.getTaskDetails = function(){
       user_id = getCookie('userid');
@@ -93,9 +109,6 @@ app.controller('TaskDetailsController',
       $scope.task_details.subtasks = DataService.getSubtasksById(list_tasks, $scope.task_details.id);
       $scope.task_details.higher_tasks = DataService.getRelatedTasksById(list_tasks, $scope.task_details);
       $scope.task_details.lower_tasks = DataService.getRelatedLowerTasks(list_tasks, $scope.task_details);
-      for(var i = 0; i < ctrl.list_projects.length; i++){
-        
-      }
       $scope.task_details.subtasks = $scope.task_details.subtasks.filter(function(subtask){
         return $scope.task_details.project_id === subtask.project_id;
       });

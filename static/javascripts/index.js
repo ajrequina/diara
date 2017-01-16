@@ -1,15 +1,15 @@
 var app = angular.module('Diara', ['ui.router', 'ui.bootstrap', 'flash','ngMaterial', 'ngMessages','ngCookies', 'route','angularModalService', 'ngSanitize', 'ngAnimate','ngTagsInput','moment-picker','angularMoment',"xeditable", 'ui-notification','ngCookies','ngDesktopNotification', 'base64', 'ngFileSaver', "xeditable",  'zingchart-angularjs' ]);
 app.config(function(NotificationProvider, $locationProvider, desktopNotificationProvider) {
-        NotificationProvider.setOptions({
-            delay: 10000,
-            maxCount : 3
-        });
-        desktopNotificationProvider.config({
-         autoClose: false,
-         duration : 20
-      });
+  NotificationProvider.setOptions({
+    delay: 10000,
+    maxCount : 3
+  });
 
-    });
+  desktopNotificationProvider.config({
+    autoClose: false,
+    duration : 20
+  });
+});
 app.constant('HOST', {
   site : 'http://localhost:1532/'
 });
@@ -88,33 +88,33 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
     var list_tasks = [];
     var list_projects = [];
     ctrl.setListTasks = function(){
-      DataService.initTasks2()
+      DataService.initTasks()
        .then(function(data){
         list_tasks = data.related;
        $rootScope.$broadcast('list_tasks', data);
        }, function(data){});
     } 
     ctrl.setListUsers = function(){
-      DataService.initUsers2()
+      DataService.initUsers()
        .then(function(data){
          $rootScope.$broadcast('list_users', data);
       }, function(data){})
     }
     ctrl.setListAssignments = function(){
-       DataService.initAssignments2()
+       DataService.initAssignments()
        .then(function(data){
         $rootScope.$broadcast('list_assignments', data);
        }, function(data){})
     }
     ctrl.setListProjects = function(){
-      DataService.initProjects2()
+      DataService.initProjects()
       .then(function(data){
         list_projects = data.related;
         $rootScope.$broadcast('list_projects', data);
       }, function(data){})
     }
     ctrl.setListCollabs = function(){
-      DataService.initCollabs2()
+      DataService.initCollabs()
        .then(function(data){
         $rootScope.$broadcast('list_collabs', data);
       }, function(data){})
@@ -157,7 +157,7 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
     });
     $scope.$on('get_list_assignments', function(){
       ctrl.setListAssignments();
-    })
+    });
     $scope.$on('get_list_projects', function(){
       ctrl.setListProjects();
     });
@@ -498,10 +498,10 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
               if(type === 'comment'){
         var id = {id : task};
               
-         DataService.initAssignments2()
+         DataService.initAssignments()
          .then(function(data){
            var assign = data;
-            DataService.initTasks2()
+            DataService.initTasks()
              .then(function(data){
                var task = filterFilter(data.related, { id : id.id})[0];
                 if(task !== undefined){
@@ -530,10 +530,10 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
          }, function(data){})
              } else if(type === 'task'){
                var id = {id : task};
-                DataService.initAssignments2()
+                DataService.initAssignments()
                  .then(function(data){
                    var assign = data;
-                    DataService.initTasks2()
+                    DataService.initTasks()
                      .then(function(data){
                        var task = filterFilter(data.related, { id :id.id } )[0];
                         if(task !== undefined){
@@ -562,10 +562,10 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
                  }, function(data){})
              } else if(type === 'project'){
               var id = {id : task};
-              DataService.initCollabs2()
+              DataService.initCollabs()
                .then(function(data){
                  var collab = data;
-                DataService.initProjects2(data)
+                DataService.initProjects(data)
                   .then(function(data){
                  var project = filterFilter(data.related, { id : id.id})[0];
 
@@ -623,25 +623,26 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
     };
 
   $scope.initAssignments = function(){
-      DataService.initAssignments2()
+      DataService.initAssignments()
        .then(function(data){
          $scope.assignments = data;
        }, function(data){})
     }
 
     $scope.initUsers = function(){
-      DataService.initUsers2()
+      DataService.initUsers()
        .then(function(data){
          $scope.users = data;
       }, function(data){})
     }
     $scope.initProjects = function(){
-      DataService.initProjects2().then(function(data){
+      DataService.initProjects()
+      .then(function(data){
          $scope.projects = data.related;
       }, function(data){})
     }
     $scope.initCollabs = function(){
-      DataService.initCollabs2()
+      DataService.initCollabs()
        .then(function(data){
          $scope.collab = data;
       }, function(data){})
@@ -680,10 +681,10 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
        var d = {
          id : task.task_id
        };
-        DataService.initAssignments2()
+        DataService.initAssignments()
          .then(function(data){
            var assign = data;
-            DataService.initTasks2()
+            DataService.initTasks()
              .then(function(data){
                var task = filterFilter(data.related, { id : d.id})[0];
                 if(task !== undefined){
@@ -720,10 +721,10 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
          var d = {
            id : task
          };
-         DataService.initAssignments2()
+         DataService.initAssignments()
          .then(function(data){
            var assign = data;
-            DataService.initTasks2()
+            DataService.initTasks()
              .then(function(data){
                var task = filterFilter(data.related, { id : notif.type_id })[0];
                 if(task !== undefined){
@@ -760,10 +761,10 @@ app.controller("MainController", ['$rootScope', '$scope', '$state', '$location',
            var d = {
              notifid : task
       };
-      DataService.initCollabs2()
+      DataService.initCollabs()
        .then(function(data){
          var collab = data;
-        DataService.initProjects2(data)
+        DataService.initProjects(data)
           .then(function(data){
          var project = filterFilter(data.related, { id :  notif.type_id })[0];
 

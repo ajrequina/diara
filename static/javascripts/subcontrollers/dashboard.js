@@ -3,7 +3,6 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
   var ctrl = this;
   ctrl.showDetails = true;
   ctrl.home = {};
-  // hey
   $scope.ave_response = null;
   $scope.incomplete_tasks = [];
   $scope.overdue_tasks = [];
@@ -47,28 +46,28 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
     }
   };
   ctrl.setListTasks = function(){
-    DataService.initTasks2()
+    DataService.initTasks()
      .then(function(data){
        list_tasks = data.related;
        ctrl.startCalculations();
      }, function(data){});
   } 
   ctrl.setListUsers = function(){
-    DataService.initUsers2()
+    DataService.initUsers()
      .then(function(data){
        list_users = data;
        ctrl.setListAssignments();
     }, function(data){})
   }
   ctrl.setListAssignments = function(){
-     DataService.initAssignments2()
+     DataService.initAssignments()
      .then(function(data){
      list_assignments = data;
      ctrl.setListProjects();
      }, function(data){})
   }
   ctrl.setListProjects = function(){
-    DataService.initProjects2()
+    DataService.initProjects()
     .then(function(data){
       list_projects = data.related;
       ctrl.list_projects = data.related;
@@ -76,7 +75,7 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
     }, function(data){})
   }
   ctrl.setListCollabs = function(){
-    DataService.initCollabs2()
+    DataService.initCollabs()
      .then(function(data){
       list_collabs = data;
       ctrl.setListTasks();

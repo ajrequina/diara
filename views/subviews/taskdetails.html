@@ -699,10 +699,6 @@ overflow: hidden;
 
       </span>  
 			<div id="topDiv">
-		        <!-- <div  id="back">
-					<a ui-sref="tasks">&larr; Back to Tasks</a>
-				</div>
-				 -->
 				<div id="addST">   
              <img style="max-width: 25px; max-height: 25px;" src="/static/images/attachFile.png?"
                  title="Attach Files" data-toggle="tooltip" data-placement="top" tooltip onclick="document.getElementById('attach').click(); return false" >
@@ -711,19 +707,21 @@ overflow: hidden;
 
             <img style="max-width: 25px; max-height: 25px; margin: 0 5px" src="/static/images/addSubtask.png?"
                  title="Add Subtask" data-toggle="tooltip" data-placement="top" tooltip ng-click="ctrl.showAddSubtask()">
-
             <img style="max-width: 25px; max-height: 25px;" src="/static/images/delete.png?"
                  title="Delete Task" data-toggle="tooltip" data-placement="top" tooltip ng-click="ctrl.deleteTask($event)">
             
           </div>
 			</div>
-
+      <div>
+        <button ng-click="ctrl.viewData()">View Data</button>
+        <input type="text" ng-model="test_data">
+        <button ng-click="ctrl.setData(test_data)">Change Data</button>
+      </div>
 			<div style="margin-top: 20px; ">
 		    <div >
 			    <div>
 			        <div>
 			          <span style=" display: flex; font-size: 15px;">
-
 			          <strong ng-if="task_details.project_id !== null" class="badge" style=" max-width: 70%;" ng-click="ctrl.setProjectDetailsId(task_details.project_id)"><span style="white-space: nowrap; text-overflow: ellipsis; display: block; overflow: hidden; text-decoration: none;">{{project_title}}</span></strong>
                 <strong ng-if="task_details.project_id === null" class="badge" style=" max-width: 70%;"><span style="white-space: nowrap; text-overflow: ellipsis; display: block; overflow: hidden; text-decoration: none;">{{project_title}}</span></strong>
 			            <img ng-if="task_details.task_id === null" src="/static/images/edit.png" style="margin-left: 10px; width: 20px; height: 20px;" popover-placement="bottom" uib-popover-template="'select-proj-template'" popover-is-open="popoverIsOpen" popover-trigger="'outsideClick'">
@@ -790,17 +788,10 @@ overflow: hidden;
 		     </div>		   
 		</div>
      <div>
-       <!-- <textarea  class="description"       style="width: 100%; overflow: hidden; text-overflow: ellipsis;                                          height: 200px; font-size: 18px; color: black;" 
-                  placeholder="Description" ng-model="task_description" 
-                  ng-blur="ctrl.updateTaskDescription()">{{task_details.description}}
-      </textarea> -->
       <a href="#" editable-textarea="task_description" e-rows="7" e-cols="50" onbeforesave="ctrl.updateTaskDescription($data)">
         <pre>{{task_details.description || 'no task description'}}</pre>
       </a>
      </div>
-
-		   
-			  
 		    <script type="text/ng-template" id="timepicker.html">
 		      <div uib-timepicker  ng-model="mytime"    hour-step="1" 
 		           minute-step="1" show-meridian="true" class="exclude" 
@@ -810,9 +801,7 @@ overflow: hidden;
 		              style="float: right; width: 25px; height: 25px; border-left: 2px solid #000;
 		                     margin-bottom: 5px;" 
 		              ng-click="ctrl.updateTaskDueTime(mytime)">
-		    </script>
-		   
-			</h3>
+		    </script>   
       
      <div id="attachmentDiv" ng-show="task_details.attachments !== undefined && task_details.attachments.length > 0">
         <header>

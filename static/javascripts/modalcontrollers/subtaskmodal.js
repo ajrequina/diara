@@ -13,7 +13,7 @@ app.controller('SubtaskModalController',
 
 
 	   ctrl.initUsers = function(){
-	      DataService.initUsers2()
+	      DataService.initUsers()
 	       .then(function(data){
 	         list_users = data;
 	      }, function(data){})
@@ -21,7 +21,7 @@ app.controller('SubtaskModalController',
 
 	    ctrl.initSubtaskAssignees = function(){
 	      ctrl.initUsers();
-	      DataService.initAssignments2()
+	      DataService.initAssignments()
 	       .then(function(data){
 	         list_assignments = data;
 	         ctrl.setInitSubtaskAssignees();
@@ -75,7 +75,7 @@ app.controller('SubtaskModalController',
 
 	            //// FOR NOTIFICATIONS ////
 	            if(response.data.data !== undefined){
-	               DataService.initUsers2()
+	               DataService.initUsers()
 	               .then(function(data){
 	                 var users = data;
 	                 var task_data = response.data.data;
