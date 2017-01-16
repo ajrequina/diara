@@ -16,8 +16,8 @@ app.constant('HOST', {
 app.run(function(editableOptions) {
   editableOptions.theme = 'bs3';
 });
-app.controller("MainController", ['$rootScope', '$scope', '$state', '$location', 'Flash', '$mdDialog','$http','$uibModal','HTTPFactory','filterFilter','DataService','socket','MiscService','$filter','Notification','desktopNotification','HOST','$timeout', '$q', '$log','$window',
-  function ($rootScope, $scope, $state, $location, Flash, $mdDialog, $http, $uibModal, HTTPFactory, filterFilter, DataService, socket, MiscService, $filter, Notification, desktopNotification, HOST,$timeout, $q, $log, $window) {  
+app.controller("MainController", ['$rootScope', '$scope', '$state', '$location', 'Flash', '$mdDialog','$http','$uibModal','HTTPFactory','filterFilter','DataService','socket','MiscService','$filter','Notification','desktopNotification','HOST','$timeout', '$q', '$log','$window', '$cacheFactory',
+  function ($rootScope, $scope, $state, $location, Flash, $mdDialog, $http, $uibModal, HTTPFactory, filterFilter, DataService, socket, MiscService, $filter, Notification, desktopNotification, HOST,$timeout, $q, $log, $window, $cacheFactory) {  
   socket.removeAllListeners();
   var list_users = [];
   $scope.have_unread = false;
