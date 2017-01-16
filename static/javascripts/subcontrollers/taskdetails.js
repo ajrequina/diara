@@ -49,36 +49,11 @@ app.controller('TaskDetailsController',
         url : '/listallprojects',
         method : 'GET'
       }).then(function(response){
-         list_projects = response.data;
+        list_projects = response.data;
         ctrl.list_projects = response.data;
-         ctrl.setListCollabs();
-          // ctrl.getTaskDetails();
-      // DataService.initProjects2()
-      // .then(function(data){
-      //   list_projects = data.related;
-       
-
-        
-      // }, function(data){})
+        ctrl.setListCollabs();
     });
   }
-
-    ctrl.viewData = function(){
-        $timeout(function(){
-          SessionStorageService.getData('test')
-           .then(function(data){
-            console.log(data);
-          });
-        }, 10000); 
-     
-      
-      //console.log(SessionStorageService.getData('test'));
-    }
-    ctrl.setData = function(num){
-      console.log(num);
-      var d = { details : num }
-      SessionStorageService.setData('test', d);
-    }
     ctrl.setListCollabs = function(){
       DataService.initCollabs()
        .then(function(data){
