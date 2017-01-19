@@ -99,12 +99,15 @@ app.controller("TasksController", ['$rootScope', '$scope', '$state', '$location'
   ctrl.setTaskCompletion = function(op, task){
     if(op === 'complete'){
       var proceed = true;
-      for(var i = 0; i < task.subtask.length; i++){
-        if(task.subtask[i].complete_date === null){
-          proceed = false;
-          break;
+      if(task.subtask !== undefined){
+        for(var i = 0; i < task.subtask.length; i++){
+          if(task.subtask[i].complete_date === null){
+            proceed = false;
+            break;
+          }
         }
       }
+
       if(proceed){
           var rating =  task.rating === null ? "0": task.rating;
          // rating = rating.substring(0, rating.indexOf('.'));
