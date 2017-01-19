@@ -96,159 +96,210 @@ function ($rootScope, $scope, $state, $location,  Flash, DataService, filterFilt
   var shown_projects_tasks = [];
 
   ctrl.startCalculations = function(){
-    var first = new Date(list_tasks[0].create_date);
-    var second = new Date();
-    var total = 0;
-    var count = 1;
-    var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks);
-    tasks = tasks.filter(function(task){
-      var exist_user = filterFilter(task.assignees, {id : getCookie('userid')})[0];
-      return exist_user !== undefined;
-    });
-    for(var i = 0; i < tasks.length; i++){
-      if(tasks[i].complete_date !== null){
-        total += new Date(tasks[i].complete_date) - new Date(tasks[i].create_date);
-        count++;
-      }
-    }
-    var ONE_DAY = 1000 * 60 * 60 * 24;
-    $scope.ave_response = timeConversion(new Date(total / count));
+    ctrl.responseTime();
+    // var first = new Date(list_tasks[0].create_date);
+    // var second = new Date();
+    // var total = 0;
+    // var count = 1;
+    // var tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks);
+    // tasks = tasks.filter(function(task){
+    //   var exist_user = filterFilter(task.assignees, {id : getCookie('userid')})[0];
+    //   return exist_user !== undefined;
+    // });
+    // for(var i = 0; i < tasks.length; i++){
+    //   if(tasks[i].complete_date !== null){
+    //     total += new Date(tasks[i].complete_date) - new Date(tasks[i].create_date);
+    //     count++;
+    //   }
+    // }
+    // var ONE_DAY = 1000 * 60 * 60 * 24;
+    // $scope.ave_response = timeConversion(new Date(total / count));
 
-    var project_month = new Array();
-    for(var i = 0; i < 12; i++){
-      project_month[i] = [];
-    }
+    // var project_month = new Array();
+    // for(var i = 0; i < 12; i++){
+    //   project_month[i] = [];
+    // }
     
-    var projects = list_projects;
-    projects = projects.filter(function(project){
-      var collabs = DataService.getCollabById(list_collabs, list_users, project.id);
-      var user_exist = filterFilter(collabs, {id : getCookie('userid')})[0];
-      return user_exist !== undefined;
-    });
+    // var projects = list_projects;
+    // projects = projects.filter(function(project){
+    //   var collabs = DataService.getCollabById(list_collabs, list_users, project.id);
+    //   var user_exist = filterFilter(collabs, {id : getCookie('userid')})[0];
+    //   return user_exist !== undefined;
+    // });
 
-    for(var i = 0; i < projects.length; i++){
-      projects[i].tasks = filterFilter(list_tasks, {project_id : projects[i].id });
-      var data = {}
-      var project = {};
-      project.name = projects[i].name;
-      project.tasklength = projects[i].tasks.length;
-      projectsnames.push(projects[i].name);
-      shown_projects_tasks.push(project);
-      var date =  new Date(projects[i].create_date);
-      projects[i].real = date.getTime();
-      projectstasks.push(projects[i].tasks.length);
-      if(projects[i].deadline_date !== null){
-        var datetime  = null;
-        if(projects[i].deadline_time !== null){
-          datetime = new Date(projects[i].deadline_date + ' ' + projects[i].deadline_time);
-        }
-         datetime = new Date(projects[i].deadline_date);
-         var date = new Date();
-         if(datetime.getTime() <= date.getTime()){
-          var task_completed = filterFilter(projects[i].tasks, {complete_date : null})[0];
-          if(task_completed === undefined){
-            data.name = projects[i].name;
-            var date1 = new Date(projects[i].create_date);
-            var date2 = new Date();
-            var timeDiff = Math.abs(datetime.getTime() - date1.getTime());
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-            data.days = diffDays;
-            projectsdate.push(diffDays);
-            shown_projects.push(data);
-          }
-         }
-         if(datetime !== null){
-           project_month[datetime.getMonth()].push(projects[i]);
-         }   
-      }
-    }
+    // for(var i = 0; i < projects.length; i++){
+    //   projects[i].tasks = filterFilter(list_tasks, {project_id : projects[i].id });
+    //   var data = {}
+    //   var project = {};
+    //   project.name = projects[i].name;
+    //   project.tasklength = projects[i].tasks.length;
+    //   projectsnames.push(projects[i].name);
+    //   shown_projects_tasks.push(project);
+    //   var date =  new Date(projects[i].create_date);
+    //   projects[i].real = date.getTime();
+    //   projectstasks.push(projects[i].tasks.length);
+    //   if(projects[i].deadline_date !== null){
+    //     var datetime  = null;
+    //     if(projects[i].deadline_time !== null){
+    //       datetime = new Date(projects[i].deadline_date + ' ' + projects[i].deadline_time);
+    //     }
+    //      datetime = new Date(projects[i].deadline_date);
+    //      var date = new Date();
+    //      if(datetime.getTime() <= date.getTime()){
+    //       var task_completed = filterFilter(projects[i].tasks, {complete_date : null})[0];
+    //       if(task_completed === undefined){
+    //         data.name = projects[i].name;
+    //         var date1 = new Date(projects[i].create_date);
+    //         var date2 = new Date();
+    //         var timeDiff = Math.abs(datetime.getTime() - date1.getTime());
+    //         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    //         data.days = diffDays;
+    //         projectsdate.push(diffDays);
+    //         shown_projects.push(data);
+    //       }
+    //      }
+    //      if(datetime !== null){
+    //        project_month[datetime.getMonth()].push(projects[i]);
+    //      }   
+    //   }
+    // }
 
     
     
-    shown_projects_tasks = $filter('orderBy')(shown_projects_tasks, 'tasklength');
-    shown_projects = $filter('orderBy')(shown_projects, 'days');
-    var task_completed = new Array();
-    for(var i = 0 ; i < 7 ; i++){
-      task_completed[i] = [];
-    }
+    // shown_projects_tasks = $filter('orderBy')(shown_projects_tasks, 'tasklength');
+    // shown_projects = $filter('orderBy')(shown_projects, 'days');
+    // var task_completed = new Array();
+    // for(var i = 0 ; i < 7 ; i++){
+    //   task_completed[i] = [];
+    // }
 
-    var task_samples = filterFilter(tasks, {complete_date : null});
-    var overdue_tasks = [];
-    var incomplete_tasks = [];
-    for(var i = 0; i < task_samples.length; i++){
-      var not_due = false;
-      if(task_samples[i].deadline_date !== null){
-        var datetime  = null;
-        var data = {};
-        if(task_samples[i].deadline_time !== null){
-          datetime = new Date(task_samples[i].deadline_date + ' ' + task_samples[i].deadline_time);
-        }
-         datetime = new Date(task_samples[i].deadline_date);
-         var date = new Date();
-         if(datetime.getTime() <= date.getTime()){             
-            data.name = task_samples[i].title;
-            var date1 = new Date(task_samples[i].create_date);
-            var date2 = new Date();
-            var timeDiff = Math.abs(datetime.getTime() - date1.getTime());
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-            data.time = timeConversion(diffDays);
-            data.real = diffDays;
-            overdue_tasks.push(data);           
-         } else {
-           not_due = true;
-         }
-      }
-      if(not_due){
-        var data = {};
-        data.name = task_samples[i].title;
-        var date1 = new Date(task_samples[i].create_date);
-        var date2 = new Date();
-        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-        data.time = timeConversion(timeDiff);
-        data.real = timeDiff;
-        incomplete_tasks.push(data);
-      } 
+    // var task_samples = filterFilter(tasks, {complete_date : null});
+    // var overdue_tasks = [];
+    // var incomplete_tasks = [];
+    // for(var i = 0; i < task_samples.length; i++){
+    //   var not_due = false;
+    //   if(task_samples[i].deadline_date !== null){
+    //     var datetime  = null;
+    //     var data = {};
+    //     if(task_samples[i].deadline_time !== null){
+    //       datetime = new Date(task_samples[i].deadline_date + ' ' + task_samples[i].deadline_time);
+    //     }
+    //      datetime = new Date(task_samples[i].deadline_date);
+    //      var date = new Date();
+    //      if(datetime.getTime() <= date.getTime()){             
+    //         data.name = task_samples[i].title;
+    //         var date1 = new Date(task_samples[i].create_date);
+    //         var date2 = new Date();
+    //         var timeDiff = Math.abs(datetime.getTime() - date1.getTime());
+    //         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    //         data.time = timeConversion(diffDays);
+    //         data.real = diffDays;
+    //         overdue_tasks.push(data);           
+    //      } else {
+    //        not_due = true;
+    //      }
+    //   }
+    //   if(not_due){
+    //     var data = {};
+    //     data.name = task_samples[i].title;
+    //     var date1 = new Date(task_samples[i].create_date);
+    //     var date2 = new Date();
+    //     var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    //     data.time = timeConversion(timeDiff);
+    //     data.real = timeDiff;
+    //     incomplete_tasks.push(data);
+    //   } 
       
-    }
-    incomplete_tasks = $filter('orderBy')(incomplete_tasks, '-real');
-    if(incomplete_tasks.length > 0){
-      $scope.incomplete_task = incomplete_tasks[0];
-    }
-    overdue_tasks = $filter('orderBy')(overdue_tasks, '-real');
-    if(overdue_tasks.length > 0){
-      $scope.overdue_task = overdue_tasks[0];
-    }
+    // }
+    // incomplete_tasks = $filter('orderBy')(incomplete_tasks, '-real');
+    // if(incomplete_tasks.length > 0){
+    //   $scope.incomplete_task = incomplete_tasks[0];
+    // }
+    // overdue_tasks = $filter('orderBy')(overdue_tasks, '-real');
+    // if(overdue_tasks.length > 0){
+    //   $scope.overdue_task = overdue_tasks[0];
+    // }
 
-    var min = 1;
-    min = projects[0].real;
-    if(projects.length > 0){
-     for(var i = 0; i <  projects.length; i++){
-      if(projects[i].real !== null){
-         if(projects[i].real < min){
-           min = projects[i].real;
-         }
-       }
-      }
+    // var min = 1;
+    // min = projects[0].real;
+    // if(projects.length > 0){
+    //  for(var i = 0; i <  projects.length; i++){
+    //   if(projects[i].real !== null){
+    //      if(projects[i].real < min){
+    //        min = projects[i].real;
+    //      }
+    //    }
+    //   }
+    // } else {
+    //   var arranged = $filter('orderBy')(tasks, 'create_date');
+    //   if(arranged.length > 0){
+    //    var min_task = new Date(arranged[0].create_date);
+    //    min = min_task.getTime();
+    //   }
+    // }
+
+    // var now = new Date();   
+    // min = timeConversionForDay(now.getTime() - min)
+    // var count = 0;
+    // for(var i = 0; i < tasks.length; i++){
+    //   if(tasks.complete_date !== null){
+    //      count++;
+    //   }
+    // }
+
+    // $scope.ave_task = Math.floor(count / min);
+    // ctrl.setLineGraph();
+    // ctrl.setBarGraph();
+  }
+  
+  /**
+  * Function that computes the average response time per task of the user
+  */
+  ctrl.responseTime = function(){
+
+    // Sets the related tasks of the user
+    var related_tasks = DataService.setTasks(list_projects, list_assignments, list_users, list_tasks);
+
+    // Filters the completed tasks on the related tasks of the user
+    var completed_tasks = related_tasks.filter(function(task){
+      return task.complete_date !== null && task.project_id !== null;
+    });
+
+    // Variable on where the current user id is stored
+    var user = getCookie('userid');   
+    
+    // Variable on where the sum of all the response time for each task is stored
+    var response_sum = 0;
+    
+    // Variable on where the response time is stored
+    var response_time = 0;
+    var ctr = 0;
+
+    // Loop that performs the accumulation of the response time for each task of the user
+    for(var i = 0; i < completed_tasks.length; i++){
+
+     // Filters the assignment object of the current task and for the user
+     // To retrieve the assignment date
+     var assignment = list_assignments.filter(function(assignment){
+       return completed_tasks[i].id === assignment.task_id && user === assignment.assignee_id; 
+     })[0];
+    
+     // Operation that accumulates the response time of each task
+     // To get the actual response time : complete_date - assignment_date
+     if(assignment !== undefined){
+      var complete_date = new Date(completed_tasks[i].complete_date);
+      var assignment_date = new Date(assignment.assign_date);
+      response_sum += (complete_date.getTime() - assignment_date.getTime());
+      ctr++;
+     }
+
+    }
+    if(completed_tasks.length > 0 && ctr > 0){
+      response_time = timeConversion(response_sum / ctr);
     } else {
-      var arranged = $filter('orderBy')(tasks, 'create_date');
-      if(arranged.length > 0){
-       var min_task = new Date(arranged[0].create_date);
-       min = min_task.getTime();
-      }
+      response_time = timeConversion(response_sum)
     }
-
-    var now = new Date();   
-    min = timeConversionForDay(now.getTime() - min)
-    var count = 0;
-    for(var i = 0; i < tasks.length; i++){
-      if(tasks.complete_date !== null){
-         count++;
-      }
-    }
-
-    $scope.ave_task = Math.floor(count / min);
-    ctrl.setLineGraph();
-    ctrl.setBarGraph();
+     console.log(response_time);
   }
   function getCookie(cname) {
     var name = cname + "=";
@@ -363,7 +414,7 @@ ctrl.setLineGraph = function(){
       var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
 
       var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
-
+      
       if (seconds < 60) {
           return seconds + " sec";
       } else if (minutes < 60) {
